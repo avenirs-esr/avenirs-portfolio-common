@@ -19,6 +19,30 @@
 *.tar.gz
 *.rar
 
+# Generated
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+# Temp files
+\#*
+*~
+
+# gitignore token
+.nogit
+.no-git
+*.nogit.*
+*.no-git.*
+
+# node
+node_modules
+
+# Intellij
+*.iml
+.idea/
+*.iws
+.husky/commit-msg
