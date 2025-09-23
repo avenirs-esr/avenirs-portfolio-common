@@ -6,6 +6,10 @@ and [Conventional Commits](https://www.conventionalcommits.org/) standard.
 
 ---
 
+## [v1.1.0] - 2025-09-23
+
+- Feature security fetched from avenirs-portfolio-ap.
+
 ## [v1.0.0] - 2025-09-12
 
 - ✨ **Repository initialization**
@@ -16,7 +20,7 @@ and [Conventional Commits](https://www.conventionalcommits.org/) standard.
     - linter,
     - tests.
 
-### Features
+## Features
 
 Note: for this first version, the files have been moved from the shared feature of avenirs-portfolio-api and reorganized
 into features.

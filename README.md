@@ -12,6 +12,7 @@ src/main/java/fr/avenirsesr/portfolio/common/
 ├── error       Exception handling and error management.
 ├── language    Internationalization and language support.
 ├── openapi     OpenAPI documentation configuration.
+├── security    Spring security config and models.
 ├── temporal    Date, time, period, etc.
 ├── testutils   Utils classes for tests.
 ├── validation  Validation classes (mainly a placeholder at this step).
