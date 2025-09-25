@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
     classes = fr.avenirsesr.portfolio.common.TestApplication.class,
     properties = {"spring.profiles.active=test"})
 @AutoConfigureMockMvc
-class SecurityConfigTest {
+class HMACSecurityConfigTest {
 
   private static final String permitAllPathsString =
       "/avenirs-portfolio-api/api-docs/**,/avenirs-portfolio-api/swagger-ui/**,/favicon.ico,/actuator/health,/photo/**,/cover/**";
