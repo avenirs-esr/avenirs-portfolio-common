@@ -9,4 +9,9 @@ public record PageCriteria(Integer page, Integer pageSize) {
     this.pageSize =
         pageSize == null ? DEFAULT_PAGE_CRITERIA.pageSize : Math.min(MAX_PAGE_SIZE, pageSize);
   }
+
+  @Override
+  public String toString() {
+    return "(page=%s, pageSize=%s)".formatted(page, pageSize);
+  }
 }
