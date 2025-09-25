@@ -1,6 +1,9 @@
 package fr.avenirsesr.portfolio.common.security.infrastructure.configuration;
 
+import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.enums.ESecurityFilter;
+import fr.avenirsesr.portfolio.common.security.infrastructure.filter.ApiKeyAuthenticationFilter;
 import fr.avenirsesr.portfolio.common.security.infrastructure.filter.DevAuthenticationFilter;
+import fr.avenirsesr.portfolio.common.security.infrastructure.filter.DisabledAuthenticationFilter;
 import fr.avenirsesr.portfolio.common.security.infrastructure.filter.HmacAuthenticationFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +25,11 @@ public class SecurityConfig {
 
   private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-  @Value("${security.disabled:false}")
-  private boolean securityDisabled;
+  @Value("${security.authentication.filter}")
+  private String securityFilter;
+
+  @Value("${security.authentication.api-key:default-api-key}")
+  private String expectedApiKey;
 
   @Value("${security.permit-all-paths}")
   private String[] permitAllPaths;
@@ -46,22 +52,67 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+    boolean isSecurityEnabled = true;
+    switch (ESecurityFilter.fromValue(securityFilter)) {
+      case HMAC:
+        {
+          log.info(
+              "Security enabled (signed header protection) using filter {}",
+              HmacAuthenticationFilter.class.getSimpleName());
+          http.addFilterBefore(
+              new HmacAuthenticationFilter(String.join(",", permitAllPaths)),
+              UsernamePasswordAuthenticationFilter.class);
+        }
+        break;
+      case DEV:
+        {
+          log.warn(
+              "Security is disabled, dev mode, using {}, do not use in production",
+              DevAuthenticationFilter.class.getSimpleName());
+          http.addFilterBefore(
+              new DevAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        }
+        break;
+      case API_KEY:
+        {
+          log.info(
+              "Security is enabled (api key protection), using {}",
+              ApiKeyAuthenticationFilter.class.getSimpleName());
+          http.addFilterBefore(
+              new ApiKeyAuthenticationFilter(expectedApiKey, String.join(",", permitAllPaths)),
+              UsernamePasswordAuthenticationFilter.class);
+        }
+        break;
+      case DISABLED:
+        {
+          isSecurityEnabled = false;
+          log.warn(
+              "Security is disabled, using {}, do not use in production",
+              DisabledAuthenticationFilter.class.getSimpleName());
+          http.addFilterBefore(
+              new DisabledAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        }
+        break;
+      default:
+        {
+          log.info(
+              "Security enabled by default (signed header protection) using filter {}",
+              HmacAuthenticationFilter.class.getSimpleName());
+          http.addFilterBefore(
+              new HmacAuthenticationFilter(String.join(",", permitAllPaths)),
+              UsernamePasswordAuthenticationFilter.class);
+        }
+    }
     http.csrf(AbstractHttpConfigurer::disable)
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests(
-            authz -> authz.requestMatchers(permitAllPaths).permitAll().anyRequest().authenticated())
+            isSecurityEnabled
+                ? authz ->
+                    authz.requestMatchers(permitAllPaths).permitAll().anyRequest().authenticated()
+                : authz -> authz.anyRequest().permitAll())
         .exceptionHandling(
             exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint));
-
-    if (securityDisabled) {
-      log.warn("Security is disabled");
-      http.addFilterBefore(
-          new DevAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-    } else {
-      http.addFilterBefore(
-          new HmacAuthenticationFilter(String.join(",", permitAllPaths)),
-          UsernamePasswordAuthenticationFilter.class);
-    }
 
     return http.build();
   }

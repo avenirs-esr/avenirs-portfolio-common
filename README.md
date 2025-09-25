@@ -8,15 +8,16 @@ This module provides shared components organized by feature:
 
 ```
 src/main/java/fr/avenirsesr/portfolio/common/
-├── data        Data structures, DTOs, and mappers.
-├── error       Exception handling and error management.
-├── language    Internationalization and language support.
-├── openapi     OpenAPI documentation configuration.
-├── security    Spring security config and models.
-├── temporal    Date, time, period, etc.
-├── testutils   Utils classes for tests.
-├── validation  Validation classes (mainly a placeholder at this step).
-└── web         Context management and queries.
+├── configuration   Configuration for trace, etc. 
+├── data            Data structures, DTOs, and mappers.
+├── error           Exception handling and error management.
+├── language        Internationalization and language support.
+├── openapi         OpenAPI documentation configuration.
+├── security        Spring security config and models.
+├── temporal        Date, time, period, etc.
+├── testutils       Utils classes for tests.
+├── validation      Validation classes (mainly a placeholder at this step).
+└── web             Context management and queries.
 ```
 
 ## Usage

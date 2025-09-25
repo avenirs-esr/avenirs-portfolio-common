@@ -6,6 +6,10 @@ and [Conventional Commits](https://www.conventionalcommits.org/) standard.
 
 ---
 
+## [v1.2.0] - 2025-10-01
+
+- Shared objects for back office.
+
 ## [v1.1.0] - 2025-09-23
 
 - Feature security fetched from avenirs-portfolio-ap.
