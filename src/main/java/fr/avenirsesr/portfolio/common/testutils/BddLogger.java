@@ -17,6 +17,10 @@ public final class BddLogger {
     log("🔶 WHEN", message);
   }
 
+  public static void and(String message) {
+    log("➕ AND", message);
+  }
+
   public static void then(String message) {
     log("🟩 THEN", message);
   }
