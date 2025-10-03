@@ -1,4 +1,4 @@
-package fr.avenirsesr.portfolio.common.configuration.domain.model.exception;
+package fr.avenirsesr.portfolio.common.configuration.domain.exception;
 
 import fr.avenirsesr.portfolio.common.error.domain.exception.BusinessException;
 import fr.avenirsesr.portfolio.common.error.domain.model.enums.EErrorCode;
