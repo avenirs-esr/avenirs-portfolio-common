@@ -1,6 +1,6 @@
 package fr.avenirsesr.portfolio.common.language.infrastructure.adapter.utils;
 
-import fr.avenirsesr.portfolio.common.error.domain.exception.LanguageException;
+import fr.avenirsesr.portfolio.common.language.domain.exception.LanguageException;
 import fr.avenirsesr.portfolio.common.language.domain.model.enums.ELanguage;
 import fr.avenirsesr.portfolio.common.language.infrastructure.adapter.model.TranslationEntity;
 import fr.avenirsesr.portfolio.common.web.infrastructure.context.RequestContext;
