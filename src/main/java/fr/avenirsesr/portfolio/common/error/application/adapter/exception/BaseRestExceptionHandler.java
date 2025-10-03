@@ -1,5 +1,6 @@
 package fr.avenirsesr.portfolio.common.error.application.adapter.exception;
 
+import fr.avenirsesr.portfolio.common.configuration.domain.exception.ConfigurationException;
 import fr.avenirsesr.portfolio.common.error.application.adapter.response.ErrorResponse;
 import fr.avenirsesr.portfolio.common.error.domain.exception.BusinessException;
 import fr.avenirsesr.portfolio.common.error.domain.model.enums.EErrorCode;
@@ -54,5 +55,14 @@ public abstract class BaseRestExceptionHandler {
             new ErrorResponse(
                 EErrorCode.INVALID_ARGUMENT_TYPE.name(),
                 EErrorCode.INVALID_ARGUMENT_TYPE.getMessage()));
+  }
+
+  @ExceptionHandler(ConfigurationException.class)
+  public ResponseEntity<ErrorResponse> handleConfigurationError(ConfigurationException ex) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(
+            new ErrorResponse(
+                EErrorCode.CONFIGURATION_ERROR.name(),
+                EErrorCode.CONFIGURATION_ERROR.getMessage()));
   }
 }
