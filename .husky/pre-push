@@ -14,15 +14,15 @@ do
     else
         if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]
         then
-            # New branch, examine all commits
-            range="$local_sha"
+            # New branch: only commits not yet on origin
+            commits=$(git rev-list "$local_sha" --not --remotes=origin)
         else
             # Update to existing branch, examine new commits
-            range="$remote_sha..$local_sha"
+            commits=$(git rev-list "$remote_sha..$local_sha")
         fi
 
-        # Check each commit message in the range
-        for commit in $(git rev-list "$range")
+        # Check each commit message in the computed set
+        for commit in $commits
         do
             echo "Checking commit: $(git log --oneline -1 $commit)"
             if ! git log --format=%B -n 1 $commit | npx commitlint

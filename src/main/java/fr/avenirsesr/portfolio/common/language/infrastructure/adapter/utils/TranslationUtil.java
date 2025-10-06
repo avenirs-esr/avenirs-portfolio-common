@@ -9,11 +9,11 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface TranslationUtil {
-    static ELanguage getRequestLanguage() {
-        return Optional.ofNullable(RequestContext.get())
-                .map(RequestData::preferredLanguage)
-                .orElse(ELanguage.FALLBACK);
-    }
+  static ELanguage getRequestLanguage() {
+    return Optional.ofNullable(RequestContext.get())
+        .map(RequestData::preferredLanguage)
+        .orElse(ELanguage.FALLBACK);
+  }
 
   static <T extends TranslationEntity> T getTranslation(Set<T> translations) {
     var preferredLanguage =
