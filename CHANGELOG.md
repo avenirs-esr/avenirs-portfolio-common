@@ -6,6 +6,13 @@ and [Conventional Commits](https://www.conventionalcommits.org/) standard.
 
 ---
 
+## [v1.3.1]
+
+- Seeder for avenirs portfolio API moved in the associated repository.
+- Missing property for the seeder added in the test property file.
+- husky pre push patched adapted to check on ly not already pushed commit message (the merge commit can be not
+  compliant)
+
 ## [v1.2.0] - 2025-10-01
 
 - Shared objects for back office.
