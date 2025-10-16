@@ -1,9 +1,8 @@
 package fr.avenirsesr.portfolio.common.data.infrastructure.adapter.specification;
 
 import fr.avenirsesr.portfolio.common.data.domain.model.enums.EDateFilterKey;
-import org.springframework.data.jpa.domain.Specification;
-
 import java.time.LocalDate;
+import org.springframework.data.jpa.domain.Specification;
 
 public class DateFilterSpecificationBuilder<T>
     extends FilterSpecificationBuilder<T, EDateFilterKey> {

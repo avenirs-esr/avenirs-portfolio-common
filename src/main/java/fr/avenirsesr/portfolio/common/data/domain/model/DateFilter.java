@@ -1,7 +1,6 @@
 package fr.avenirsesr.portfolio.common.data.domain.model;
 
 import fr.avenirsesr.portfolio.common.data.domain.model.enums.EDateFilterKey;
-
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;

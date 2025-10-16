@@ -14,6 +14,7 @@ src/main/java/fr/avenirsesr/portfolio/common/
 ├── language        Internationalization and language support.
 ├── openapi         OpenAPI documentation configuration.
 ├── security        Spring security config and models.
+├── seeder          Seeding feature, based on Faker or csv.
 ├── temporal        Date, time, period, etc.
 ├── testutils       Utils classes for tests.
 ├── validation      Validation classes (mainly a placeholder at this step).

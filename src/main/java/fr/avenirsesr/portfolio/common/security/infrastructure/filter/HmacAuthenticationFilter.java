@@ -3,6 +3,7 @@ package fr.avenirsesr.portfolio.common.security.infrastructure.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import fr.avenirsesr.portfolio.common.security.domain.exception.UserNotAuthorizedException;
+import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.AvenirsSecurityHeaders;
 import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.HmacAuthenticationToken;
 import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.UserSecurityPayload;
 import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.enums.ESecurityKeys;
@@ -42,9 +43,10 @@ public class HmacAuthenticationFilter extends OncePerRequestFilter {
       @NonNull FilterChain filterChain)
       throws ServletException, IOException {
 
-    String signature = request.getHeader("X-Context-Signature");
-    String secretKey = ESecurityKeys.getSecretByKey(request.getHeader("X-Context-Kid"));
-    String payload = request.getHeader("X-Signed-Context");
+    String signature = request.getHeader(AvenirsSecurityHeaders.CONTEXT_SIGNATURE);
+    String secretKey =
+        ESecurityKeys.getSecretByKey(request.getHeader(AvenirsSecurityHeaders.CONTEXT_KID));
+    String payload = request.getHeader(AvenirsSecurityHeaders.SIGNED_CONTEXT);
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
     UserSecurityPayload userSecurityPayload =
@@ -70,6 +72,11 @@ public class HmacAuthenticationFilter extends OncePerRequestFilter {
 
   @Override
   public boolean shouldNotFilter(@NonNull HttpServletRequest request) throws ServletException {
+
+    if (SecurityContextHolder.getContext().getAuthentication() != null) {
+      return true;
+    }
+
     if (permitAllPathsList == null) {
       permitAllPathsList =
           Arrays.stream(permitAllPathsString.split(","))

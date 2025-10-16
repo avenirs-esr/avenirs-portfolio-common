@@ -84,6 +84,21 @@ public class SecurityConfig {
               UsernamePasswordAuthenticationFilter.class);
         }
         break;
+
+      case API_KEY_OR_HMAC:
+        {
+          log.info(
+              "Security is enabled (api key protection or signed header protection), using {} and {}",
+              ApiKeyAuthenticationFilter.class.getSimpleName(),
+              HmacAuthenticationFilter.class.getSimpleName());
+          http.addFilterBefore(
+              new ApiKeyAuthenticationFilter(expectedApiKey, String.join(",", permitAllPaths)),
+              UsernamePasswordAuthenticationFilter.class);
+          http.addFilterBefore(
+              new HmacAuthenticationFilter(String.join(",", permitAllPaths)),
+              UsernamePasswordAuthenticationFilter.class);
+        }
+        break;
       case DISABLED:
         {
           isSecurityEnabled = false;

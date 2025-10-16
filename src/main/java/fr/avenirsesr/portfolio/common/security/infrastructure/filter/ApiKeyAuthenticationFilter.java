@@ -10,6 +10,8 @@ import java.util.List;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
@@ -52,6 +54,12 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
       @NonNull FilterChain filterChain)
       throws ServletException, IOException {
 
+    if (isExternalRequest(request)) {
+      log.trace("External request detected; continuing filter chain");
+      filterChain.doFilter(request, response);
+      return;
+    }
+
     String providedApiKey = request.getHeader(API_KEY_HEADER);
 
     if (providedApiKey == null || providedApiKey.isBlank()) {
@@ -68,7 +76,19 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
       return;
     }
 
+    // Marks the request as authenticated so downstream filters can skip authentication.
+    var auth = new UsernamePasswordAuthenticationToken("internal-service", null, List.of());
+    SecurityContextHolder.getContext().setAuthentication(auth);
+
     log.debug("API Key authentication successful");
     filterChain.doFilter(request, response);
+  }
+
+  private boolean isExternalRequest(HttpServletRequest request) {
+    String forwardedFor = request.getHeader("X-Forwarded-For");
+    if (forwardedFor == null) return false;
+    return !forwardedFor.startsWith("10.")
+        && !forwardedFor.startsWith("172.")
+        && !forwardedFor.startsWith("192.168.");
   }
 }
