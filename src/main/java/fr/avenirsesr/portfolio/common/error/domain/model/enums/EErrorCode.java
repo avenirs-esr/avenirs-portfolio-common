@@ -17,6 +17,7 @@ public enum EErrorCode {
   TRACE_NOT_FOUND("Trace not found"),
   AMS_NOT_FOUND("AMS not found"),
   USER_IS_NOT_STUDENT_EXCEPTION("User is not student"),
+  USER_IS_NOT_TEACHER_EXCEPTION("User is not teacher"),
   LANGUAGE_NOT_SUPPORTED("Language not supported"),
   INVALID_ARGUMENT_TYPE("The type of the argument is invalid"),
   ADDITIONAL_SKILL_NOT_AVAILABLE("Additional skill not available"),
