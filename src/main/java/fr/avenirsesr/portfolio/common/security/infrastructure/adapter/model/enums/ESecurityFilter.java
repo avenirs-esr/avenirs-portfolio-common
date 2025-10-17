@@ -11,6 +11,9 @@ public enum ESecurityFilter {
   /** API Key authentication filter (validates X-API-Key header). */
   API_KEY("api-key"),
 
+  /** API key for internal calls, hmac otherwise. */
+  API_KEY_OR_HMAC("api-key-or-hmac"),
+
   /** Disabled authentication filter (no authentication performed). */
   DISABLED("disabled");
 

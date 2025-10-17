@@ -6,6 +6,10 @@ and [Conventional Commits](https://www.conventionalcommits.org/) standard.
 
 ---
 
+## [v1.4.0]
+
+- Combined security filters, hmac or Api key, to be usable by the frontend or another microservice.
+
 ## [v1.3.1]
 
 - Seeder for avenirs portfolio API moved in the associated repository.

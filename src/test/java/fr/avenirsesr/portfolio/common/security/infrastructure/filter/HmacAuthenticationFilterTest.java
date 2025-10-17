@@ -26,6 +26,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -112,6 +113,20 @@ class HmacAuthenticationFilterTest {
     } catch (Exception e) {
       Assertions.fail("Test setup failed: " + e.getMessage());
     }
+  }
+
+  @Test
+  void shouldNotFilterWhenAlreadyAuthenticated() throws Exception {
+    BddLogger.given("an already authenticated security context and a protected path");
+    // pre-set an authentication to simulate a previous filter (e.g., API key) having authenticated
+    // the request
+    var auth =
+        new UsernamePasswordAuthenticationToken("internal-service", null, java.util.List.of());
+    SecurityContextHolder.getContext().setAuthentication(auth);
+
+    BddLogger.when("HMAC filter decides whether to run");
+    BddLogger.then("it should skip filtering because an authentication is already present");
+    Assertions.assertTrue(filter.shouldNotFilter(request));
   }
 
   @Test
