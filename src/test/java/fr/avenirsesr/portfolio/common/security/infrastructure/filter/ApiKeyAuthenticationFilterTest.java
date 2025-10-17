@@ -6,6 +6,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -99,8 +102,8 @@ class ApiKeyAuthenticationFilterTest {
 
     BddLogger.when("the ApiKeyAuthenticationFilter processes the request");
     // mock response writer to avoid NPE when filter writes error message
-    java.io.StringWriter sw = new java.io.StringWriter();
-    java.io.PrintWriter pw = new java.io.PrintWriter(sw);
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
     Mockito.when(response.getWriter()).thenReturn(pw);
     filter.doFilterInternal(request, response, filterChain);
 
@@ -118,8 +121,8 @@ class ApiKeyAuthenticationFilterTest {
 
     BddLogger.when("the ApiKeyAuthenticationFilter processes the request");
     // mock response writer to avoid NPE when filter writes error message
-    java.io.StringWriter sw = new java.io.StringWriter();
-    java.io.PrintWriter pw = new java.io.PrintWriter(sw);
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
     Mockito.when(response.getWriter()).thenReturn(pw);
     filter.doFilterInternal(request, response, filterChain);
 
@@ -137,8 +140,8 @@ class ApiKeyAuthenticationFilterTest {
 
     BddLogger.when("the ApiKeyAuthenticationFilter processes the request");
     // mock response writer to avoid NPE when filter writes error message
-    java.io.StringWriter sw = new java.io.StringWriter();
-    java.io.PrintWriter pw = new java.io.PrintWriter(sw);
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
     Mockito.when(response.getWriter()).thenReturn(pw);
     filter.doFilterInternal(request, response, filterChain);
 
