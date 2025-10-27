@@ -25,7 +25,8 @@ public enum EErrorCode {
   STUDENT_ADDITIONAL_ALREADY_EXIST("This additional skill is already assigned to the student"),
   STUDENT_PROGRESS_NOT_FOUND("Student progress not found"),
   FILE_NOT_FOUND("File not found"),
-  CONFIGURATION_ERROR("Configuration error");
+  CONFIGURATION_ERROR("Configuration error"),
+  DESCRIPTION_TOO_LONG("The length of the description is too long");
 
   private final String message;
 
