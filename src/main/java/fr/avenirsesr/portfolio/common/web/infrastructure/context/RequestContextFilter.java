@@ -1,19 +1,32 @@
 package fr.avenirsesr.portfolio.common.web.infrastructure.context;
 
+import fr.avenirsesr.portfolio.common.error.domain.exception.UserNotFoundException;
 import fr.avenirsesr.portfolio.common.language.domain.model.enums.ELanguage;
+import fr.avenirsesr.portfolio.user.domain.port.input.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Optional;
+import java.util.UUID;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.swing.text.html.Option;
+
 @Component("userRequestContextFilter")
 @Slf4j
 public class RequestContextFilter extends OncePerRequestFilter {
+  private final UserService userService;
+
+  public RequestContextFilter(UserService userService) {
+    this.userService = userService;
+  }
+
   @Override
   public void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -26,7 +39,16 @@ public class RequestContextFilter extends OncePerRequestFilter {
       }
       ELanguage preferredLanguage = ELanguage.fromCode(languageCode.get());
 
-      RequestContext.set(new RequestData(preferredLanguage));
+      try {
+        var userLoggedIn =
+            Optional.ofNullable(request.getUserPrincipal())
+                .map(p -> userService.getUser(UUID.fromString(p.getName())));
+
+        RequestContext.set(new RequestData(userLoggedIn, preferredLanguage));
+      } catch (UserNotFoundException e) {
+        log.debug("User not found for principal {}", request.getUserPrincipal());
+        RequestContext.set(new RequestData(Optional.empty(), preferredLanguage));
+      }
 
       filterChain.doFilter(request, response);
     } finally {
