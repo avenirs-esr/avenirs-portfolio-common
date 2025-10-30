@@ -22,6 +22,7 @@ public enum EErrorCode {
   INVALID_ARGUMENT_TYPE("The type of the argument is invalid"),
   ADDITIONAL_SKILL_NOT_AVAILABLE("Additional skill not available"),
   ADDITIONAL_SKILL_NOT_FOUND("Additional skill not found"),
+  ADDITIONAL_SKILL_PROGRESS_NOT_FOUND("Additional skill progress not found"),
   STUDENT_ADDITIONAL_ALREADY_EXIST("This additional skill is already assigned to the student"),
   STUDENT_PROGRESS_NOT_FOUND("Student progress not found"),
   FILE_NOT_FOUND("File not found"),
