@@ -54,6 +54,12 @@ public abstract class GenericJpaRepositoryAdapter<
   }
 
   @Override
+  public List<D> findAllById(List<UUID> ids) {
+    List<E> entites = jpaRepository.findAllById(ids);
+    return entites.stream().map(toDomain).toList();
+  }
+
+  @Override
   public void flush() {
     jpaRepository.flush();
   }

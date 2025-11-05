@@ -8,6 +8,8 @@ import java.util.UUID;
 public interface GenericRepositoryPort<D extends AvenirsBaseModel> {
   Optional<D> findById(UUID id);
 
+  List<D> findAllById(List<UUID> ids);
+
   D save(D domain);
 
   List<D> saveAll(List<D> collection);
