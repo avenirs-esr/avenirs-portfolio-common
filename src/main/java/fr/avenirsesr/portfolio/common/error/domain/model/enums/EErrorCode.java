@@ -27,7 +27,8 @@ public enum EErrorCode {
   STUDENT_PROGRESS_NOT_FOUND("Student progress not found"),
   FILE_NOT_FOUND("File not found"),
   CONFIGURATION_ERROR("Configuration error"),
-  DESCRIPTION_TOO_LONG("The length of the description is too long");
+  DESCRIPTION_TOO_LONG("The length of the description is too long"),
+  ASSOCIATION_NOT_FOUND("Association not found"),;
 
   private final String message;
 
