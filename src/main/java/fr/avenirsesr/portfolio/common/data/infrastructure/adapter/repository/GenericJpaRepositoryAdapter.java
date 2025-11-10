@@ -47,6 +47,11 @@ public abstract class GenericJpaRepositoryAdapter<
     }
   }
 
+    @Override
+    public List<D> findAll() {
+        return jpaRepository.findAll().stream().map(toDomain).toList();
+    }
+
   @Override
   public Optional<D> findById(UUID id) {
     E entity = jpaRepository.findById(id).orElse(null);
@@ -55,8 +60,7 @@ public abstract class GenericJpaRepositoryAdapter<
 
   @Override
   public List<D> findAllById(List<UUID> ids) {
-    List<E> entites = jpaRepository.findAllById(ids);
-    return entites.stream().map(toDomain).toList();
+    return jpaRepository.findAllById(ids).stream().map(toDomain).toList();
   }
 
   @Override

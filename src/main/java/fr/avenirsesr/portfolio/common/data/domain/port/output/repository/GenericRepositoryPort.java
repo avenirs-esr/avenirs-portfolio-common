@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface GenericRepositoryPort<D extends AvenirsBaseModel> {
+  List<D> findAll();
+
   Optional<D> findById(UUID id);
 
   List<D> findAllById(List<UUID> ids);
