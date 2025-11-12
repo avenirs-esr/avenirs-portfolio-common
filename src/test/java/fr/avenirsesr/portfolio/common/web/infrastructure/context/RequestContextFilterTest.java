@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import fr.avenirsesr.portfolio.common.language.domain.model.enums.ELanguage;
 import fr.avenirsesr.portfolio.common.testutils.BddLogger;
+import fr.avenirsesr.portfolio.common.user.domain.port.output.BaseUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +16,8 @@ import org.junit.jupiter.api.Test;
 
 class RequestContextFilterTest {
 
-  private final RequestContextFilter filter = new RequestContextFilter();
+  private final BaseUserService userService = mock(BaseUserService.class);
+  private final RequestContextFilter filter = new RequestContextFilter(userService);
 
   private final HttpServletRequest request = mock(HttpServletRequest.class);
   private final HttpServletResponse response = mock(HttpServletResponse.class);

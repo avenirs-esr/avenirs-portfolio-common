@@ -1,7 +1,10 @@
 package fr.avenirsesr.portfolio.common;
 
+import fr.avenirsesr.portfolio.common.user.domain.port.output.BaseUserService;
+import fr.avenirsesr.portfolio.common.user.infrastructure.service.NoOpUserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 /**
  * Test application configuration for avenirs-portfolio-common module tests. This class provides
@@ -10,6 +13,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class TestApplication {
+  @Bean
+  public BaseUserService baseUserService() {
+    return new NoOpUserService();
+  }
 
   public static void main(String[] args) {
     SpringApplication.run(TestApplication.class, args);

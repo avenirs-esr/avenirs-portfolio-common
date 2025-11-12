@@ -2,28 +2,24 @@ package fr.avenirsesr.portfolio.common.web.infrastructure.context;
 
 import fr.avenirsesr.portfolio.common.error.domain.exception.UserNotFoundException;
 import fr.avenirsesr.portfolio.common.language.domain.model.enums.ELanguage;
-import fr.avenirsesr.portfolio.user.domain.port.input.UserService;
+import fr.avenirsesr.portfolio.common.user.domain.port.output.BaseUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.Optional;
 import java.util.UUID;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.swing.text.html.Option;
-
 @Component("userRequestContextFilter")
 @Slf4j
 public class RequestContextFilter extends OncePerRequestFilter {
-  private final UserService userService;
+  private final BaseUserService userService;
 
-  public RequestContextFilter(UserService userService) {
+  public RequestContextFilter(BaseUserService userService) {
     this.userService = userService;
   }
 
