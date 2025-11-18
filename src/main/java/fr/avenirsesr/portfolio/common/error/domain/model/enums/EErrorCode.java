@@ -30,7 +30,8 @@ public enum EErrorCode {
   DESCRIPTION_TOO_LONG("The length of the description is too long"),
   ASSOCIATION_NOT_FOUND("Association not found"),
   SELF_KNOWLEDGE_CATEGORY_LIST_EMPTY("Self knowledge category list is empty"),
-  SELF_KNOWLEDGE_CATEGORY_NOT_FOUND("Self knowledge category not found"),;
+  SELF_KNOWLEDGE_CATEGORY_NOT_FOUND("Self knowledge category not found"),
+  SELF_KNOWLEDGE_CATEGORY_NOT_AVAILABLE("Self knowledge category not available"),;
 
   private final String message;
 
