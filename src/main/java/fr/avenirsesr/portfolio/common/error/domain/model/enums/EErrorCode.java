@@ -28,7 +28,9 @@ public enum EErrorCode {
   FILE_NOT_FOUND("File not found"),
   CONFIGURATION_ERROR("Configuration error"),
   DESCRIPTION_TOO_LONG("The length of the description is too long"),
-  ASSOCIATION_NOT_FOUND("Association not found"),;
+  ASSOCIATION_NOT_FOUND("Association not found"),
+  SELF_KNOWLEDGE_CATEGORY_LIST_EMPTY("Self knowledge category list is empty"),
+  SELF_KNOWLEDGE_CATEGORY_NOT_FOUND("Self knowledge category not found"),;
 
   private final String message;
 
