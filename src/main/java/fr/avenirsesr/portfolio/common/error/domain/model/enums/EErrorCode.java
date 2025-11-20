@@ -29,6 +29,7 @@ public enum EErrorCode {
   CONFIGURATION_ERROR("Configuration error"),
   TITLE_TOO_LONG("The length of the title is too long"),
   DESCRIPTION_TOO_LONG("The length of the description is too long"),
+  RATING_OUT_OF_BOUNCE("Rating is out of bounce"),
   ASSOCIATION_NOT_FOUND("Association not found"),
   SELF_KNOWLEDGE_ELEMENT_NOT_FOUND("Self knowledge element not found"),
   SELF_KNOWLEDGE_CATEGORY_LIST_EMPTY("Self knowledge category list is empty"),
