@@ -27,8 +27,10 @@ public enum EErrorCode {
   STUDENT_PROGRESS_NOT_FOUND("Student progress not found"),
   FILE_NOT_FOUND("File not found"),
   CONFIGURATION_ERROR("Configuration error"),
+  TITLE_TOO_LONG("The length of the title is too long"),
   DESCRIPTION_TOO_LONG("The length of the description is too long"),
   ASSOCIATION_NOT_FOUND("Association not found"),
+  SELF_KNOWLEDGE_ELEMENT_NOT_FOUND("Self knowledge element not found"),
   SELF_KNOWLEDGE_CATEGORY_LIST_EMPTY("Self knowledge category list is empty"),
   SELF_KNOWLEDGE_CATEGORY_NOT_FOUND("Self knowledge category not found"),
   SELF_KNOWLEDGE_CATEGORY_NOT_AVAILABLE("Self knowledge category not available"),;
