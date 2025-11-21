@@ -34,7 +34,9 @@ public enum EErrorCode {
   SELF_KNOWLEDGE_ELEMENT_NOT_FOUND("Self knowledge element not found"),
   SELF_KNOWLEDGE_CATEGORY_LIST_EMPTY("Self knowledge category list is empty"),
   SELF_KNOWLEDGE_CATEGORY_NOT_FOUND("Self knowledge category not found"),
-  SELF_KNOWLEDGE_CATEGORY_NOT_AVAILABLE("Self knowledge category not available"),;
+  SELF_KNOWLEDGE_CATEGORY_NOT_AVAILABLE("Self knowledge category not available"),
+  SELF_KNOWLEDGE_CATEGORY_IS_MANDATORY("Self knowledge category is mandatory"),
+  SELF_KNOWLEDGE_CATEGORY_NOT_LINKED("Self knowledge category is not linked to the student"),;
 
   private final String message;
 
