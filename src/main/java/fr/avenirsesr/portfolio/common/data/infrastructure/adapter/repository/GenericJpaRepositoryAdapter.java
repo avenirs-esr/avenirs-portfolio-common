@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
+
+import fr.avenirsesr.portfolio.common.data.infrastructure.adapter.specification.SharedSpecification;
+import fr.avenirsesr.portfolio.user.infrastructure.adapter.model.StudentEntity;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -77,4 +81,8 @@ public abstract class GenericJpaRepositoryAdapter<
   public void removeAllFromDatabase(List<D> domains) {
     jpaRepository.deleteAll(domains.stream().map(fromDomain).toList());
   }
+  
+    protected Specification<E> hasStudent(StudentEntity student) {
+        return SharedSpecification.hasStudent(student);
+    }
 }
