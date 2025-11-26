@@ -32,6 +32,7 @@ public enum EErrorCode {
   RATING_OUT_OF_BOUNCE("Rating is out of bounce"),
   ASSOCIATION_NOT_FOUND("Association not found"),
   SELF_KNOWLEDGE_ELEMENT_NOT_FOUND("Self knowledge element not found"),
+  SELF_KNOWLEDGE_ELEMENTS_ARE_NOT_IN_SAME_CATEGORY("Self knowledge elements are not in the same category"),
   SELF_KNOWLEDGE_CATEGORY_LIST_EMPTY("Self knowledge category list is empty"),
   SELF_KNOWLEDGE_CATEGORY_NOT_FOUND("Self knowledge category not found"),
   SELF_KNOWLEDGE_CATEGORY_NOT_AVAILABLE("Self knowledge category not available"),
