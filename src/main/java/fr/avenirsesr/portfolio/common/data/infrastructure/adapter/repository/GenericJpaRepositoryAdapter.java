@@ -72,4 +72,9 @@ public abstract class GenericJpaRepositoryAdapter<
   public void removeFromDatabase(D domain) {
     jpaRepository.delete(fromDomain.apply(domain));
   }
+
+  @Override
+  public void removeAllFromDatabase(List<D> domains) {
+    jpaRepository.deleteAll(domains.stream().map(fromDomain).toList());
+  }
 }
