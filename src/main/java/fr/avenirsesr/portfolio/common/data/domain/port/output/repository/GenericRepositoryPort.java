@@ -19,4 +19,6 @@ public interface GenericRepositoryPort<D extends AvenirsBaseModel> {
   void flush();
 
   void removeFromDatabase(D domain);
+
+  void removeAllFromDatabase(List<D> domains);
 }
