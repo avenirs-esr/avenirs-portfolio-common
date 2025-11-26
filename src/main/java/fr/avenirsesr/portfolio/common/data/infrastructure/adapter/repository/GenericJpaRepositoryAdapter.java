@@ -1,6 +1,9 @@
 package fr.avenirsesr.portfolio.common.data.infrastructure.adapter.repository;
 
 import fr.avenirsesr.portfolio.common.data.domain.model.AvenirsBaseModel;
+import fr.avenirsesr.portfolio.common.data.domain.model.PageCriteria;
+import fr.avenirsesr.portfolio.common.data.domain.model.PageInfo;
+import fr.avenirsesr.portfolio.common.data.domain.model.PagedResult;
 import fr.avenirsesr.portfolio.common.data.domain.port.output.repository.GenericRepositoryPort;
 import fr.avenirsesr.portfolio.common.data.infrastructure.adapter.model.AvenirsBaseEntity;
 import java.util.List;
@@ -8,8 +11,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
-import fr.avenirsesr.portfolio.common.data.infrastructure.adapter.specification.SharedSpecification;
-import fr.avenirsesr.portfolio.user.infrastructure.adapter.model.StudentEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -81,8 +85,51 @@ public abstract class GenericJpaRepositoryAdapter<
   public void removeAllFromDatabase(List<D> domains) {
     jpaRepository.deleteAll(domains.stream().map(fromDomain).toList());
   }
-  
-    protected Specification<E> hasStudent(StudentEntity student) {
-        return SharedSpecification.hasStudent(student);
+
+    protected List<D> mapEntitiesToDomain(List<E> entities) {
+        return entities.stream().map(toDomain).toList();
     }
+
+    protected PagedResult<D> toPagedResult(Page<E> page) {
+        var content = mapEntitiesToDomain(page.getContent());
+
+        return new PagedResult<>(
+                content,
+                new PageInfo(
+                        page.getPageable().getPageNumber(),
+                        page.getPageable().getPageSize(),
+                        page.getTotalElements()));
+    }
+
+    protected List<D> findAll(Specification<E> specification) {
+        return mapEntitiesToDomain(jpaSpecificationExecutor.findAll(specification));
+    }
+
+    protected PagedResult<D> findAll(
+            Specification<E> specification, PageCriteria pageCriteria) {
+        var page = jpaSpecificationExecutor.findAll(
+                specification,
+                PageRequest.of(pageCriteria.page(), pageCriteria.pageSize()));
+
+        return toPagedResult(page);
+    }
+
+    protected PagedResult<D> findAll(
+            Specification<E> specification, PageCriteria pageCriteria, Sort sort) {
+        var page = jpaSpecificationExecutor.findAll(
+                specification,
+                PageRequest.of(pageCriteria.page(), pageCriteria.pageSize(), sort));
+
+        return toPagedResult(page);
+    }
+
+    protected PagedResult<D> findAll(
+            Specification<E> specification, PageRequest pageRequest) {
+        var page = jpaSpecificationExecutor.findAll(
+                specification,
+                pageRequest);
+
+        return toPagedResult(page);
+    }
+
 }
