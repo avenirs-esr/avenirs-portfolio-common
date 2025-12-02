@@ -37,7 +37,8 @@ public enum EErrorCode {
   SELF_KNOWLEDGE_CATEGORY_NOT_FOUND("Self knowledge category not found"),
   SELF_KNOWLEDGE_CATEGORY_NOT_AVAILABLE("Self knowledge category not available"),
   SELF_KNOWLEDGE_CATEGORY_IS_MANDATORY("Self knowledge category is mandatory"),
-  SELF_KNOWLEDGE_CATEGORY_NOT_LINKED("Self knowledge category is not linked to the student"),;
+  SELF_KNOWLEDGE_CATEGORY_NOT_LINKED("Self knowledge category is not linked to the student"),
+    UNSUPPORTED_TRANSLATION_MAPPING("This repository is translation-based. Mapping from base entity to domain is not allowed."),;
 
   private final String message;
 
