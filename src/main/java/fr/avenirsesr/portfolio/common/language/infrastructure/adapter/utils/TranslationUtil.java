@@ -1,5 +1,6 @@
 package fr.avenirsesr.portfolio.common.language.infrastructure.adapter.utils;
 
+import fr.avenirsesr.portfolio.common.data.infrastructure.adapter.model.AvenirsBaseEntity;
 import fr.avenirsesr.portfolio.common.language.domain.exception.LanguageException;
 import fr.avenirsesr.portfolio.common.language.domain.model.enums.ELanguage;
 import fr.avenirsesr.portfolio.common.language.infrastructure.adapter.model.TranslationEntity;
@@ -29,9 +30,15 @@ public interface TranslationUtil {
     return translations.stream()
         .filter(t -> t.getLanguage().equals(selectedLanguage))
         .findFirst()
-        .orElseThrow(
+        .orElseGet(
             () ->
-                new LanguageException(
-                    String.format("Fallback language [%s] not setup", ELanguage.FALLBACK)));
+                translations.stream()
+                    .filter(t -> t.getLanguage().equals(ELanguage.FALLBACK))
+                    .findFirst()
+                    .orElseThrow(
+                        () ->
+                            new LanguageException(
+                                String.format(
+                                    "Fallback language [%s] not setup", ELanguage.FALLBACK))));
   }
 }

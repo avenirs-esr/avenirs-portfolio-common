@@ -55,10 +55,10 @@ public abstract class GenericJpaRepositoryAdapter<
     }
   }
 
-    @Override
-    public List<D> findAll() {
-        return jpaRepository.findAll().stream().map(toDomain).toList();
-    }
+  @Override
+  public List<D> findAll() {
+    return jpaRepository.findAll().stream().map(toDomain).toList();
+  }
 
   @Override
   public Optional<D> findById(UUID id) {
@@ -86,50 +86,45 @@ public abstract class GenericJpaRepositoryAdapter<
     jpaRepository.deleteAll(domains.stream().map(fromDomain).toList());
   }
 
-    protected List<D> mapEntitiesToDomain(List<E> entities) {
-        return entities.stream().map(toDomain).toList();
-    }
+  protected List<D> mapEntitiesToDomain(List<E> entities) {
+    return entities.stream().map(toDomain).toList();
+  }
 
-    protected PagedResult<D> toPagedResult(Page<E> page) {
-        var content = mapEntitiesToDomain(page.getContent());
+  protected PagedResult<D> toPagedResult(Page<E> page) {
+    var content = mapEntitiesToDomain(page.getContent());
 
-        return new PagedResult<>(
-                content,
-                new PageInfo(
-                        page.getPageable().getPageNumber(),
-                        page.getPageable().getPageSize(),
-                        page.getTotalElements()));
-    }
+    return new PagedResult<>(
+        content,
+        new PageInfo(
+            page.getPageable().getPageNumber(),
+            page.getPageable().getPageSize(),
+            page.getTotalElements()));
+  }
 
-    protected List<D> findAll(Specification<E> specification) {
-        return mapEntitiesToDomain(jpaSpecificationExecutor.findAll(specification));
-    }
+  protected List<D> findAll(Specification<E> specification) {
+    return mapEntitiesToDomain(jpaSpecificationExecutor.findAll(specification));
+  }
 
-    protected PagedResult<D> findAll(
-            Specification<E> specification, PageCriteria pageCriteria) {
-        var page = jpaSpecificationExecutor.findAll(
-                specification,
-                PageRequest.of(pageCriteria.page(), pageCriteria.pageSize()));
+  protected PagedResult<D> findAll(Specification<E> specification, PageCriteria pageCriteria) {
+    var page =
+        jpaSpecificationExecutor.findAll(
+            specification, PageRequest.of(pageCriteria.page(), pageCriteria.pageSize()));
 
-        return toPagedResult(page);
-    }
+    return toPagedResult(page);
+  }
 
-    protected PagedResult<D> findAll(
-            Specification<E> specification, PageCriteria pageCriteria, Sort sort) {
-        var page = jpaSpecificationExecutor.findAll(
-                specification,
-                PageRequest.of(pageCriteria.page(), pageCriteria.pageSize(), sort));
+  protected PagedResult<D> findAll(
+      Specification<E> specification, PageCriteria pageCriteria, Sort sort) {
+    var page =
+        jpaSpecificationExecutor.findAll(
+            specification, PageRequest.of(pageCriteria.page(), pageCriteria.pageSize(), sort));
 
-        return toPagedResult(page);
-    }
+    return toPagedResult(page);
+  }
 
-    protected PagedResult<D> findAll(
-            Specification<E> specification, PageRequest pageRequest) {
-        var page = jpaSpecificationExecutor.findAll(
-                specification,
-                pageRequest);
+  protected PagedResult<D> findAll(Specification<E> specification, PageRequest pageRequest) {
+    var page = jpaSpecificationExecutor.findAll(specification, pageRequest);
 
-        return toPagedResult(page);
-    }
-
+    return toPagedResult(page);
+  }
 }
