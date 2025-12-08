@@ -41,6 +41,7 @@ public enum EErrorCode {
   SELF_KNOWLEDGE_CATEGORY_NOT_LINKED("Self knowledge category is not linked to the student"),
   DEPENDENCY_CHECK_TIMEOUT("Dependency check timeout"),
   DEPENDENCY_CHECK_FAILED("Dependency check failed"),
+  INVALID_DECLARED_EXPERIENCE_DATA("Invalid declared experience data"),
   ;
 
   private final String message;
