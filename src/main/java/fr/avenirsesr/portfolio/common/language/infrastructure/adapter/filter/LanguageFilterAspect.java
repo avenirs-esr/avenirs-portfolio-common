@@ -1,6 +1,5 @@
 package fr.avenirsesr.portfolio.common.language.infrastructure.adapter.filter;
 
-import fr.avenirsesr.portfolio.common.web.infrastructure.context.RequestContext;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
