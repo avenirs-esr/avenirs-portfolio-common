@@ -47,7 +47,7 @@ public enum EErrorCode {
     NOT_NULL("The field {0} cannot be null"),
     TOO_LONG("The field {0} exceeds the maximum allowed length"),
     END_DATE_BEFORE_START_DATE("The end date cannot be before the start date"),
-  	INVALID_DECLARED_EXPERIENCE_DATA("Invalid declared experience data"),
+    DECLARED_EXPERIENCE_NOT_FOUND("Declared experience"),
     ;
 
     private final String message;
