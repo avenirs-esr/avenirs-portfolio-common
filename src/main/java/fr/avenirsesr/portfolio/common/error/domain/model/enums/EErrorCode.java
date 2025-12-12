@@ -48,6 +48,7 @@ public enum EErrorCode {
     TOO_LONG("The field {0} exceeds the maximum allowed length"),
     END_DATE_BEFORE_START_DATE("The end date cannot be before the start date"),
     DECLARED_EXPERIENCE_NOT_FOUND("Declared experience"),
+  	DECLARED_PROGRAM_NOT_FOUND("Declared program not found"),
     ;
 
     private final String message;
