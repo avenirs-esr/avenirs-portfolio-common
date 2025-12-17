@@ -1,5 +1,6 @@
 package fr.avenirsesr.portfolio.common.web.infrastructure.context;
 
+import fr.avenirsesr.portfolio.common.data.domain.model.User;
 import fr.avenirsesr.portfolio.common.error.domain.exception.UserNotFoundException;
 import fr.avenirsesr.portfolio.common.language.domain.model.enums.ELanguage;
 import fr.avenirsesr.portfolio.common.user.domain.port.output.BaseUserService;
@@ -36,9 +37,17 @@ public class RequestContextFilter extends OncePerRequestFilter {
       ELanguage preferredLanguage = ELanguage.fromCode(languageCode.get());
 
       try {
-        var userLoggedIn =
+        Optional<User> userLoggedIn =
             Optional.ofNullable(request.getUserPrincipal())
-                .map(p -> userService.getUser(UUID.fromString(p.getName())));
+                .flatMap(
+                    p -> {
+                      try {
+                        return Optional.of(userService.getUser(UUID.fromString(p.getName())));
+                      } catch (IllegalArgumentException ex) {
+                        log.debug("Principal name is not a UUID: {}", p.getName());
+                        return Optional.empty();
+                      }
+                    });
 
         RequestContext.set(new RequestData(userLoggedIn, preferredLanguage));
       } catch (UserNotFoundException e) {
