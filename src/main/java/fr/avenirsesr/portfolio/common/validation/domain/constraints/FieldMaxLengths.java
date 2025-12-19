@@ -10,4 +10,8 @@ public final class FieldMaxLengths {
   public static final int DESCRIPTION_LENGTH = 400;
   public static final int RESULT_LENGTH = 50;
   public static final int SOURCE_OF_INFORMATION_LENGTH = 200;
+  public static final int ACTIVITY_SECTOR_LENGTH = 50;
+  public static final int LOCATION_LENGTH = 50;
+  public static final int SUMMARY_LENGTH = 400;
+  public static final int BIO_LENGTH = 400;
 }
