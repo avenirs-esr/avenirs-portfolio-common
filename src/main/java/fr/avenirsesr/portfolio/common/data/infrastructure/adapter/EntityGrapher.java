@@ -1,9 +1,13 @@
 package fr.avenirsesr.portfolio.common.data.infrastructure.adapter;
 
+import fr.avenirsesr.portfolio.common.data.domain.FetchGraph;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.AttributeNode;
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Subgraph;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,15 +77,7 @@ public class EntityGrapher<T> {
     }
 
     fetch(attribute);
-    Object newGraph =
-        switch (currentGraph) {
-          case EntityGraph<?> entityGraph -> entityGraph.addSubgraph(attribute);
-          case Subgraph<?> subgraph -> subgraph.addSubgraph(attribute);
-          default -> throw new IllegalStateException("Graph type non supporté pour " + attribute);
-        };
-
-    subgraphs.put(attribute, (Subgraph<?>) newGraph);
-    currentGraph = newGraph;
+    currentGraph = subgraphs.get(attribute);
     return this;
   }
 
@@ -98,8 +94,16 @@ public class EntityGrapher<T> {
     switch (currentGraph) {
       case EntityGraph<?> entityGraph -> entityGraph.addAttributeNodes(attribute);
       case Subgraph<?> subgraph -> subgraph.addAttributeNodes(attribute);
-      default -> throw new IllegalStateException("Graph type non supporté pour " + attribute);
+      default -> throw new IllegalStateException("Graph type not supported for " + attribute);
     }
+    Object newGraph =
+        switch (currentGraph) {
+          case EntityGraph<?> entityGraph -> entityGraph.addSubgraph(attribute);
+          case Subgraph<?> subgraph -> subgraph.addSubgraph(attribute);
+          default -> throw new IllegalStateException("Graph type not supported for " + attribute);
+        };
+
+    subgraphs.put(attribute, (Subgraph<?>) newGraph);
     return this;
   }
 
@@ -125,5 +129,53 @@ public class EntityGrapher<T> {
    */
   public EntityGraph<T> build() {
     return rootGraph;
+  }
+
+  public List<String> attributes() {
+    var attributes =
+        switch (currentGraph) {
+          case EntityGraph<?> entityGraph ->
+              entityGraph.getAttributeNodes().stream()
+                  .map(AttributeNode::getAttributeName)
+                  .toList();
+          case Subgraph<?> subgraph ->
+              subgraph.getAttributeNodes().stream().map(AttributeNode::getAttributeName).toList();
+          default -> throw new IllegalStateException("Graph type not supported");
+        };
+    root();
+    return attributes;
+  }
+
+  /**
+   * Build the {@link EntityGraph} based on an provided {@link FetchGraph}
+   *
+   * @return the fully built {@link EntityGraph}
+   */
+  public static <T> EntityGrapher<T> from(
+      FetchGraph fetchGraph, Class<T> rootClass, EntityManager em) {
+    var graph = EntityGrapher.of(rootClass, em);
+    apply(fetchGraph, null, graph);
+
+    return graph;
+  }
+
+  private static void apply(
+      FetchGraph fetchGraph, @Nullable String parentAttribute, EntityGrapher<?> grapher) {
+    for (var entry : fetchGraph.children().entrySet()) {
+      String attribute = entry.getKey();
+      FetchGraph child = entry.getValue();
+
+      grapher.fetch(attribute);
+
+      if (!child.children().isEmpty()) {
+        grapher.from(attribute);
+        apply(child, attribute, grapher);
+        if (parentAttribute != null) {
+          grapher.from(parentAttribute);
+        } else {
+          grapher.root();
+        }
+      }
+    }
   }
 }

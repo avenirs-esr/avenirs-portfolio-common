@@ -1,5 +1,6 @@
 package fr.avenirsesr.portfolio.common.data.domain.port.output.repository;
 
+import fr.avenirsesr.portfolio.common.data.domain.FetchGraph;
 import fr.avenirsesr.portfolio.common.data.domain.model.AvenirsBaseModel;
 import java.util.List;
 import java.util.Optional;
@@ -10,13 +11,13 @@ public interface GenericRepositoryPort<D extends AvenirsBaseModel> {
 
   Optional<D> findById(UUID id);
 
+  Optional<D> findById(UUID id, FetchGraph fetchGraph);
+
   List<D> findAllById(List<UUID> ids);
 
   D save(D domain);
 
   List<D> saveAll(List<D> collection);
-
-  void flush();
 
   void removeFromDatabase(D domain);
 

@@ -2,6 +2,7 @@ package fr.avenirsesr.portfolio.common.data.infrastructure.adapter.repository;
 
 import fr.avenirsesr.portfolio.common.data.domain.model.DeletableAvenirsBaseModel;
 import fr.avenirsesr.portfolio.common.data.domain.port.output.repository.GenericDeletableRepositoryPort;
+import fr.avenirsesr.portfolio.common.data.infrastructure.adapter.mapper.Mapper;
 import fr.avenirsesr.portfolio.common.data.infrastructure.adapter.model.DeletableAvenirsBaseEntity;
 import java.util.UUID;
 import java.util.function.Function;
@@ -13,23 +14,21 @@ public abstract class GenericDeletableJpaRepositoryAdapter<
     extends GenericJpaRepositoryAdapter<D, E> implements GenericDeletableRepositoryPort<D> {
   protected final JpaRepository<E, UUID> jpaRepository;
   protected final JpaSpecificationExecutor<E> jpaSpecificationExecutor;
-  private final Function<D, E> fromDomain;
-  private final Function<E, D> toDomain;
+  private final Mapper<E, D> mapper;
 
   protected GenericDeletableJpaRepositoryAdapter(
       JpaRepository<E, UUID> jpaRepository,
       JpaSpecificationExecutor<E> jpaSpecificationExecutor,
-      Function<D, E> fromDomain,
-      Function<E, D> toDomain) {
-    super(jpaRepository, jpaSpecificationExecutor, fromDomain, toDomain);
+      Class<E> entityClass,
+      Mapper<E, D> mapper) {
+    super(jpaRepository, jpaSpecificationExecutor, entityClass, mapper);
     this.jpaRepository = jpaRepository;
     this.jpaSpecificationExecutor = jpaSpecificationExecutor;
-    this.fromDomain = fromDomain;
-    this.toDomain = toDomain;
+    this.mapper = mapper;
   }
 
   @Override
   public void delete(D domain) {
-    jpaRepository.delete(fromDomain.apply(domain));
+    jpaRepository.delete(mapper.fromDomain(domain));
   }
 }
