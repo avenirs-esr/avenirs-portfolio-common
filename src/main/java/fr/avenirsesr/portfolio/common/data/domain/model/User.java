@@ -25,8 +25,8 @@ public class User extends AvenirsBaseModel {
     this.email = email;
   }
 
-  public static User create(String firstName, String lastName, String email) {
-    return new User(UUID.randomUUID(), firstName, lastName, email, Instant.now(), Instant.now());
+  public static User create(UUID id, String firstName, String lastName, String email) {
+    return new User(id, firstName, lastName, email, Instant.now(), Instant.now());
   }
 
   public static User toDomain(
