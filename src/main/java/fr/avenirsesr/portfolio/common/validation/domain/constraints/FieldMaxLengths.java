@@ -16,4 +16,5 @@ public final class FieldMaxLengths {
   public static final int BIO_LENGTH = 400;
   public static final int AI_JUSTIFICATION_LENGTH = 200;
   public static final int PERSONAL_NOTE_LENGTH = 200;
+  public static final int MAX_IMPORTED_SKILLS = 6;
 }
