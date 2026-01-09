@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public enum EErrorCode {
   USER_NOT_FOUND("User not found"),
+  WRONG_CLASS_TYPE("The class type should be different"),
   USER_ALREADY_EXISTS("User already exists"),
   USER_NOT_AUTHORIZED("User not authorized"),
   USER_CATEGORY_NOT_FOUND("User category not found"),
