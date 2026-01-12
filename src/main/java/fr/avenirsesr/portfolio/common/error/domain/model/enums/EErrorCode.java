@@ -51,7 +51,8 @@ public enum EErrorCode {
   INSTITUTION_CONFIG_NOT_FOUND("Institution configuration not found"),
   INSTITUTION_ID_NULL("Institution id cannot be null"),
   FIRSTNAME_IS_NULL("First name cannot be null"),
-  LASTNAME_IS_NULL("Last name cannot be null");
+  LASTNAME_IS_NULL("Last name cannot be null"),
+  INVALID_DATE_FORMAT("Invalid date format. Expected format: yyyy-MM-dd.");
 
   private final String message;
 
