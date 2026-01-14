@@ -46,6 +46,7 @@ public enum EErrorCode {
   NOT_BLANK("The field {0} cannot be blank"),
   NOT_NULL("The field {0} cannot be null"),
   TOO_LONG("The field {0} exceeds the maximum allowed length"),
+  NOT_URL("The field {0} is not a valid URL"),
   END_DATE_BEFORE_START_DATE("The end date cannot be before the start date"),
   DECLARED_EXPERIENCE_NOT_FOUND("Declared experience"),
   DECLARED_PROGRAM_NOT_FOUND("Declared program not found"),

@@ -2,6 +2,8 @@ package fr.avenirsesr.portfolio.common.validation.domain.utils;
 
 import fr.avenirsesr.portfolio.common.error.domain.exception.FieldValidationException;
 import fr.avenirsesr.portfolio.common.error.domain.model.enums.EErrorCode;
+
+import java.net.URI;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -28,6 +30,19 @@ public final class FieldValidationUtils {
     String trimmed = value.trim();
     if (trimmed.length() > maxLength) {
       throw new FieldValidationException(EErrorCode.TOO_LONG, fieldName);
+    }
+  }
+
+  public static void validateUrl(String url) {
+    if (url == null || url.trim().isEmpty()) {
+      return;
+    }
+    try {
+      URI uri = new java.net.URI(url);
+      if (uri.getScheme() == null) throw new FieldValidationException(EErrorCode.NOT_URL, url);
+      uri.toURL();
+    } catch (Exception e) {
+      throw new FieldValidationException(EErrorCode.NOT_URL, url);
     }
   }
 
