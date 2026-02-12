@@ -54,7 +54,10 @@ public enum EErrorCode {
   INSTITUTION_ID_NULL("Institution id cannot be null"),
   FIRSTNAME_IS_NULL("First name cannot be null"),
   LASTNAME_IS_NULL("Last name cannot be null"),
-  INVALID_DATE_FORMAT("Invalid date format. Expected format: yyyy-MM-dd.");
+  INVALID_DATE_FORMAT("Invalid date format. Expected format: yyyy-MM-dd."),
+  ACTIVITY_NOT_FOUND("Activity not found"),
+  DECLARED_ACTIVITY_NOT_FOUND("Declared activity not found"),
+  DECLARED_ACTIVITY_ALREADY_EXIST("Declared activity already exist");
 
   private final String message;
 
