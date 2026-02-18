@@ -7,10 +7,9 @@ import fr.avenirsesr.portfolio.common.data.infrastructure.adapter.model.Translat
 import fr.avenirsesr.portfolio.common.language.domain.model.enums.ELanguage;
 import fr.avenirsesr.portfolio.common.language.infrastructure.adapter.model.TranslationEntity;
 import fr.avenirsesr.portfolio.common.language.infrastructure.adapter.utils.TranslationUtil;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-
-import java.util.UUID;
 
 public abstract class GenericTranslatableJpaRepositoryAdapter<
         D extends AvenirsBaseModel, T extends TranslationEntity, E extends TranslatableEntity<T>>

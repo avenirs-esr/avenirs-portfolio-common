@@ -1,8 +1,5 @@
 package fr.avenirsesr.portfolio.common.data.domain;
 
-import jakarta.persistence.EntityGraph;
-import jakarta.persistence.EntityManager;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
