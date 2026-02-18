@@ -2,7 +2,6 @@ package fr.avenirsesr.portfolio.common.validation.domain.utils;
 
 import fr.avenirsesr.portfolio.common.error.domain.exception.FieldValidationException;
 import fr.avenirsesr.portfolio.common.error.domain.model.enums.EErrorCode;
-
 import java.net.URI;
 import java.time.LocalDate;
 import lombok.AccessLevel;
