@@ -57,7 +57,9 @@ public enum EErrorCode {
   INVALID_DATE_FORMAT("Invalid date format. Expected format: yyyy-MM-dd."),
   ACTIVITY_NOT_FOUND("Activity not found"),
   DECLARED_ACTIVITY_NOT_FOUND("Declared activity not found"),
-  DECLARED_ACTIVITY_ALREADY_EXIST("Declared activity already exist");
+  DECLARED_ACTIVITY_ALREADY_EXIST("Declared activity already exist"),
+  DECLARED_ACTIVITY_ALREADY_FINISHED("Declared activity already finished"),
+  DECLARED_ACTIVITY_HAS_NOT_STARTED("Declared activity has not started");
 
   private final String message;
 
