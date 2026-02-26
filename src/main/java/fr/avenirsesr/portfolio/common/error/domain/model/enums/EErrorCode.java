@@ -59,6 +59,8 @@ public enum EErrorCode {
   DECLARED_ACTIVITY_NOT_FOUND("Declared activity not found"),
   DECLARED_ACTIVITY_ALREADY_EXIST("Declared activity already exist"),
   DECLARED_ACTIVITY_ALREADY_FINISHED("Declared activity already finished"),
+  DECLARED_ACTIVITY_DATES("Start and end dates must either be both null or both provided"),
+  DECLARED_ACTIVITY_START_DATE_BEFORE_SUBSCRIPTION("Start date cannot be before the subscription date"),
   DECLARED_ACTIVITY_HAS_NOT_STARTED("Declared activity has not started");
 
   private final String message;
