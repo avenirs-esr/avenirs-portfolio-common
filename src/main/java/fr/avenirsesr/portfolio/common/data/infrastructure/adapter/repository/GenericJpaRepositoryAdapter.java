@@ -202,6 +202,21 @@ public abstract class GenericJpaRepositoryAdapter<
 
     return new PagedResult<>(
         content,
-        new PageInfo(pageRequest.getPageNumber(), pageRequest.getPageSize(), content.size()));
+        new PageInfo(pageRequest.getPageNumber(), pageRequest.getPageSize(), count(specification)));
+  }
+
+  private long count(Specification<E> specification) {
+    var cb = em.getCriteriaBuilder();
+    var cq = cb.createQuery(Long.class);
+    var root = cq.from(entityClass);
+
+    Predicate predicate = specification.toPredicate(root, cq, cb);
+    if (predicate != null) {
+      cq.where(predicate);
+    }
+
+    cq.select(cb.countDistinct(root));
+
+    return em.createQuery(cq).getSingleResult();
   }
 }
