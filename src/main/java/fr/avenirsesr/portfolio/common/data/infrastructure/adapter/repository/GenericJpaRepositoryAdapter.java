@@ -111,6 +111,60 @@ public abstract class GenericJpaRepositoryAdapter<
     return query.getResultList().stream().map(e -> mapper.toDomain(e, graph)).toList();
   }
 
+  protected List<D> findAllById(List<UUID> ids, Specification<E> specification) {
+    if (ids == null || ids.isEmpty()) {
+      return List.of();
+    }
+
+    var cb = em.getCriteriaBuilder();
+    var cq = cb.createQuery(entityClass);
+    var root = cq.from(entityClass);
+
+    Predicate idPredicate = root.get("id").in(ids);
+    Predicate specPredicate = specification.toPredicate(root, cq, cb);
+
+    if (specPredicate != null) {
+      cq.where(cb.and(idPredicate, specPredicate));
+    } else {
+      cq.where(idPredicate);
+    }
+
+    cq.select(root).distinct(true);
+
+    var query = em.createQuery(cq);
+
+    return query.getResultList().stream().map(mapper::toDomain).toList();
+  }
+
+  protected List<D> findAllById(
+      List<UUID> ids, Specification<E> specification, FetchGraph fetchGraph) {
+    if (ids == null || ids.isEmpty()) {
+      return List.of();
+    }
+
+    var graph = EntityGrapher.from(fetchGraph, entityClass, em);
+    var cb = em.getCriteriaBuilder();
+    var cq = cb.createQuery(entityClass);
+    var root = cq.from(entityClass);
+
+    Predicate idPredicate = root.get("id").in(ids);
+
+    Predicate specPredicate = specification.toPredicate(root, cq, cb);
+
+    if (specPredicate != null) {
+      cq.where(cb.and(idPredicate, specPredicate));
+    } else {
+      cq.where(idPredicate);
+    }
+
+    cq.select(root).distinct(true);
+
+    var query = em.createQuery(cq);
+    query.setHint("jakarta.persistence.fetchgraph", graph.build());
+
+    return query.getResultList().stream().map(e -> mapper.toDomain(e, graph)).toList();
+  }
+
   @Override
   public void removeFromDatabase(D domain) {
     jpaRepository.delete(mapper.fromDomain(domain));
