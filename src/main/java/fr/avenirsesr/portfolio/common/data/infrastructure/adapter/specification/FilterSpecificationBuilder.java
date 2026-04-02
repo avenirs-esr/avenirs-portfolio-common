@@ -5,7 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public abstract class FilterSpecificationBuilder<T, K extends Enum<K>> {
   public Specification<T> build(Map<K, Object> filters) {
-    Specification<T> spec = Specification.where(null);
+    Specification<T> spec = Specification.where((Specification<T>) null);
 
     for (var entry : filters.entrySet()) {
       Specification<T> s = getSpecification(entry.getKey(), entry.getValue());
