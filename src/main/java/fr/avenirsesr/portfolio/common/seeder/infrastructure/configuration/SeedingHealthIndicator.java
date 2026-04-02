@@ -1,12 +1,13 @@
 package fr.avenirsesr.portfolio.common.seeder.infrastructure.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Component
-public class SeedingHealthIndicator implements HealthIndicator {
+import java.util.Map;
+
+@RestController
+public class SeedingHealthIndicator {
 
   private final boolean seederEnabled;
   private final SeedingState seedingState;
@@ -17,20 +18,28 @@ public class SeedingHealthIndicator implements HealthIndicator {
     this.seedingState = seedingState;
   }
 
-  @Override
-  public Health health() {
+  @GetMapping("/health/seeding")
+  public Map<String, Object> health() {
     if (!seederEnabled) {
-      return Health.up().withDetail("seeder.enabled", false).build();
+      return Map.of("status", "UP", "seeder.enabled", false);
     }
 
     if (seedingState.isCompleted()) {
-      return Health.up().withDetail("seeding", "completed").build();
+      return Map.of(
+          "status", "UP",
+          "seeding", "completed");
     }
 
-    var err = seedingState.getError();
+    String err = seedingState.getError();
     if (err != null && !err.isBlank()) {
-      return Health.down().withDetail("seeding", "failed").withDetail("error", err).build();
+      return Map.of(
+          "status", "DOWN",
+          "seeding", "failed",
+          "error", err);
     }
-    return Health.down().withDetail("seeding", "running_or_not_started").build();
+
+    return Map.of(
+        "status", "DOWN",
+        "seeding", "running_or_not_started");
   }
 }
