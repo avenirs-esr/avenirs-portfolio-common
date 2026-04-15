@@ -17,6 +17,7 @@ public final class FieldMaxLengths {
   public static final int BIO_LENGTH = 400;
   public static final int AI_JUSTIFICATION_LENGTH = 200;
   public static final int PERSONAL_NOTE_LENGTH = 200;
+  public static final int LINK_LENGTH = 2000;
   public static final int RATING_MIN = 1;
   public static final int RATING_MAX = 5;
   public static final int ACTIVITY_EXECUTION_PERIOD_INFO = 200;
