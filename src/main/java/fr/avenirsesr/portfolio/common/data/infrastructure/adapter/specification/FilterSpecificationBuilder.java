@@ -2,7 +2,6 @@ package fr.avenirsesr.portfolio.common.data.infrastructure.adapter.specification
 
 import java.util.Map;
 import java.util.Optional;
-
 import org.springframework.data.jpa.domain.Specification;
 
 public abstract class FilterSpecificationBuilder<T, K extends Enum<K>> {
