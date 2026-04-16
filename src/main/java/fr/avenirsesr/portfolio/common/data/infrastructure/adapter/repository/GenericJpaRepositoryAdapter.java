@@ -10,6 +10,7 @@ import fr.avenirsesr.portfolio.common.data.infrastructure.adapter.mapper.Mapper;
 import fr.avenirsesr.portfolio.common.data.infrastructure.adapter.model.AvenirsBaseEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import java.util.List;
 import java.util.Optional;
@@ -237,10 +238,10 @@ public abstract class GenericJpaRepositoryAdapter<
       var orders =
           pageRequest.getSort().stream()
               .map(
-                  order ->
-                      order.isAscending()
-                          ? cb.asc(root.get(order.getProperty()))
-                          : cb.desc(root.get(order.getProperty())))
+                  order -> {
+                    Path<?> path = resolvePath(root, order.getProperty());
+                    return order.isAscending() ? cb.asc(path) : cb.desc(path);
+                  })
               .toList();
       cq.orderBy(orders);
     }
@@ -272,5 +273,13 @@ public abstract class GenericJpaRepositoryAdapter<
     cq.select(cb.countDistinct(root));
 
     return em.createQuery(cq).getSingleResult();
+  }
+
+  private Path<?> resolvePath(Path<?> root, String propertyPath) {
+    Path<?> path = root;
+    for (String part : propertyPath.split("\\.")) {
+      path = path.get(part);
+    }
+    return path;
   }
 }
