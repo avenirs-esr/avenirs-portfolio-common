@@ -17,6 +17,7 @@ public enum EErrorCode {
   SKILL_NOT_FOUND("Skill not found"),
   SKILL_LEVEL_NOT_FOUND("Skill level not found"),
   TRACE_NOT_FOUND("Trace not found"),
+  INVALID_TRACE_TYPE("Invalid trace type"),
   AMS_NOT_FOUND("AMS not found"),
   USER_IS_NOT_STUDENT_EXCEPTION("User is not student"),
   USER_IS_NOT_STAFF_EXCEPTION("User is not staff"),
