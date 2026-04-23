@@ -9,33 +9,33 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import java.util.Arrays;
 
-public interface BaseSwaggerSchema {
+public class BaseSwaggerSchema {
 
-  Schema<String> errorCodeSchema =
+  public final static Schema<String> errorCodeSchema =
       new StringSchema()
           .name("EErrorCode")
           ._enum(Arrays.stream(EErrorCode.values()).map(Enum::name).toList())
           .description("Enum for error codes");
 
-  Schema<String> languageSchema =
+  public final static Schema<String> languageSchema =
       new StringSchema()
           .name("ELanguage")
           ._enum(Arrays.stream(ELanguage.values()).map(Enum::name).toList())
           .description("Enum for languages");
 
-  Schema<String> sortFieldSchema =
+  public final static Schema<String> sortFieldSchema =
       new StringSchema()
           .name("ESortField")
           ._enum(Arrays.stream(ESortField.values()).map(Enum::name).toList())
           .description("Enum for sort fields");
 
-  Schema<String> sortOrderSchema =
+  public final static Schema<String> sortOrderSchema =
       new StringSchema()
           .name("ESortOrder")
           ._enum(Arrays.stream(ESortOrder.values()).map(Enum::name).toList())
           .description("Enum for sort orders");
 
-  Schema<String> durationUnitSchema =
+  public final static Schema<String> durationUnitSchema =
       new StringSchema()
           .name("EDurationUnit")
           ._enum(Arrays.stream(EDurationUnit.values()).map(Enum::name).toList())
