@@ -29,6 +29,7 @@ public enum EErrorCode {
   STUDENT_DECLARED_ALREADY_EXIST("This declared skill is already assigned to the student"),
   STUDENT_PROGRESS_NOT_FOUND("Student progress not found"),
   FILE_NOT_FOUND("File not found"),
+  FILE_STORAGE_ERROR("File storage operation failed"),
   ATTACHMENT_NOT_FOUND("Attachment not found"),
   CONFIGURATION_ERROR("Configuration error"),
   TITLE_TOO_LONG("The length of the title is too long"),
