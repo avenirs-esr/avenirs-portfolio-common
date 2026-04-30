@@ -1,6 +1,7 @@
 package fr.avenirsesr.portfolio.common.data.domain.model;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +27,7 @@ public class User extends AvenirsBaseModel {
   }
 
   public static User create(UUID id, String firstName, String lastName, String email) {
-    return new User(id, firstName, lastName, email, Instant.now(), Instant.now());
+    return new User(id, firstName, lastName, email, null, null);
   }
 
   public static User toDomain(

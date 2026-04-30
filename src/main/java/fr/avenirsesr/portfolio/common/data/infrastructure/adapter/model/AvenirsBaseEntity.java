@@ -24,14 +24,12 @@ public abstract class AvenirsBaseEntity {
   @Column(
       name = "created_at",
       nullable = false,
-      updatable = false,
-      columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
+      updatable = false)
   private Instant createdAt;
 
   @LastModifiedDate
   @Column(
       name = "updated_at",
-      nullable = false,
-      columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
+      nullable = false)
   private Instant updatedAt;
 }
