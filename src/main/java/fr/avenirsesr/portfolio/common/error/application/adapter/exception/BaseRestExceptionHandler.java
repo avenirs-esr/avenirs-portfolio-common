@@ -25,10 +25,10 @@ public abstract class BaseRestExceptionHandler {
 
   @ExceptionHandler(BusinessException.class)
   public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex) {
-    log.error("Erreur métier inattendue", ex);
+    log.error("Erreur métier : {}", ex.getMessage());
 
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-        .body(new ErrorResponse(ex.getErrorCode().name(), ex.getErrorCode().getMessage()));
+    return ResponseEntity.status(ex.getErrorCode().getHttpStatus())
+        .body(new ErrorResponse(ex.getErrorCode().name(), ex.getMessage()));
   }
 
   @ExceptionHandler(MaxUploadSizeExceededException.class)
