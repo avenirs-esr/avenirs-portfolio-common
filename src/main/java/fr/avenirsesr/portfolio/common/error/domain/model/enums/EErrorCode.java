@@ -27,6 +27,7 @@ public enum EErrorCode {
   DECLARED_PROGRAM_NOT_FOUND("Declared program not found", HttpStatus.NOT_FOUND),
   INSTITUTION_CONFIG_NOT_FOUND("Institution configuration not found", HttpStatus.NOT_FOUND),
   ACTIVITY_NOT_FOUND("Activity not found", HttpStatus.NOT_FOUND),
+  ACTIVITY_DRAFT_NOT_FOUND("Activity draft not found", HttpStatus.NOT_FOUND),
   DECLARED_ACTIVITY_NOT_FOUND("Declared activity not found", HttpStatus.NOT_FOUND),
 
   // 403 Forbidden
