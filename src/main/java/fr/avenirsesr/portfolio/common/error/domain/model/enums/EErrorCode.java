@@ -36,6 +36,9 @@ public enum EErrorCode {
   USER_IS_NOT_STAFF_EXCEPTION("User is not staff", HttpStatus.FORBIDDEN),
   MAXIMUM_ALLOWED_ASSOCIATIONS_REACHED("The maximum allowed associations is already reached", HttpStatus.FORBIDDEN),
 
+  // 401 Unauthorized
+  UNAUTHENTICATED_SESSION("Unauthenticated session", HttpStatus.UNAUTHORIZED),
+
   // 409 Conflict
   USER_ALREADY_EXISTS("User already exists", HttpStatus.CONFLICT),
   STUDENT_DECLARED_ALREADY_EXIST(
