@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -42,9 +41,9 @@ public class RequestContextFilter extends OncePerRequestFilter {
                 .flatMap(
                     p -> {
                       try {
-                        return Optional.of(userService.getUser(UUID.fromString(p.getName())));
-                      } catch (IllegalArgumentException ex) {
-                        log.debug("Principal name is not a UUID: {}", p.getName());
+                        return Optional.of(userService.getUserByEppn(p.getName()));
+                      } catch (UserNotFoundException ex) {
+                        log.debug("User not found for eppn {}", p.getName());
                         return Optional.empty();
                       }
                     });

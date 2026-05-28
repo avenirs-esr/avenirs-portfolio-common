@@ -5,4 +5,6 @@ import java.util.UUID;
 
 public interface BaseUserService {
   User getUser(UUID userId);
+
+  User getUserByEppn(String eppn);
 }
