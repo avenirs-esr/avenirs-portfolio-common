@@ -6,7 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.UUID;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -29,9 +28,9 @@ public class DevAuthenticationFilter extends OncePerRequestFilter {
       @NonNull HttpServletResponse response,
       @NonNull FilterChain filterChain)
       throws ServletException, IOException {
-    String devUser = request.getHeader("user-id");
+    String devUser = request.getHeader("eppn");
     if (devUser != null && !devUser.isBlank()) {
-      Authentication auth = new HmacAuthenticationToken(UUID.fromString(devUser));
+      Authentication auth = new HmacAuthenticationToken(devUser);
       SecurityContextHolder.getContext().setAuthentication(auth);
       log.debug("Dev authentication enabled for user: {}", devUser);
     }

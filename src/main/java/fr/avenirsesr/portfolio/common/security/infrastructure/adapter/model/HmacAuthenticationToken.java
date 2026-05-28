@@ -1,16 +1,15 @@
 package fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model;
 
 import java.util.Collections;
-import java.util.UUID;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 public class HmacAuthenticationToken extends AbstractAuthenticationToken {
 
-  private final UUID userId;
+  private final String eppn;
 
-  public HmacAuthenticationToken(UUID userId) {
+  public HmacAuthenticationToken(String eppn) {
     super(Collections.emptyList());
-    this.userId = userId;
+    this.eppn = eppn;
     setAuthenticated(true);
   }
 
@@ -21,6 +20,6 @@ public class HmacAuthenticationToken extends AbstractAuthenticationToken {
 
   @Override
   public Object getPrincipal() {
-    return userId;
+    return eppn;
   }
 }

@@ -34,7 +34,8 @@ public enum EErrorCode {
   USER_NOT_AUTHORIZED("User not authorized", HttpStatus.FORBIDDEN),
   USER_IS_NOT_STUDENT_EXCEPTION("User is not student", HttpStatus.FORBIDDEN),
   USER_IS_NOT_STAFF_EXCEPTION("User is not staff", HttpStatus.FORBIDDEN),
-  MAXIMUM_ALLOWED_ASSOCIATIONS_REACHED("The maximum allowed associations is already reached", HttpStatus.FORBIDDEN),
+  MAXIMUM_ALLOWED_ASSOCIATIONS_REACHED(
+      "The maximum allowed associations is already reached", HttpStatus.FORBIDDEN),
 
   // 401 Unauthorized
   UNAUTHENTICATED_SESSION("Unauthenticated session", HttpStatus.UNAUTHORIZED),
@@ -84,8 +85,7 @@ public enum EErrorCode {
   FIRSTNAME_IS_NULL("First name cannot be null"),
   LASTNAME_IS_NULL("Last name cannot be null"),
   INVALID_DATE_FORMAT("Invalid date format. Expected format: yyyy-MM-dd."),
-  DECLARED_ACTIVITY_DATES(
-      "Start and end dates must either be both null or both provided"),
+  DECLARED_ACTIVITY_DATES("Start and end dates must either be both null or both provided"),
   DECLARED_ACTIVITY_START_DATE_BEFORE_SUBSCRIPTION(
       "Start date cannot be before the subscription date");
 

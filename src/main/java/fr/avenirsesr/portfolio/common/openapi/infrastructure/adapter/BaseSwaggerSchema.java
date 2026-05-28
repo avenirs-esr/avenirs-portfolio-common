@@ -11,31 +11,31 @@ import java.util.Arrays;
 
 public class BaseSwaggerSchema {
 
-  public final static Schema<String> errorCodeSchema =
+  public static final Schema<String> errorCodeSchema =
       new StringSchema()
           .name("EErrorCode")
           ._enum(Arrays.stream(EErrorCode.values()).map(Enum::name).toList())
           .description("Enum for error codes");
 
-  public final static Schema<String> languageSchema =
+  public static final Schema<String> languageSchema =
       new StringSchema()
           .name("ELanguage")
           ._enum(Arrays.stream(ELanguage.values()).map(Enum::name).toList())
           .description("Enum for languages");
 
-  public final static Schema<String> sortFieldSchema =
+  public static final Schema<String> sortFieldSchema =
       new StringSchema()
           .name("ESortField")
           ._enum(Arrays.stream(ESortField.values()).map(Enum::name).toList())
           .description("Enum for sort fields");
 
-  public final static Schema<String> sortOrderSchema =
+  public static final Schema<String> sortOrderSchema =
       new StringSchema()
           .name("ESortOrder")
           ._enum(Arrays.stream(ESortOrder.values()).map(Enum::name).toList())
           .description("Enum for sort orders");
 
-  public final static Schema<String> durationUnitSchema =
+  public static final Schema<String> durationUnitSchema =
       new StringSchema()
           .name("EDurationUnit")
           ._enum(Arrays.stream(EDurationUnit.values()).map(Enum::name).toList())

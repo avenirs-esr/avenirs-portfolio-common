@@ -13,4 +13,9 @@ public class NoOpUserService implements BaseUserService {
   public User getUser(UUID userId) {
     return null;
   }
+
+  @Override
+  public User getUserByEppn(String eppn) {
+    return null;
+  }
 }
