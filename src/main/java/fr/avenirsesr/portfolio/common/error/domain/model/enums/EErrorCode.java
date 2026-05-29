@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 public enum EErrorCode {
   // 404 Not Found
   USER_NOT_FOUND("User not found", HttpStatus.NOT_FOUND),
+  EXTERNAL_USER_NOT_FOUND("External user not found", HttpStatus.NOT_FOUND),
+  EXTERNAL_USER_BLOCKED("External user was blocked", HttpStatus.NOT_FOUND),
+  EXTERNAL_USER_REMOVED("External user was removed", HttpStatus.NOT_FOUND),
   USER_CATEGORY_NOT_FOUND("User category not found", HttpStatus.NOT_FOUND),
   PROGRAM_NOT_FOUND("Program not found", HttpStatus.NOT_FOUND),
   TRAINING_PATH_NOT_FOUND("Training path not found", HttpStatus.NOT_FOUND),
