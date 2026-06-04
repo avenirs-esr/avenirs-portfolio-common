@@ -31,6 +31,7 @@ public enum EErrorCode {
   ACTIVITY_NOT_FOUND("Activity not found", HttpStatus.NOT_FOUND),
   ACTIVITY_DRAFT_NOT_FOUND("Activity draft not found", HttpStatus.NOT_FOUND),
   DECLARED_ACTIVITY_NOT_FOUND("Declared activity not found", HttpStatus.NOT_FOUND),
+  FEEDBACK_NOT_FOUND("Feedback not found", HttpStatus.NOT_FOUND),
 
   // 403 Forbidden
   USER_NOT_AUTHORIZED("User not authorized", HttpStatus.FORBIDDEN),
