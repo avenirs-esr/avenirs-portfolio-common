@@ -44,6 +44,8 @@ public enum EErrorCode {
   UNAUTHENTICATED_SESSION("Unauthenticated session", HttpStatus.UNAUTHORIZED),
 
   // 409 Conflict
+  FEEDBACK_MAXIMUM_ITERATION_REACHED("Maximum feedback iteration reached", HttpStatus.CONFLICT),
+  FEEDBACK_IN_PROCESS("A feedback is currently in process", HttpStatus.CONFLICT),
   USER_ALREADY_EXISTS("User already exists", HttpStatus.CONFLICT),
   STUDENT_DECLARED_ALREADY_EXIST(
       "This declared skill is already assigned to the student", HttpStatus.CONFLICT),
