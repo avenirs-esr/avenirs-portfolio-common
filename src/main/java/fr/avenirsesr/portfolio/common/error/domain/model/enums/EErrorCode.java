@@ -9,7 +9,6 @@ public enum EErrorCode {
   // 404 Not Found
   USER_NOT_FOUND("User not found", HttpStatus.NOT_FOUND),
   EXTERNAL_USER_NOT_FOUND("External user not found", HttpStatus.NOT_FOUND),
-  EXTERNAL_USER_BLOCKED("External user was blocked", HttpStatus.NOT_FOUND),
   EXTERNAL_USER_REMOVED("External user was removed", HttpStatus.NOT_FOUND),
   USER_CATEGORY_NOT_FOUND("User category not found", HttpStatus.NOT_FOUND),
   PROGRAM_NOT_FOUND("Program not found", HttpStatus.NOT_FOUND),
@@ -37,6 +36,7 @@ public enum EErrorCode {
   USER_NOT_AUTHORIZED("User not authorized", HttpStatus.FORBIDDEN),
   USER_IS_NOT_STUDENT_EXCEPTION("User is not student", HttpStatus.FORBIDDEN),
   USER_IS_NOT_STAFF_EXCEPTION("User is not staff", HttpStatus.FORBIDDEN),
+  EXTERNAL_USER_BLOCKED("External user was blocked", HttpStatus.FORBIDDEN),
   MAXIMUM_ALLOWED_ASSOCIATIONS_REACHED(
       "The maximum allowed associations is already reached", HttpStatus.FORBIDDEN),
 
