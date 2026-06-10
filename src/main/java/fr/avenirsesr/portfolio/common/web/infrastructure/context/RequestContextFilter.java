@@ -41,7 +41,7 @@ public class RequestContextFilter extends OncePerRequestFilter {
                 .flatMap(
                     p -> {
                       try {
-                        return Optional.of(userService.getUserByEppn(p.getName()));
+                        return Optional.ofNullable(userService.getUserByEppn(p.getName()));
                       } catch (UserNotFoundException ex) {
                         log.debug("User not found for eppn {}", p.getName());
                         return Optional.empty();

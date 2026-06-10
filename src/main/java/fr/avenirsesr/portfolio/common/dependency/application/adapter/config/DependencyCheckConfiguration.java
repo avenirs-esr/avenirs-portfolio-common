@@ -1,7 +1,9 @@
 package fr.avenirsesr.portfolio.common.dependency.application.adapter.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.avenirsesr.portfolio.common.dependency.domain.model.DependencyCheckConfig;
 import fr.avenirsesr.portfolio.common.dependency.domain.model.EDependencyBehaviour;
+import fr.avenirsesr.portfolio.common.dependency.domain.model.enums.EHealthCheckMode;
 import fr.avenirsesr.portfolio.common.dependency.domain.port.input.DependencyChecker;
 import fr.avenirsesr.portfolio.common.dependency.domain.service.DependencyCheckerImpl;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,15 +25,21 @@ public class DependencyCheckConfiguration {
   @Value("${avenirs.microservice.dependency.retry.interval.seconds:10}")
   private int retryIntervalSeconds;
 
+  @Value("${avenirs.microservice.dependency.health-check-mode:RESPONSE_EXISTS}")
+  private String healthCheckMode;
+
   @Bean
   public DependencyCheckConfig dependencyCheckConfig() {
     EDependencyBehaviour behaviourEnum = parseBehaviour(behaviour);
-    return new DependencyCheckConfig(behaviourEnum, timeoutSeconds, retryIntervalSeconds);
+    EHealthCheckMode healthCheckModeEnum = parseHealthCheckMode(healthCheckMode);
+    return new DependencyCheckConfig(
+        behaviourEnum, timeoutSeconds, retryIntervalSeconds, healthCheckModeEnum);
   }
 
   @Bean
-  public DependencyChecker dependencyChecker(DependencyCheckConfig config, WebClient webClient) {
-    return new DependencyCheckerImpl(config, webClient);
+  public DependencyChecker dependencyChecker(
+      DependencyCheckConfig config, WebClient webClient, ObjectMapper objectMapper) {
+    return new DependencyCheckerImpl(config, webClient, objectMapper);
   }
 
   @Bean
@@ -52,5 +60,9 @@ public class DependencyCheckConfiguration {
           String.format("Invalid dependency behaviour: '%s'. Must be WAIT or FAIL", behaviourValue),
           e);
     }
+  }
+
+  private EHealthCheckMode parseHealthCheckMode(String value) {
+    return EHealthCheckMode.valueOf(value.trim().toUpperCase());
   }
 }
