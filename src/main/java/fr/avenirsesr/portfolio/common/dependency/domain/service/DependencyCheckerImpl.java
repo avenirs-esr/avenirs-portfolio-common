@@ -1,5 +1,7 @@
 package fr.avenirsesr.portfolio.common.dependency.domain.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.avenirsesr.portfolio.common.dependency.domain.model.DependencyCheckConfig;
 import fr.avenirsesr.portfolio.common.dependency.domain.model.EDependencyBehaviour;
 import fr.avenirsesr.portfolio.common.dependency.domain.port.input.DependencyChecker;
@@ -15,10 +17,13 @@ public class DependencyCheckerImpl implements DependencyChecker {
 
   private final DependencyCheckConfig config;
   private final WebClient webClient;
+  private final ObjectMapper objectMapper;
 
-  public DependencyCheckerImpl(DependencyCheckConfig config, WebClient webClient) {
+  public DependencyCheckerImpl(
+      DependencyCheckConfig config, WebClient webClient, ObjectMapper objectMapper) {
     this.config = config;
     this.webClient = webClient;
+    this.objectMapper = objectMapper;
   }
 
   @Override
@@ -96,9 +101,28 @@ public class DependencyCheckerImpl implements DependencyChecker {
   private boolean isServiceHealthy(String healthUrl) {
     try {
       String response = webClient.get().uri(healthUrl).retrieve().bodyToMono(String.class).block();
-      return response != null;
+
+      if (response == null) {
+        return false;
+      }
+
+      return switch (config.healthCheckMode()) {
+        case RESPONSE_EXISTS -> true;
+        case STATUS_UP -> isStatusUp(response);
+      };
+
     } catch (Exception e) {
       logger.debug("Health check failed for '{}': {}", healthUrl, e.getMessage());
+      return false;
+    }
+  }
+
+  private boolean isStatusUp(String response) {
+    try {
+      JsonNode json = objectMapper.readTree(response);
+      return json.has("status") && "UP".equalsIgnoreCase(json.get("status").asText());
+    } catch (Exception e) {
+      logger.debug("Unable to parse health check response as JSON: {}", e.getMessage());
       return false;
     }
   }

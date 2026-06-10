@@ -10,9 +10,8 @@ import org.springframework.security.core.Authentication;
 class HmacAuthenticationTokenTest {
 
   @Test
-  void shouldCreateTokenWithUserId() {
-    UUID userId = UUID.randomUUID();
-    HmacAuthenticationToken token = new HmacAuthenticationToken(userId);
+  void shouldCreateTokenWithEppn() {
+    HmacAuthenticationToken token = new HmacAuthenticationToken("mockedeppn");
 
     assertThat(token.getPrincipal()).isEqualTo(userId);
     assertThat(token.getCredentials()).isEqualTo("");
@@ -22,15 +21,14 @@ class HmacAuthenticationTokenTest {
   @Test
   void shouldHaveNoAuthorities() {
     UUID userId = UUID.randomUUID();
-    HmacAuthenticationToken token = new HmacAuthenticationToken(userId);
+    HmacAuthenticationToken token = new HmacAuthenticationToken("mockedeppn");
 
     assertThat(token.getAuthorities()).isEmpty();
   }
 
   @Test
   void shouldImplementAuthenticationInterface() {
-    UUID userId = UUID.randomUUID();
-    HmacAuthenticationToken token = new HmacAuthenticationToken(userId);
+    HmacAuthenticationToken token = new HmacAuthenticationToken("mockedeppn");
 
     assertThat(token).isInstanceOf(Authentication.class);
   }
