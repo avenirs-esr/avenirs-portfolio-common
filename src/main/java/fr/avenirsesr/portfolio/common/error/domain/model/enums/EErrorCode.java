@@ -54,6 +54,7 @@ public enum EErrorCode {
   DECLARED_ACTIVITY_ALREADY_EXIST("Declared activity already exist", HttpStatus.CONFLICT),
   DECLARED_ACTIVITY_ALREADY_FINISHED("Declared activity already finished", HttpStatus.CONFLICT),
   DECLARED_ACTIVITY_HAS_NOT_STARTED("Declared activity has not started", HttpStatus.CONFLICT),
+  DECLARED_ACTIVITY_LOCKED("Declared activity is submitted or finished", HttpStatus.CONFLICT),
   ASSOCIATION_ALREADY_EXIST("This association already exist", HttpStatus.CONFLICT),
 
   // 413 Payload Too Large
