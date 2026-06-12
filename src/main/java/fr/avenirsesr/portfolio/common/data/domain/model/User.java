@@ -12,21 +12,25 @@ public class User extends AvenirsBaseModel {
   private String lastName;
   private String email;
 
+  private boolean notificationEnabled;
+
   private User(
       UUID id,
       String firstName,
       String lastName,
       String email,
+      boolean notificationEnabled,
       Instant createdAt,
       Instant updatedAt) {
     super(id, createdAt, updatedAt);
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
+    this.notificationEnabled = notificationEnabled;
   }
 
   public static User create(UUID id, String firstName, String lastName, String email) {
-    return new User(id, firstName, lastName, email, null, null);
+    return new User(id, firstName, lastName, email, false, null, null);
   }
 
   public static User toDomain(
@@ -34,8 +38,9 @@ public class User extends AvenirsBaseModel {
       String firstName,
       String lastName,
       String email,
+      boolean notificationEnabled,
       Instant createdAt,
       Instant updatedAt) {
-    return new User(id, firstName, lastName, email, createdAt, updatedAt);
+    return new User(id, firstName, lastName, email, notificationEnabled, createdAt, updatedAt);
   }
 }
