@@ -21,6 +21,17 @@ public final class FieldValidationUtils {
     }
   }
 
+  public static void requireNotBlankAndEnrichedMaxLength(String fieldName, String value, int maxLength) {
+    if (value == null || value.trim().isEmpty()) {
+      throw new FieldValidationException(EErrorCode.NOT_BLANK, fieldName);
+    }
+
+    String trimmed = value.trim();
+    if (trimmed.length() > maxLength) {
+      throw new FieldValidationException(EErrorCode.ENRICHED_TEXT_TOO_LONG, fieldName);
+    }
+  }
+
   public static void validateOptionalTextMaxLength(String fieldName, String value, int maxLength) {
     if (value == null) {
       return;
@@ -29,6 +40,17 @@ public final class FieldValidationUtils {
     String trimmed = value.trim();
     if (trimmed.length() > maxLength) {
       throw new FieldValidationException(EErrorCode.TOO_LONG, fieldName);
+    }
+  }
+
+  public static void validateOptionalEnrichedTextMaxLength(String fieldName, String value, int maxLength) {
+    if (value == null) {
+      return;
+    }
+
+    String trimmed = value.trim();
+    if (trimmed.length() > maxLength) {
+      throw new FieldValidationException(EErrorCode.ENRICHED_TEXT_TOO_LONG, fieldName);
     }
   }
 
