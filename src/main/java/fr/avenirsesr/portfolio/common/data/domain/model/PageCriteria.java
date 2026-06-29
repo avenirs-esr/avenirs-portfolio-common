@@ -1,7 +1,7 @@
 package fr.avenirsesr.portfolio.common.data.domain.model;
 
 public record PageCriteria(Integer page, Integer pageSize) {
-  private static final Integer MAX_PAGE_SIZE = 12;
+  private static final Integer MAX_PAGE_SIZE = 100;
   private static final PageCriteria DEFAULT_PAGE_CRITERIA = new PageCriteria(0, 8);
 
   public PageCriteria(Integer page, Integer pageSize) {
