@@ -30,6 +30,7 @@ public enum EErrorCode {
   INSTITUTION_CONFIG_NOT_FOUND("Institution configuration not found", HttpStatus.NOT_FOUND),
   ACTIVITY_NOT_FOUND("Activity not found", HttpStatus.NOT_FOUND),
   ACTIVITY_DRAFT_NOT_FOUND("Activity draft not found", HttpStatus.NOT_FOUND),
+  ACTIVITY_UNPUBLISHED("Activity is unpublished", HttpStatus.CONFLICT),
   DECLARED_ACTIVITY_NOT_FOUND("Declared activity not found", HttpStatus.NOT_FOUND),
   FEEDBACK_NOT_FOUND("Feedback not found", HttpStatus.NOT_FOUND),
   NOTIFICATION_NOT_FOUND("Notification not found", HttpStatus.NOT_FOUND),
