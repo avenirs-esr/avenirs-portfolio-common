@@ -28,6 +28,7 @@ public enum EErrorCode {
   DECLARED_EXPERIENCE_NOT_FOUND("Declared experience", HttpStatus.NOT_FOUND),
   DECLARED_PROGRAM_NOT_FOUND("Declared program not found", HttpStatus.NOT_FOUND),
   INSTITUTION_CONFIG_NOT_FOUND("Institution configuration not found", HttpStatus.NOT_FOUND),
+  INSTITUTION_NOT_FOUND("Institution not found", HttpStatus.NOT_FOUND),
   ACTIVITY_NOT_FOUND("Activity not found", HttpStatus.NOT_FOUND),
   ACTIVITY_DRAFT_NOT_FOUND("Activity draft not found", HttpStatus.NOT_FOUND),
   ACTIVITY_UNPUBLISHED("Activity is unpublished", HttpStatus.CONFLICT),
@@ -57,6 +58,8 @@ public enum EErrorCode {
   DECLARED_ACTIVITY_HAS_NOT_STARTED("Declared activity has not started", HttpStatus.CONFLICT),
   DECLARED_ACTIVITY_LOCKED("Declared activity is submitted or finished", HttpStatus.CONFLICT),
   ASSOCIATION_ALREADY_EXIST("This association already exist", HttpStatus.CONFLICT),
+  INSTITUTION_HAI_ALREADY_EXISTS(
+      "An institution with this HAI already exists", HttpStatus.CONFLICT),
 
   // 413 Payload Too Large
   MAX_FILE_SIZE_EXCEEDED("Maximum upload size exceeded", HttpStatus.PAYLOAD_TOO_LARGE),
@@ -93,6 +96,12 @@ public enum EErrorCode {
   NOT_URL("The field {0} is not a valid URL"),
   END_DATE_BEFORE_START_DATE("The end date cannot be before the start date"),
   INSTITUTION_ID_NULL("Institution id cannot be null"),
+  INSTITUTION_PRIMARY_CANNOT_HAVE_PARENT(
+      "A primary institution cannot be attached to a parent institution"),
+  INSTITUTION_SECONDARY_REQUIRES_PARENT(
+      "A secondary institution must be attached to a parent institution"),
+  INSTITUTION_PARENT_MUST_BE_PRIMARY(
+      "A secondary institution must be attached to a primary institution"),
   FIRSTNAME_IS_NULL("First name cannot be null"),
   LASTNAME_IS_NULL("Last name cannot be null"),
   INVALID_DATE_FORMAT("Invalid date format. Expected format: yyyy-MM-dd."),
