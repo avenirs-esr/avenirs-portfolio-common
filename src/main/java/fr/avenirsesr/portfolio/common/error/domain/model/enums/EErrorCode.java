@@ -88,7 +88,8 @@ public enum EErrorCode {
   NOT_BLANK("The field {0} cannot be blank"),
   NOT_NULL("The field {0} cannot be null"),
   TOO_LONG("The field {0} exceeds the maximum allowed length"),
-  ENRICHED_TEXT_TOO_LONG("The field {0}, with its enriched content, exceeds the maximum allowed length"),
+  ENRICHED_TEXT_TOO_LONG(
+      "The field {0}, with its enriched content, exceeds the maximum allowed length"),
   NOT_URL("The field {0} is not a valid URL"),
   END_DATE_BEFORE_START_DATE("The end date cannot be before the start date"),
   INSTITUTION_ID_NULL("Institution id cannot be null"),

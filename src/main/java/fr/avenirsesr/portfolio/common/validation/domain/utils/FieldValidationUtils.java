@@ -21,7 +21,8 @@ public final class FieldValidationUtils {
     }
   }
 
-  public static void requireNotBlankAndEnrichedMaxLength(String fieldName, String value, int maxLength) {
+  public static void requireNotBlankAndEnrichedMaxLength(
+      String fieldName, String value, int maxLength) {
     if (value == null || value.trim().isEmpty()) {
       throw new FieldValidationException(EErrorCode.NOT_BLANK, fieldName);
     }
@@ -43,7 +44,8 @@ public final class FieldValidationUtils {
     }
   }
 
-  public static void validateOptionalEnrichedTextMaxLength(String fieldName, String value, int maxLength) {
+  public static void validateOptionalEnrichedTextMaxLength(
+      String fieldName, String value, int maxLength) {
     if (value == null) {
       return;
     }
