@@ -29,6 +29,7 @@ public enum EErrorCode {
   DECLARED_PROGRAM_NOT_FOUND("Declared program not found", HttpStatus.NOT_FOUND),
   INSTITUTION_CONFIG_NOT_FOUND("Institution configuration not found", HttpStatus.NOT_FOUND),
   INSTITUTION_NOT_FOUND("Institution not found", HttpStatus.NOT_FOUND),
+  GROUP_NOT_FOUND("Group not found", HttpStatus.NOT_FOUND),
   ACTIVITY_NOT_FOUND("Activity not found", HttpStatus.NOT_FOUND),
   ACTIVITY_DRAFT_NOT_FOUND("Activity draft not found", HttpStatus.NOT_FOUND),
   ACTIVITY_UNPUBLISHED("Activity is unpublished", HttpStatus.CONFLICT),
@@ -60,6 +61,7 @@ public enum EErrorCode {
   ASSOCIATION_ALREADY_EXIST("This association already exist", HttpStatus.CONFLICT),
   INSTITUTION_HAI_ALREADY_EXISTS(
       "An institution with this HAI already exists", HttpStatus.CONFLICT),
+  GROUP_ID_SI_SCO_ALREADY_EXISTS("A group with this id_si_sco already exists", HttpStatus.CONFLICT),
 
   // 413 Payload Too Large
   MAX_FILE_SIZE_EXCEEDED("Maximum upload size exceeded", HttpStatus.PAYLOAD_TOO_LARGE),
@@ -102,6 +104,12 @@ public enum EErrorCode {
       "A secondary institution must be attached to a parent institution"),
   INSTITUTION_PARENT_MUST_BE_PRIMARY(
       "A secondary institution must be attached to a primary institution"),
+  GROUP_PROGRAM_CANNOT_HAVE_PARENT("A program cannot be attached to a parent group"),
+  GROUP_PROGRAM_OPTION_REQUIRES_PARENT("A program option must be attached to a parent group"),
+  GROUP_PROGRAM_OPTION_PARENT_MUST_BE_PROGRAM("A program option must be attached to a program"),
+  GROUP_STUDENT_GROUP_REQUIRES_PARENT("A student group must be attached to a parent group"),
+  GROUP_STUDENT_GROUP_PARENT_MUST_BE_PROGRAM_OR_OPTION(
+      "A student group must be attached to a program or a program option"),
   FIRSTNAME_IS_NULL("First name cannot be null"),
   LASTNAME_IS_NULL("Last name cannot be null"),
   INVALID_DATE_FORMAT("Invalid date format. Expected format: yyyy-MM-dd."),
