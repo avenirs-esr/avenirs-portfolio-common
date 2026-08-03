@@ -6,7 +6,6 @@ import fr.avenirsesr.portfolio.common.security.domain.exception.UserNotAuthorize
 import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.AvenirsSecurityHeaders;
 import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.HmacAuthenticationToken;
 import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.UserSecurityPayload;
-import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.enums.ESecurityKeys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,11 +28,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class HmacAuthenticationFilter extends OncePerRequestFilter {
 
   private final String permitAllPathsString;
+  private final String secret;
 
   private List<String> permitAllPathsList;
 
-  public HmacAuthenticationFilter(String permitAllPathsString) {
+  public HmacAuthenticationFilter(String permitAllPathsString, String secret) {
     this.permitAllPathsString = permitAllPathsString;
+    this.secret = secret;
   }
 
   @Override
@@ -44,8 +45,6 @@ public class HmacAuthenticationFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
 
     String signature = request.getHeader(AvenirsSecurityHeaders.CONTEXT_SIGNATURE);
-    String secretKey =
-        ESecurityKeys.getSecretByKey(request.getHeader(AvenirsSecurityHeaders.CONTEXT_KID));
     String payload = request.getHeader(AvenirsSecurityHeaders.SIGNED_CONTEXT);
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
@@ -58,7 +57,7 @@ public class HmacAuthenticationFilter extends OncePerRequestFilter {
       throw exception;
     }
 
-    if (signature != null && verifySignature(payload, signature, secretKey)) {
+    if (signature != null && verifySignature(payload, signature, secret)) {
       Authentication auth = new HmacAuthenticationToken(userSecurityPayload.getSub());
       SecurityContextHolder.getContext().setAuthentication(auth);
 

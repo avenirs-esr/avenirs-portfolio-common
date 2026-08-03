@@ -31,6 +31,9 @@ public class SecurityConfig {
   @Value("${security.authentication.api-key:default-api-key}")
   private String expectedApiKey;
 
+  @Value("${security.hmac.secret}")
+  private String hmacSecret;
+
   @Value("${security.permit-all-paths}")
   private String[] permitAllPaths;
 
@@ -61,7 +64,7 @@ public class SecurityConfig {
               "Security enabled (signed header protection) using filter {}",
               HmacAuthenticationFilter.class.getSimpleName());
           http.addFilterBefore(
-              new HmacAuthenticationFilter(String.join(",", permitAllPaths)),
+              new HmacAuthenticationFilter(String.join(",", permitAllPaths), hmacSecret),
               UsernamePasswordAuthenticationFilter.class);
         }
         break;
@@ -95,7 +98,7 @@ public class SecurityConfig {
               new ApiKeyAuthenticationFilter(expectedApiKey, String.join(",", permitAllPaths)),
               UsernamePasswordAuthenticationFilter.class);
           http.addFilterBefore(
-              new HmacAuthenticationFilter(String.join(",", permitAllPaths)),
+              new HmacAuthenticationFilter(String.join(",", permitAllPaths), hmacSecret),
               UsernamePasswordAuthenticationFilter.class);
         }
         break;
@@ -115,7 +118,7 @@ public class SecurityConfig {
               "Security enabled by default (signed header protection) using filter {}",
               HmacAuthenticationFilter.class.getSimpleName());
           http.addFilterBefore(
-              new HmacAuthenticationFilter(String.join(",", permitAllPaths)),
+              new HmacAuthenticationFilter(String.join(",", permitAllPaths), hmacSecret),
               UsernamePasswordAuthenticationFilter.class);
         }
     }
