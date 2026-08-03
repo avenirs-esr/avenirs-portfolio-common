@@ -108,7 +108,8 @@ class HMACSecurityConfigTest {
     @Bean
     @Primary
     public HmacAuthenticationFilter testHmacFilter() throws ServletException, IOException {
-      HmacAuthenticationFilter mockFilter = spy(new HmacAuthenticationFilter(permitAllPathsString));
+      HmacAuthenticationFilter mockFilter =
+          spy(new HmacAuthenticationFilter(permitAllPathsString, "test-hmac-secret"));
 
       doAnswer(
               (Answer<Void>)

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import fr.avenirsesr.portfolio.common.error.domain.exception.BusinessException;
 import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.UserSecurityPayload;
-import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.enums.ESecurityKeys;
 import fr.avenirsesr.portfolio.common.testutils.BddLogger;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -42,7 +41,6 @@ class HmacAuthenticationFilterTest {
   @Mock private FilterChain filterChain;
 
   private ObjectMapper objectMapper;
-  private static final String TEST_KEY = "TEST_KEY";
   private static final String TEST_SECRET = "test-secret";
   private static final UUID TEST_UUID = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
 
@@ -55,6 +53,7 @@ class HmacAuthenticationFilterTest {
         filter,
         "permitAllPathsString",
         "/avenirs-portfolio-api/swagger-ui/**,/avenirs-portfolio-api/api-docs/**,/favicon.ico,/actuator/health");
+    ReflectionTestUtils.setField(filter, "secret", TEST_SECRET);
   }
 
   @Test
@@ -139,22 +138,17 @@ class HmacAuthenticationFilterTest {
     String payload = objectMapper.writeValueAsString(userSecurityPayload);
     String signature = generateHmacSignature(payload);
 
-    Mockito.when(request.getHeader("X-Context-Kid")).thenReturn(TEST_KEY);
     Mockito.when(request.getHeader("X-Context-Signature")).thenReturn(signature);
     Mockito.when(request.getHeader("X-Signed-Context")).thenReturn(payload);
 
     BddLogger.when("performing the request with valid signature");
     BddLogger.then("it should authenticate");
-    try (var mockedStatic = Mockito.mockStatic(ESecurityKeys.class)) {
-      mockedStatic.when(() -> ESecurityKeys.getSecretByKey(TEST_KEY)).thenReturn(TEST_SECRET);
+    filter.doFilterInternal(request, response, filterChain);
 
-      filter.doFilterInternal(request, response, filterChain);
-
-      Mockito.verify(filterChain).doFilter(request, response);
-      Assertions.assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-      Assertions.assertEquals(
-          TEST_UUID, SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-    }
+    Mockito.verify(filterChain).doFilter(request, response);
+    Assertions.assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+    Assertions.assertEquals(
+        TEST_UUID, SecurityContextHolder.getContext().getAuthentication().getPrincipal());
   }
 
   @Test
@@ -170,16 +164,11 @@ class HmacAuthenticationFilterTest {
       String payload = objectMapper.writeValueAsString(userSecurityPayload);
       String signature = generateHmacSignature(payload);
 
-      Mockito.when(request.getHeader("X-Context-Kid")).thenReturn(TEST_KEY);
       Mockito.when(request.getHeader("X-Context-Signature")).thenReturn(signature);
       Mockito.when(request.getHeader("X-Signed-Context")).thenReturn(payload);
 
-      try (var mockedStatic = Mockito.mockStatic(ESecurityKeys.class)) {
-        mockedStatic.when(() -> ESecurityKeys.getSecretByKey(TEST_KEY)).thenReturn(TEST_SECRET);
-
-        Assertions.assertThrows(
-            BusinessException.class, () -> filter.doFilterInternal(request, response, filterChain));
-      }
+      Assertions.assertThrows(
+          BusinessException.class, () -> filter.doFilterInternal(request, response, filterChain));
     } catch (Exception e) {
       Assertions.fail("Test setup failed: " + e.getMessage());
     }
@@ -198,16 +187,11 @@ class HmacAuthenticationFilterTest {
       String payload = objectMapper.writeValueAsString(userSecurityPayload);
       String invalidSignature = "invalid-signature";
 
-      Mockito.when(request.getHeader("X-Context-Kid")).thenReturn(TEST_KEY);
       Mockito.when(request.getHeader("X-Context-Signature")).thenReturn(invalidSignature);
       Mockito.when(request.getHeader("X-Signed-Context")).thenReturn(payload);
 
-      try (var mockedStatic = Mockito.mockStatic(ESecurityKeys.class)) {
-        mockedStatic.when(() -> ESecurityKeys.getSecretByKey(TEST_KEY)).thenReturn(TEST_SECRET);
-
-        Assertions.assertThrows(
-            BusinessException.class, () -> filter.doFilterInternal(request, response, filterChain));
-      }
+      Assertions.assertThrows(
+          BusinessException.class, () -> filter.doFilterInternal(request, response, filterChain));
     } catch (Exception e) {
       Assertions.fail("Test setup failed: " + e.getMessage());
     }
@@ -225,16 +209,13 @@ class HmacAuthenticationFilterTest {
     try {
       String payload = objectMapper.writeValueAsString(userSecurityPayload);
 
-      Mockito.when(request.getHeader("X-Context-Kid")).thenReturn(TEST_KEY);
       Mockito.when(request.getHeader("X-Context-Signature")).thenReturn("valid-looking-signature");
       Mockito.when(request.getHeader("X-Signed-Context")).thenReturn(payload);
 
-      try (var mockedStatic = Mockito.mockStatic(ESecurityKeys.class)) {
-        mockedStatic.when(() -> ESecurityKeys.getSecretByKey(TEST_KEY)).thenReturn(null);
+      ReflectionTestUtils.setField(filter, "secret", null);
 
-        Assertions.assertThrows(
-            BusinessException.class, () -> filter.doFilterInternal(request, response, filterChain));
-      }
+      Assertions.assertThrows(
+          BusinessException.class, () -> filter.doFilterInternal(request, response, filterChain));
     } catch (Exception e) {
       Assertions.fail("Test setup failed: " + e.getMessage());
     }
@@ -246,16 +227,11 @@ class HmacAuthenticationFilterTest {
     BddLogger.when("performing the request with null payload");
     BddLogger.then("it should reject it");
     try {
-      Mockito.when(request.getHeader("X-Context-Kid")).thenReturn(TEST_KEY);
       Mockito.when(request.getHeader("X-Context-Signature")).thenReturn("some-signature");
       Mockito.when(request.getHeader("X-Signed-Context")).thenReturn("invalid-json");
 
-      try (var mockedStatic = Mockito.mockStatic(ESecurityKeys.class)) {
-        mockedStatic.when(() -> ESecurityKeys.getSecretByKey(TEST_KEY)).thenReturn(TEST_SECRET);
-
-        Assertions.assertThrows(
-            Exception.class, () -> filter.doFilterInternal(request, response, filterChain));
-      }
+      Assertions.assertThrows(
+          Exception.class, () -> filter.doFilterInternal(request, response, filterChain));
     } catch (Exception e) {
       Assertions.fail("Test setup failed: " + e.getMessage());
     }
@@ -267,44 +243,11 @@ class HmacAuthenticationFilterTest {
     BddLogger.when("performing the request with null payload string");
     BddLogger.then("it should reject it");
     try {
-      Mockito.when(request.getHeader("X-Context-Kid")).thenReturn(TEST_KEY);
       Mockito.when(request.getHeader("X-Context-Signature")).thenReturn("some-signature");
       Mockito.when(request.getHeader("X-Signed-Context")).thenReturn(null);
 
-      try (var mockedStatic = Mockito.mockStatic(ESecurityKeys.class)) {
-        mockedStatic.when(() -> ESecurityKeys.getSecretByKey(TEST_KEY)).thenReturn(TEST_SECRET);
-
-        Assertions.assertThrows(
-            Exception.class, () -> filter.doFilterInternal(request, response, filterChain));
-      }
-    } catch (Exception e) {
-      Assertions.fail("Test setup failed: " + e.getMessage());
-    }
-  }
-
-  @Test
-  void shouldRejectMissingSecretKey() {
-    BddLogger.given("a request");
-    UserSecurityPayload userSecurityPayload = new UserSecurityPayload();
-    userSecurityPayload.setSub(TEST_UUID);
-    userSecurityPayload.setExp(Instant.now().plusSeconds(3600));
-
-    BddLogger.when("performing the request without secret key");
-    BddLogger.then("it should reject it");
-    try {
-      String payload = objectMapper.writeValueAsString(userSecurityPayload);
-      String signature = generateHmacSignature(payload);
-
-      Mockito.when(request.getHeader("X-Context-Kid")).thenReturn("UNKNOWN_KEY");
-      Mockito.when(request.getHeader("X-Context-Signature")).thenReturn(signature);
-      Mockito.when(request.getHeader("X-Signed-Context")).thenReturn(payload);
-
-      try (var mockedStatic = Mockito.mockStatic(ESecurityKeys.class)) {
-        mockedStatic.when(() -> ESecurityKeys.getSecretByKey("UNKNOWN_KEY")).thenReturn(null);
-
-        Assertions.assertThrows(
-            BusinessException.class, () -> filter.doFilterInternal(request, response, filterChain));
-      }
+      Assertions.assertThrows(
+          Exception.class, () -> filter.doFilterInternal(request, response, filterChain));
     } catch (Exception e) {
       Assertions.fail("Test setup failed: " + e.getMessage());
     }
@@ -322,16 +265,11 @@ class HmacAuthenticationFilterTest {
     try {
       String payload = objectMapper.writeValueAsString(userSecurityPayload);
 
-      Mockito.when(request.getHeader("X-Context-Kid")).thenReturn(TEST_KEY);
       Mockito.when(request.getHeader("X-Context-Signature")).thenReturn(null);
       Mockito.when(request.getHeader("X-Signed-Context")).thenReturn(payload);
 
-      try (var mockedStatic = Mockito.mockStatic(ESecurityKeys.class)) {
-        mockedStatic.when(() -> ESecurityKeys.getSecretByKey(TEST_KEY)).thenReturn(TEST_SECRET);
-
-        Assertions.assertThrows(
-            BusinessException.class, () -> filter.doFilterInternal(request, response, filterChain));
-      }
+      Assertions.assertThrows(
+          BusinessException.class, () -> filter.doFilterInternal(request, response, filterChain));
     } catch (Exception e) {
       Assertions.fail("Test setup failed: " + e.getMessage());
     }
@@ -350,16 +288,11 @@ class HmacAuthenticationFilterTest {
       String payload = objectMapper.writeValueAsString(userSecurityPayload);
       String signature = generateHmacSignature(payload);
 
-      Mockito.when(request.getHeader("X-Context-Kid")).thenReturn(TEST_KEY);
       Mockito.when(request.getHeader("X-Context-Signature")).thenReturn(signature);
       Mockito.when(request.getHeader("X-Signed-Context")).thenReturn(payload);
 
-      try (var mockedStatic = Mockito.mockStatic(ESecurityKeys.class)) {
-        mockedStatic.when(() -> ESecurityKeys.getSecretByKey(TEST_KEY)).thenReturn(TEST_SECRET);
-
-        Assertions.assertThrows(
-            Exception.class, () -> filter.doFilterInternal(request, response, filterChain));
-      }
+      Assertions.assertThrows(
+          Exception.class, () -> filter.doFilterInternal(request, response, filterChain));
     } catch (Exception e) {
       Assertions.fail("Test setup failed: " + e.getMessage());
     }
