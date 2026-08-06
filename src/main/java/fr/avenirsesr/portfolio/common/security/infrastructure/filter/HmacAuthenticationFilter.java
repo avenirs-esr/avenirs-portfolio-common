@@ -15,12 +15,15 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -58,8 +61,19 @@ public class HmacAuthenticationFilter extends OncePerRequestFilter {
     }
 
     if (signature != null && verifySignature(payload, signature, secret)) {
-      Authentication auth = new HmacAuthenticationToken(userSecurityPayload.getSub());
+      List<GrantedAuthority> authorities =
+          userSecurityPayload.getAuthorities() == null
+              ? Collections.emptyList()
+              : userSecurityPayload.getAuthorities().stream()
+                  .map(SimpleGrantedAuthority::new)
+                  .map(GrantedAuthority.class::cast)
+                  .toList();
+      Authentication auth = new HmacAuthenticationToken(userSecurityPayload.getSub(), authorities);
       SecurityContextHolder.getContext().setAuthentication(auth);
+      log.info(
+          "HMAC authentication succeeded for user [{}] with authorities {}",
+          userSecurityPayload.getSub(),
+          userSecurityPayload.getAuthorities());
 
       filterChain.doFilter(request, response);
     } else {

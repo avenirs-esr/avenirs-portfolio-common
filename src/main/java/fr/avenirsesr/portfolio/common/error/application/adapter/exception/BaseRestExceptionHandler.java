@@ -7,6 +7,7 @@ import fr.avenirsesr.portfolio.common.error.domain.model.enums.EErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -21,6 +22,14 @@ public abstract class BaseRestExceptionHandler {
 
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(new ErrorResponse("INTERNAL_ERROR", "Une erreur technique est survenue."));
+  }
+
+  @ExceptionHandler(AuthorizationDeniedException.class)
+  public ResponseEntity<ErrorResponse> handleAuthorizationDenied(AuthorizationDeniedException ex) {
+    log.warn("Accès refusé : {}", ex.getMessage());
+
+    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+        .body(new ErrorResponse(EErrorCode.ACCESS_DENIED.name(), EErrorCode.ACCESS_DENIED.getMessage()));
   }
 
   @ExceptionHandler(BusinessException.class)
