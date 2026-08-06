@@ -38,6 +38,7 @@ public enum EErrorCode {
   NOTIFICATION_NOT_FOUND("Notification not found", HttpStatus.NOT_FOUND),
 
   // 403 Forbidden
+  ACCESS_DENIED("Access denied", HttpStatus.FORBIDDEN),
   USER_NOT_AUTHORIZED("User not authorized", HttpStatus.FORBIDDEN),
   USER_IS_NOT_STUDENT_EXCEPTION("User is not student", HttpStatus.FORBIDDEN),
   USER_IS_NOT_STAFF_EXCEPTION("User is not staff", HttpStatus.FORBIDDEN),
