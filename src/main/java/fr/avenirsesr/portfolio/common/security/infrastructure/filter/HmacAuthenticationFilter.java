@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import lombok.NonNull;
@@ -68,12 +69,18 @@ public class HmacAuthenticationFilter extends OncePerRequestFilter {
                   .map(SimpleGrantedAuthority::new)
                   .map(GrantedAuthority.class::cast)
                   .toList();
-      Authentication auth = new HmacAuthenticationToken(userSecurityPayload.getSub(), authorities);
+      Set<String> roles =
+          userSecurityPayload.getRoles() == null
+              ? Collections.emptySet()
+              : userSecurityPayload.getRoles();
+      Authentication auth =
+          new HmacAuthenticationToken(userSecurityPayload.getSub(), authorities, roles);
       SecurityContextHolder.getContext().setAuthentication(auth);
       log.info(
-          "HMAC authentication succeeded for user [{}] with authorities {}",
+          "HMAC authentication succeeded for user [{}] with authorities {} and roles {}",
           userSecurityPayload.getSub(),
-          userSecurityPayload.getAuthorities());
+          userSecurityPayload.getAuthorities(),
+          roles);
 
       filterChain.doFilter(request, response);
     } else {

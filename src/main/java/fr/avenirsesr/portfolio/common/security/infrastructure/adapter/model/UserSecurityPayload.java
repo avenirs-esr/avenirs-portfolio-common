@@ -10,4 +10,5 @@ public class UserSecurityPayload {
   private Instant iat;
   private Instant exp;
   private Set<String> authorities;
+  private Set<String> roles;
 }
