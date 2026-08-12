@@ -1,14 +1,17 @@
 package fr.avenirsesr.portfolio.common.security.infrastructure.filter;
 
+import fr.avenirsesr.portfolio.common.security.accesscontrol.domain.model.enums.EPermission;
 import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.HmacAuthenticationToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,9 +33,15 @@ public class DevAuthenticationFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
     String devUser = request.getHeader("eppn");
     if (devUser != null && !devUser.isBlank()) {
-      Authentication auth = new HmacAuthenticationToken(devUser);
+      Authentication auth =
+          new HmacAuthenticationToken(
+              devUser,
+              Arrays.stream(EPermission.values())
+                  .map(permission -> new SimpleGrantedAuthority(permission.authority()))
+                  .toList());
       SecurityContextHolder.getContext().setAuthentication(auth);
-      log.debug("Dev authentication enabled for user: {}", devUser);
+      log.debug(
+          "Dev authentication enabled for user: {} with every permission granted", devUser);
     }
     filterChain.doFilter(request, response);
   }
