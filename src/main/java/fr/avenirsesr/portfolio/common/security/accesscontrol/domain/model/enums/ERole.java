@@ -30,6 +30,7 @@ public enum ERole {
           EPermission.PERM_TRACE_READ_CONTEXTUAL,
           EPermission.PERM_TRACE_DOWNLOAD_CONTEXTUAL),
       Set.of(
+          EPermissionGroup.ACTIVITY_MANAGEMENT,
           EPermissionGroup.NOTIFICATION_MANAGEMENT_OWN,
           EPermissionGroup.STAFF_ACTIVITY_ACCESS,
           EPermissionGroup.STAFF_FEEDBACK_MANAGEMENT)),
