@@ -22,11 +22,9 @@ public enum EPermission {
       "declared-activity:list:own",
       "View the list of own declared activities and their associations"),
   PERM_DECLARED_ACTIVITY_UPDATE_OWN(
-      "declared-activity:update:own",
-      "Update, finish or add a reflection to a declared activity"),
+      "declared-activity:update:own", "Update, finish or add a reflection to a declared activity"),
   PERM_DECLARED_ACTIVITY_ASSOCIATION_MANAGE_OWN(
-      "declared-activity:association:manage:own",
-      "Remove associations of a declared activity"),
+      "declared-activity:association:manage:own", "Remove associations of a declared activity"),
 
   PERM_DECLARED_SKILL_LIST_OWN("declared-skill:list:own", "View the list of own declared skills"),
   PERM_DECLARED_SKILL_CREATE_OWN("declared-skill:create:own", "Add a declared skill"),
@@ -57,8 +55,7 @@ public enum EPermission {
       "self-knowledge:list:own", "View own self-knowledge elements and categories"),
   PERM_SELF_KNOWLEDGE_CREATE_OWN(
       "self-knowledge:create:own", "Add a self-knowledge element or category"),
-  PERM_SELF_KNOWLEDGE_UPDATE_OWN(
-      "self-knowledge:update:own", "Update a self-knowledge element"),
+  PERM_SELF_KNOWLEDGE_UPDATE_OWN("self-knowledge:update:own", "Update a self-knowledge element"),
   PERM_SELF_KNOWLEDGE_DELETE_OWN(
       "self-knowledge:delete:own", "Delete a self-knowledge element or category"),
 
