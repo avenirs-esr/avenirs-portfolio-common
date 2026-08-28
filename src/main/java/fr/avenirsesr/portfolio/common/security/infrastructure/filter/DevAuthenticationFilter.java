@@ -40,8 +40,7 @@ public class DevAuthenticationFilter extends OncePerRequestFilter {
                   .map(permission -> new SimpleGrantedAuthority(permission.authority()))
                   .toList());
       SecurityContextHolder.getContext().setAuthentication(auth);
-      log.debug(
-          "Dev authentication enabled for user: {} with every permission granted", devUser);
+      log.debug("Dev authentication enabled for user: {} with every permission granted", devUser);
     }
     filterChain.doFilter(request, response);
   }

@@ -52,6 +52,8 @@ public enum EErrorCode {
   // 409 Conflict
   FEEDBACK_MAXIMUM_ITERATION_REACHED("Maximum feedback iteration reached", HttpStatus.CONFLICT),
   FEEDBACK_IN_PROCESS("A feedback is currently in process", HttpStatus.CONFLICT),
+  FEEDBACK_SUBMITTED("This feedback has already been submitted", HttpStatus.CONFLICT),
+  FEEDBACK_SEEN("This feedback can no longer be edited once seen", HttpStatus.CONFLICT),
   USER_ALREADY_EXISTS("User already exists", HttpStatus.CONFLICT),
   STUDENT_DECLARED_ALREADY_EXIST(
       "This declared skill is already assigned to the student", HttpStatus.CONFLICT),

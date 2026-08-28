@@ -29,7 +29,9 @@ public abstract class BaseRestExceptionHandler {
     log.warn("Accès refusé : {}", ex.getMessage());
 
     return ResponseEntity.status(HttpStatus.FORBIDDEN)
-        .body(new ErrorResponse(EErrorCode.ACCESS_DENIED.name(), EErrorCode.ACCESS_DENIED.getMessage()));
+        .body(
+            new ErrorResponse(
+                EErrorCode.ACCESS_DENIED.name(), EErrorCode.ACCESS_DENIED.getMessage()));
   }
 
   @ExceptionHandler(BusinessException.class)
