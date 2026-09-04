@@ -18,6 +18,8 @@ public enum EPermission {
 
   PERM_COMPETENCY_READ("competency:read", "View the target competencies of the framework"),
 
+  PERM_EXTERNAL_SKILL_READ("external-skill:read", "View the external skill catalog"),
+
   PERM_DECLARED_ACTIVITY_LIST_OWN(
       "declared-activity:list:own",
       "View the list of own declared activities and their associations"),
@@ -117,7 +119,27 @@ public enum EPermission {
   PERM_RBAC_ASSIGN("rbac:assign", "Create or grant an RBAC assignment to a principal"),
   PERM_RBAC_REVOKE("rbac:revoke", "Revoke an RBAC assignment"),
   PERM_RBAC_MANAGE(
-      "rbac:manage", "Create, update or delete structuring RBAC elements such as roles");
+      "rbac:manage", "Create, update or delete structuring RBAC elements such as roles"),
+
+  PERM_ADDITIONAL_SKILL_CONFIG_READ(
+      "additional-skill-config:read", "View the additional skill configuration"),
+  PERM_ADDITIONAL_SKILL_CONFIG_UPDATE(
+      "additional-skill-config:update", "Update the additional skill configuration"),
+  PERM_INSTITUTION_CONFIG_READ("institution-config:read", "View an institution's configuration"),
+  PERM_TRACE_CONFIG_READ("trace-config:read", "View the trace retention configuration"),
+  PERM_TRACE_CONFIG_UPDATE("trace-config:update", "Update the trace retention configuration"),
+  PERM_WEBSITE_CONTENT_CONFIG_READ(
+      "website-content-config:read", "View the configurable website content"),
+  PERM_WEBSITE_CONTENT_CONFIG_UPDATE(
+      "website-content-config:update", "Update the configurable website content"),
+
+  PERM_EXTERNAL_USER_READ("external-user:read", "View external users"),
+  PERM_EXTERNAL_USER_IMPORT("external-user:import", "Import external users in bulk"),
+  PERM_EXTERNAL_USER_UPDATE("external-user:update", "Update or activate an external user in bulk"),
+  PERM_EXTERNAL_USER_DELETE("external-user:delete", "Delete an external user"),
+
+  PERM_SEEDER_RESET(
+      "seeder:reset", "Reset and reseed the database (destructive administration operation)");
 
   private final String authority;
   private final String description;
