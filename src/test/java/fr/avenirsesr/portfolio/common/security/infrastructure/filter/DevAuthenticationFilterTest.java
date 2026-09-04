@@ -3,6 +3,7 @@ package fr.avenirsesr.portfolio.common.security.infrastructure.filter;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import fr.avenirsesr.portfolio.common.security.accesscontrol.domain.model.enums.EPermission;
 import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.HmacAuthenticationToken;
 import fr.avenirsesr.portfolio.common.testutils.BddLogger;
 import jakarta.servlet.FilterChain;
@@ -10,7 +11,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.Authentication;
@@ -23,7 +23,7 @@ class DevAuthenticationFilterTest {
   private HttpServletResponse response;
   private FilterChain filterChain;
 
-  private static final UUID TEST_USER_ID = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
+  private static final String TEST_EPPN = "mockedeppn@avenirs-esr.fr";
 
   @BeforeEach
   void setUp() {
@@ -35,60 +35,47 @@ class DevAuthenticationFilterTest {
   }
 
   @Test
-  void shouldSetAuthenticationWhenUserIdHeaderIsPresent() throws ServletException, IOException {
-    BddLogger.given("a request with user ID header");
-    when(request.getHeader("user-id")).thenReturn(TEST_USER_ID.toString());
+  void shouldSetAuthenticationWithEveryPermissionWhenEppnHeaderIsPresent()
+      throws ServletException, IOException {
+    BddLogger.given("a request with an eppn header");
+    when(request.getHeader("eppn")).thenReturn(TEST_EPPN);
 
+    BddLogger.when("filtering the request");
     filter.doFilterInternal(request, response, filterChain);
 
-    BddLogger.when("getting authentication");
+    BddLogger.then("it should authenticate the user with every permission granted");
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-    BddLogger.then("it should set authentication");
     assertNotNull(auth);
     assertTrue(auth instanceof HmacAuthenticationToken);
-    assertEquals(TEST_USER_ID, auth.getPrincipal());
+    assertEquals(TEST_EPPN, auth.getPrincipal());
+    assertEquals(EPermission.values().length, auth.getAuthorities().size());
     verify(filterChain).doFilter(request, response);
   }
 
   @Test
-  void shouldNotSetAuthenticationWhenUserIdHeaderIsMissing() throws ServletException, IOException {
-    BddLogger.given("a request without user ID header");
-    when(request.getHeader("user-id")).thenReturn(null);
+  void shouldNotSetAuthenticationWhenEppnHeaderIsMissing() throws ServletException, IOException {
+    BddLogger.given("a request without an eppn header");
+    when(request.getHeader("eppn")).thenReturn(null);
 
+    BddLogger.when("filtering the request");
     filter.doFilterInternal(request, response, filterChain);
 
-    BddLogger.when("getting authentication");
-    assertNull(SecurityContextHolder.getContext().getAuthentication());
-
     BddLogger.then("it should not set authentication");
+    assertNull(SecurityContextHolder.getContext().getAuthentication());
     verify(filterChain).doFilter(request, response);
   }
 
   @Test
-  void shouldNotSetAuthenticationWhenUserIdHeaderIsBlank() throws ServletException, IOException {
-    BddLogger.given("a request with blank user ID header");
-    when(request.getHeader("user-id")).thenReturn(" ");
+  void shouldNotSetAuthenticationWhenEppnHeaderIsBlank() throws ServletException, IOException {
+    BddLogger.given("a request with a blank eppn header");
+    when(request.getHeader("eppn")).thenReturn(" ");
 
+    BddLogger.when("filtering the request");
     filter.doFilterInternal(request, response, filterChain);
 
-    BddLogger.when("getting authentication");
-    assertNull(SecurityContextHolder.getContext().getAuthentication());
-
     BddLogger.then("it should not set authentication");
+    assertNull(SecurityContextHolder.getContext().getAuthentication());
     verify(filterChain).doFilter(request, response);
-  }
-
-  @Test
-  void shouldThrowExceptionForInvalidUUID() {
-    BddLogger.given("a request with invalid user ID header");
-    when(request.getHeader("user-id")).thenReturn("invalid-uuid");
-
-    BddLogger.when("getting authentication");
-    BddLogger.then("it should throw IllegalArgumentException");
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> filter.doFilterInternal(request, response, filterChain));
   }
 
   @Test

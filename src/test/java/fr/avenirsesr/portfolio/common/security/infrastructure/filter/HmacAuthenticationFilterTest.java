@@ -132,7 +132,7 @@ class HmacAuthenticationFilterTest {
   void shouldAuthenticateWithValidSignature() throws ServletException, IOException {
     BddLogger.given("a request");
     UserSecurityPayload userSecurityPayload = new UserSecurityPayload();
-    userSecurityPayload.setSub(TEST_UUID);
+    userSecurityPayload.setSub(TEST_UUID.toString());
     userSecurityPayload.setExp(Instant.now().plusSeconds(3600));
 
     String payload = objectMapper.writeValueAsString(userSecurityPayload);
@@ -148,14 +148,15 @@ class HmacAuthenticationFilterTest {
     Mockito.verify(filterChain).doFilter(request, response);
     Assertions.assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     Assertions.assertEquals(
-        TEST_UUID, SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        TEST_UUID.toString(),
+        SecurityContextHolder.getContext().getAuthentication().getPrincipal());
   }
 
   @Test
   void shouldRejectExpiredPayload() {
     BddLogger.given("a request");
     UserSecurityPayload userSecurityPayload = new UserSecurityPayload();
-    userSecurityPayload.setSub(TEST_UUID);
+    userSecurityPayload.setSub(TEST_UUID.toString());
     userSecurityPayload.setExp(Instant.now().minusSeconds(3600));
 
     BddLogger.when("performing the request with expired payload");
@@ -178,7 +179,7 @@ class HmacAuthenticationFilterTest {
   void shouldRejectInvalidSignature() {
     BddLogger.given("a request");
     UserSecurityPayload userSecurityPayload = new UserSecurityPayload();
-    userSecurityPayload.setSub(TEST_UUID);
+    userSecurityPayload.setSub(TEST_UUID.toString());
     userSecurityPayload.setExp(Instant.now().plusSeconds(3600));
 
     BddLogger.when("performing the request with invalid signature");
@@ -201,7 +202,7 @@ class HmacAuthenticationFilterTest {
   void shouldHandleExceptionDuringSignatureVerification() {
     BddLogger.given("a request");
     UserSecurityPayload userSecurityPayload = new UserSecurityPayload();
-    userSecurityPayload.setSub(TEST_UUID);
+    userSecurityPayload.setSub(TEST_UUID.toString());
     userSecurityPayload.setExp(Instant.now().plusSeconds(3600));
 
     BddLogger.when("performing the request and an exception occurs during signature verification");
@@ -257,7 +258,7 @@ class HmacAuthenticationFilterTest {
   void shouldRejectMissingSignature() {
     BddLogger.given("a request");
     UserSecurityPayload userSecurityPayload = new UserSecurityPayload();
-    userSecurityPayload.setSub(TEST_UUID);
+    userSecurityPayload.setSub(TEST_UUID.toString());
     userSecurityPayload.setExp(Instant.now().plusSeconds(3600));
 
     BddLogger.when("performing the request without signature");
@@ -279,7 +280,7 @@ class HmacAuthenticationFilterTest {
   void shouldRejectPayloadWithNullExpiration() {
     BddLogger.given("a request");
     UserSecurityPayload userSecurityPayload = new UserSecurityPayload();
-    userSecurityPayload.setSub(TEST_UUID);
+    userSecurityPayload.setSub(TEST_UUID.toString());
     userSecurityPayload.setExp(null);
 
     BddLogger.when("performing the request without expiration");

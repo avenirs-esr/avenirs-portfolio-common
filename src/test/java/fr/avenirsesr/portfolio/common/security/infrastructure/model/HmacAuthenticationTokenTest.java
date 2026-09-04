@@ -13,7 +13,7 @@ class HmacAuthenticationTokenTest {
   void shouldCreateTokenWithEppn() {
     HmacAuthenticationToken token = new HmacAuthenticationToken("mockedeppn");
 
-    assertThat(token.getPrincipal()).isEqualTo(userId);
+    assertThat(token.getPrincipal()).isEqualTo("mockedeppn");
     assertThat(token.getCredentials()).isEqualTo("");
     assertThat(token.isAuthenticated()).isTrue();
   }
