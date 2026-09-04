@@ -109,7 +109,26 @@ public enum EPermissionGroup {
           EPermission.PERM_RBAC_READ,
           EPermission.PERM_RBAC_ASSIGN,
           EPermission.PERM_RBAC_REVOKE,
-          EPermission.PERM_RBAC_MANAGE));
+          EPermission.PERM_RBAC_MANAGE)),
+
+  BACKOFFICE_CONFIG_MANAGEMENT(
+      Set.of(
+          EPermission.PERM_ADDITIONAL_SKILL_CONFIG_READ,
+          EPermission.PERM_ADDITIONAL_SKILL_CONFIG_UPDATE,
+          EPermission.PERM_INSTITUTION_CONFIG_READ,
+          EPermission.PERM_TRACE_CONFIG_READ,
+          EPermission.PERM_TRACE_CONFIG_UPDATE,
+          EPermission.PERM_WEBSITE_CONTENT_CONFIG_READ,
+          EPermission.PERM_WEBSITE_CONTENT_CONFIG_UPDATE)),
+
+  EXTERNAL_USER_MANAGEMENT(
+      Set.of(
+          EPermission.PERM_EXTERNAL_USER_READ,
+          EPermission.PERM_EXTERNAL_USER_IMPORT,
+          EPermission.PERM_EXTERNAL_USER_UPDATE,
+          EPermission.PERM_EXTERNAL_USER_DELETE)),
+
+  SYSTEM_ADMINISTRATION(Set.of(EPermission.PERM_SEEDER_RESET));
 
   private final Set<EPermission> permissions;
 
