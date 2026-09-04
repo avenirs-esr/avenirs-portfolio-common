@@ -10,6 +10,7 @@ public enum ERole {
           EPermission.PERM_PROFILE_READ_OWN,
           EPermission.PERM_PROFILE_UPDATE_OWN,
           EPermission.PERM_COMPETENCY_READ,
+          EPermission.PERM_EXTERNAL_SKILL_READ,
           EPermission.PERM_EMPLOYMENT_KIT_READ_OWN),
       Set.of(
           EPermissionGroup.TRACE_MANAGEMENT_OWN,
@@ -42,7 +43,10 @@ public enum ERole {
           EPermissionGroup.ESTABLISHMENT_MANAGEMENT,
           EPermissionGroup.GROUP_MANAGEMENT,
           EPermissionGroup.ACTIVITY_MANAGEMENT,
-          EPermissionGroup.RBAC_MANAGEMENT));
+          EPermissionGroup.RBAC_MANAGEMENT,
+          EPermissionGroup.BACKOFFICE_CONFIG_MANAGEMENT,
+          EPermissionGroup.EXTERNAL_USER_MANAGEMENT,
+          EPermissionGroup.SYSTEM_ADMINISTRATION));
 
   private final String description;
   private final Set<EPermission> directPermissions;
