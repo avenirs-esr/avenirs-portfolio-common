@@ -1,5 +1,6 @@
 package fr.avenirsesr.portfolio.common;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.avenirsesr.portfolio.common.user.domain.port.output.BaseUserService;
 import fr.avenirsesr.portfolio.common.user.infrastructure.service.NoOpUserService;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +17,11 @@ public class TestApplication {
   @Bean
   public BaseUserService baseUserService() {
     return new NoOpUserService();
+  }
+
+  @Bean
+  public ObjectMapper objectMapper() {
+    return new ObjectMapper().findAndRegisterModules();
   }
 
   public static void main(String[] args) {

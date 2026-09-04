@@ -23,7 +23,7 @@ class UserSecurityPayloadTest {
   @Test
   void shouldCreateUserPayload() {
     BddLogger.given("user payload properties");
-    UUID sub = UUID.randomUUID();
+    String sub = UUID.randomUUID().toString();
     Instant iat = Instant.now();
     Instant exp = iat.plusSeconds(3600);
 
@@ -42,7 +42,7 @@ class UserSecurityPayloadTest {
   @Test
   void shouldSerializeAndDeserializeUserPayload() throws Exception {
     BddLogger.given("an UserPayload");
-    UUID sub = UUID.randomUUID();
+    String sub = UUID.randomUUID().toString();
     Instant iat = Instant.now();
     Instant exp = iat.plusSeconds(3600);
 

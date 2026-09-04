@@ -1,5 +1,6 @@
 package fr.avenirsesr.portfolio.common.security.infrastructure.filter;
 
+import fr.avenirsesr.portfolio.common.security.accesscontrol.domain.model.enums.EPermission;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -77,7 +79,15 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
     }
 
     // Marks the request as authenticated so downstream filters can skip authentication.
-    var auth = new UsernamePasswordAuthenticationToken("internal-service", null, List.of());
+    // Trusted internal service-to-service calls are granted every permission, matching
+    // DevAuthenticationFilter's trust model.
+    var auth =
+        new UsernamePasswordAuthenticationToken(
+            "internal-service",
+            null,
+            Arrays.stream(EPermission.values())
+                .map(permission -> new SimpleGrantedAuthority(permission.authority()))
+                .toList());
     SecurityContextHolder.getContext().setAuthentication(auth);
 
     log.debug("API Key authentication successful");
