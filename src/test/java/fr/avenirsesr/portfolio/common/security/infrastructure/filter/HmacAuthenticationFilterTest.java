@@ -20,13 +20,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
@@ -117,8 +120,6 @@ class HmacAuthenticationFilterTest {
   @Test
   void shouldNotFilterWhenAlreadyAuthenticated() throws Exception {
     BddLogger.given("an already authenticated security context and a protected path");
-    // pre-set an authentication to simulate a previous filter (e.g., API key) having authenticated
-    // the request
     var auth =
         new UsernamePasswordAuthenticationToken("internal-service", null, java.util.List.of());
     SecurityContextHolder.getContext().setAuthentication(auth);
@@ -150,6 +151,34 @@ class HmacAuthenticationFilterTest {
     Assertions.assertEquals(
         TEST_UUID.toString(),
         SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+  }
+
+  @Test
+  void shouldPersistSecurityContextAsRequestAttributeOnSuccessfulAuthentication()
+      throws ServletException, IOException {
+    BddLogger.given("a request with a valid signature");
+    UserSecurityPayload userSecurityPayload = new UserSecurityPayload();
+    userSecurityPayload.setSub(TEST_UUID.toString());
+    userSecurityPayload.setExp(Instant.now().plusSeconds(3600));
+
+    String payload = objectMapper.writeValueAsString(userSecurityPayload);
+    String signature = generateHmacSignature(payload);
+
+    Mockito.when(request.getHeader("X-Context-Signature")).thenReturn(signature);
+    Mockito.when(request.getHeader("X-Signed-Context")).thenReturn(payload);
+
+    BddLogger.when("the filter authenticates the request");
+    filter.doFilterInternal(request, response, filterChain);
+
+    BddLogger.then(
+        "the SecurityContext should be saved as a request attribute, so it survives the async"
+            + " redispatch used by streamed responses (StreamingResponseBody)");
+    ArgumentCaptor<SecurityContext> captor = ArgumentCaptor.forClass(SecurityContext.class);
+    Mockito.verify(request)
+        .setAttribute(
+            Mockito.eq(RequestAttributeSecurityContextRepository.DEFAULT_REQUEST_ATTR_NAME),
+            captor.capture());
+    Assertions.assertNotNull(captor.getValue().getAuthentication());
   }
 
   @Test

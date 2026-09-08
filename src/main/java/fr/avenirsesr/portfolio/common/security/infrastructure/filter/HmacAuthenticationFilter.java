@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -25,18 +26,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
 public class HmacAuthenticationFilter extends OncePerRequestFilter {
-
+  private final SecurityContextRepository securityContextRepository;
   private final String permitAllPathsString;
   private final String secret;
 
   private List<String> permitAllPathsList;
 
   public HmacAuthenticationFilter(String permitAllPathsString, String secret) {
+    this.securityContextRepository = new RequestAttributeSecurityContextRepository();
     this.permitAllPathsString = permitAllPathsString;
     this.secret = secret;
   }
@@ -47,7 +52,6 @@ public class HmacAuthenticationFilter extends OncePerRequestFilter {
       @NonNull HttpServletResponse response,
       @NonNull FilterChain filterChain)
       throws ServletException, IOException {
-
     String signature = request.getHeader(AvenirsSecurityHeaders.CONTEXT_SIGNATURE);
     String payload = request.getHeader(AvenirsSecurityHeaders.SIGNED_CONTEXT);
     ObjectMapper objectMapper = new ObjectMapper();
@@ -62,24 +66,29 @@ public class HmacAuthenticationFilter extends OncePerRequestFilter {
     }
 
     if (signature != null && verifySignature(payload, signature, secret)) {
-      List<GrantedAuthority> authorities =
-          userSecurityPayload.getAuthorities() == null
-              ? Collections.emptyList()
-              : userSecurityPayload.getAuthorities().stream()
-                  .map(SimpleGrantedAuthority::new)
-                  .map(GrantedAuthority.class::cast)
-                  .toList();
+      String stub = userSecurityPayload.getSub();
+      List<GrantedAuthority> grantedAuthority =
+          Optional.ofNullable(userSecurityPayload.getAuthorities())
+              .orElse(Collections.emptySet())
+              .stream()
+              .map(SimpleGrantedAuthority::new)
+              .map(GrantedAuthority.class::cast)
+              .toList();
       Set<String> roles =
-          userSecurityPayload.getRoles() == null
-              ? Collections.emptySet()
-              : userSecurityPayload.getRoles();
-      Authentication auth =
-          new HmacAuthenticationToken(userSecurityPayload.getSub(), authorities, roles);
-      SecurityContextHolder.getContext().setAuthentication(auth);
+          Optional.ofNullable(userSecurityPayload.getRoles()).orElse(Collections.emptySet());
+      Authentication auth = new HmacAuthenticationToken(stub, grantedAuthority, roles);
+      SecurityContext context = SecurityContextHolder.getContext();
+
+      // Persists the context as a request attribute so it survives the async thread hop used by
+      // streamed responses. Removing it breaks nothing synchronously but silently reintroduces 401s
+      // on any endpoint returning StreamingResponseBody.
+      context.setAuthentication(auth);
+      securityContextRepository.saveContext(context, request, response);
+
       log.info(
           "HMAC authentication succeeded for user [{}] with authorities {} and roles {}",
-          userSecurityPayload.getSub(),
-          userSecurityPayload.getAuthorities(),
+          stub,
+          grantedAuthority,
           roles);
 
       filterChain.doFilter(request, response);
@@ -92,16 +101,18 @@ public class HmacAuthenticationFilter extends OncePerRequestFilter {
 
   @Override
   public boolean shouldNotFilter(@NonNull HttpServletRequest request) throws ServletException {
-
     if (SecurityContextHolder.getContext().getAuthentication() != null) {
       return true;
     }
 
+    if (permitAllPathsString == null) {
+      return false;
+    }
+
     if (permitAllPathsList == null) {
+      String[] permitAllPathsParts = permitAllPathsString.split(",");
       permitAllPathsList =
-          Arrays.stream(permitAllPathsString.split(","))
-              .map(path -> path.trim().replace("/**", ""))
-              .toList();
+          Arrays.stream(permitAllPathsParts).map(path -> path.trim().replace("/**", "")).toList();
     }
 
     String path = request.getRequestURI();
@@ -117,6 +128,7 @@ public class HmacAuthenticationFilter extends OncePerRequestFilter {
       Mac sha256Hmac = Mac.getInstance("HmacSHA256");
       SecretKeySpec secretKeySpec =
           new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+
       sha256Hmac.init(secretKeySpec);
 
       byte[] signedBytes = sha256Hmac.doFinal(payload.getBytes(StandardCharsets.UTF_8));

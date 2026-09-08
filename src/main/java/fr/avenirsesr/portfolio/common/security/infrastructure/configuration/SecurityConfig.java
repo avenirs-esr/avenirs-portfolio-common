@@ -93,7 +93,8 @@ public class SecurityConfig {
       case API_KEY_OR_HMAC:
         {
           log.info(
-              "Security is enabled (api key protection or signed header protection), using {} and {}",
+              "Security is enabled (api key protection or signed header protection), using {} and"
+                  + " {}",
               ApiKeyAuthenticationFilter.class.getSimpleName(),
               HmacAuthenticationFilter.class.getSimpleName());
           http.addFilterBefore(

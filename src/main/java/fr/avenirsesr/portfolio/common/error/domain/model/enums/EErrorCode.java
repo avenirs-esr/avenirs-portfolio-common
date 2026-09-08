@@ -71,8 +71,10 @@ public enum EErrorCode {
   MAX_FILE_SIZE_EXCEEDED("Maximum upload size exceeded", HttpStatus.PAYLOAD_TOO_LARGE),
 
   // 500 Internal Server Error
+  UNEXPECTED_ERROR("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR),
   FILE_STORAGE_ERROR("File storage operation failed", HttpStatus.INTERNAL_SERVER_ERROR),
   CONFIGURATION_ERROR("Configuration error", HttpStatus.INTERNAL_SERVER_ERROR),
+  KIT_DOWNLOAD_MEDIA_FAILED("Failed to download kit media", HttpStatus.INTERNAL_SERVER_ERROR),
 
   // 503 Service Unavailable
   DEPENDENCY_CHECK_TIMEOUT("Dependency check timeout", HttpStatus.SERVICE_UNAVAILABLE),
