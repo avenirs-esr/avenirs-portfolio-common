@@ -9,7 +9,7 @@ public class FakeExternalSource {
           .init(FakeExternalSource.class, SharedDataGenerator.class);
 
   public static String generateExternalSourceId() {
-    int externalIdType = dataGenerator.with("type").number(0, 3);
+    int externalIdType = dataGenerator.with("type").number(0, 2);
     return switch (externalIdType) {
       case 0 -> dataGenerator.with("uuid").uuid().toString();
       case 1 -> String.valueOf(dataGenerator.with("number").number(1, 999_999));
