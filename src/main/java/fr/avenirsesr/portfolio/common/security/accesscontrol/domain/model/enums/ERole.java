@@ -11,7 +11,8 @@ public enum ERole {
           EPermission.PERM_PROFILE_UPDATE_OWN,
           EPermission.PERM_COMPETENCY_READ,
           EPermission.PERM_EXTERNAL_SKILL_READ,
-          EPermission.PERM_EMPLOYMENT_KIT_READ_OWN),
+          EPermission.PERM_EMPLOYMENT_KIT_READ_OWN,
+          EPermission.PERM_KIT_DOWNLOAD_MEDIA_OWN),
       Set.of(
           EPermissionGroup.TRACE_MANAGEMENT_OWN,
           EPermissionGroup.DECLARED_ACTIVITY_MANAGEMENT_OWN,

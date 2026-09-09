@@ -13,11 +13,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 
 @ExtendWith(MockitoExtension.class)
 class ApiKeyAuthenticationFilterTest {
@@ -55,6 +58,27 @@ class ApiKeyAuthenticationFilterTest {
     BddLogger.then("the request is authenticated and the chain continues");
     Assertions.assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     Mockito.verify(filterChain).doFilter(request, response);
+  }
+
+  @Test
+  void shouldPersistSecurityContextAsRequestAttributeOnSuccessfulAuthentication()
+      throws ServletException, IOException {
+    BddLogger.given("an internal request with a valid API key");
+    Mockito.when(request.getHeader("X-Forwarded-For")).thenReturn("10.0.0.5");
+    Mockito.when(request.getHeader("X-API-Key")).thenReturn(EXPECTED_API_KEY);
+
+    BddLogger.when("the ApiKeyAuthenticationFilter processes the request");
+    filter.doFilterInternal(request, response, filterChain);
+
+    BddLogger.then(
+        "the SecurityContext should be saved as a request attribute, so it survives the async"
+            + " redispatch used by streamed responses (StreamingResponseBody)");
+    ArgumentCaptor<SecurityContext> captor = ArgumentCaptor.forClass(SecurityContext.class);
+    Mockito.verify(request)
+        .setAttribute(
+            Mockito.eq(RequestAttributeSecurityContextRepository.DEFAULT_REQUEST_ATTR_NAME),
+            captor.capture());
+    Assertions.assertNotNull(captor.getValue().getAuthentication());
   }
 
   @Test

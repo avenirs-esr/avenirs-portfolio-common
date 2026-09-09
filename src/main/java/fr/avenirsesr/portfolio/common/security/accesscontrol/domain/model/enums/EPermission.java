@@ -139,7 +139,10 @@ public enum EPermission {
   PERM_EXTERNAL_USER_DELETE("external-user:delete", "Delete an external user"),
 
   PERM_SEEDER_RESET(
-      "seeder:reset", "Reset and reseed the database (destructive administration operation)");
+      "seeder:reset", "Reset and reseed the database (destructive administration operation)"),
+
+  PERM_KIT_DOWNLOAD_MEDIA_OWN(
+      "kit:download-media:own", "Download all the featured multimedia content from your own kit");
 
   private final String authority;
   private final String description;

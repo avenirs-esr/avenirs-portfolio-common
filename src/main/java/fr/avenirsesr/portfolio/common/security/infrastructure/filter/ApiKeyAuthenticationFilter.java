@@ -12,41 +12,28 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
 public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
-
   private static final String API_KEY_HEADER = "X-API-Key";
 
+  private final SecurityContextRepository securityContextRepository;
   private final String expectedApiKey;
-
   private final String permitAllPathsString;
 
   private List<String> permitAllPathsList;
 
   public ApiKeyAuthenticationFilter(String expectedApiKey, String permitAllPathsString) {
+    this.securityContextRepository = new RequestAttributeSecurityContextRepository();
     this.expectedApiKey = expectedApiKey;
     this.permitAllPathsString = permitAllPathsString;
-  }
-
-  @Override
-  protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
-    if (permitAllPathsList == null && permitAllPathsString != null) {
-      permitAllPathsList =
-          Arrays.stream(permitAllPathsString.split(","))
-              .map(path -> path.trim().replace("/**", ""))
-              .toList();
-    }
-
-    if (permitAllPathsList == null) {
-      return false;
-    }
-
-    String path = request.getRequestURI();
-    return permitAllPathsList.stream().anyMatch(path::startsWith);
   }
 
   @Override
@@ -55,7 +42,6 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
       @NonNull HttpServletResponse response,
       @NonNull FilterChain filterChain)
       throws ServletException, IOException {
-
     if (isExternalRequest(request)) {
       log.trace("External request detected; continuing filter chain");
       filterChain.doFilter(request, response);
@@ -81,23 +67,45 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
     // Marks the request as authenticated so downstream filters can skip authentication.
     // Trusted internal service-to-service calls are granted every permission, matching
     // DevAuthenticationFilter's trust model.
-    var auth =
-        new UsernamePasswordAuthenticationToken(
-            "internal-service",
-            null,
-            Arrays.stream(EPermission.values())
-                .map(permission -> new SimpleGrantedAuthority(permission.authority()))
-                .toList());
-    SecurityContextHolder.getContext().setAuthentication(auth);
+    List<SimpleGrantedAuthority> grantedAuthorities =
+        Arrays.stream(EPermission.values())
+            .map(permission -> new SimpleGrantedAuthority(permission.authority()))
+            .toList();
+    Authentication auth =
+        new UsernamePasswordAuthenticationToken("internal-service", null, grantedAuthorities);
+    SecurityContext context = SecurityContextHolder.getContext();
+
+    // Persists the context as a request attribute so it survives the async thread hop used by
+    // streamed responses. Removing it breaks nothing synchronously but silently reintroduces 401s
+    // on any endpoint returning StreamingResponseBody.
+    context.setAuthentication(auth);
+    securityContextRepository.saveContext(context, request, response);
 
     log.debug("API Key authentication successful");
+
     filterChain.doFilter(request, response);
+  }
+
+  @Override
+  protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
+    if (permitAllPathsString == null) {
+      return false;
+    }
+
+    if (permitAllPathsList == null) {
+      String[] permitAllPathsParts = permitAllPathsString.split(",");
+      permitAllPathsList =
+          Arrays.stream(permitAllPathsParts).map(path -> path.trim().replace("/**", "")).toList();
+    }
+
+    String path = request.getRequestURI();
+    return permitAllPathsList.stream().anyMatch(path::startsWith);
   }
 
   private boolean isExternalRequest(HttpServletRequest request) {
     String forwardedFor = request.getHeader("X-Forwarded-For");
-    if (forwardedFor == null) return false;
-    return !forwardedFor.startsWith("10.")
+    return forwardedFor != null
+        && !forwardedFor.startsWith("10.")
         && !forwardedFor.startsWith("172.")
         && !forwardedFor.startsWith("192.168.");
   }
