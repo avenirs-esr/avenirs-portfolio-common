@@ -1,6 +1,7 @@
 package fr.avenirsesr.portfolio.common.security.infrastructure.filter;
 
 import fr.avenirsesr.portfolio.common.security.accesscontrol.domain.model.enums.EPermission;
+import fr.avenirsesr.portfolio.common.security.accesscontrol.domain.model.enums.ERole;
 import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.HmacAuthenticationToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -9,6 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -45,7 +48,8 @@ public class DevAuthenticationFilter extends OncePerRequestFilter {
           Arrays.stream(EPermission.values())
               .map(permission -> new SimpleGrantedAuthority(permission.authority()))
               .toList();
-      Authentication auth = new HmacAuthenticationToken(devUser, authorities);
+      Set<String> roles = Arrays.stream(ERole.values()).map(Enum::name).collect(Collectors.toSet());
+      Authentication auth = new HmacAuthenticationToken(devUser, authorities, roles);
       SecurityContext context = SecurityContextHolder.getContext();
 
       // Persists the context as a request attribute so it survives the async thread hop used by
