@@ -62,6 +62,7 @@ public enum EErrorCode {
   DECLARED_ACTIVITY_HAS_NOT_STARTED("Declared activity has not started", HttpStatus.CONFLICT),
   DECLARED_ACTIVITY_LOCKED("Declared activity is submitted or finished", HttpStatus.CONFLICT),
   DECLARED_ACTIVITY_UNSUBSCRIBED("Declared activity is unsubscribed", HttpStatus.CONFLICT),
+  DECLARED_ACTIVITY_NOT_UNSUBSCRIBED("Declared activity is is still subscribed",HttpStatus.CONFLICT),
   ASSOCIATION_ALREADY_EXIST("This association already exist", HttpStatus.CONFLICT),
   INSTITUTION_HAI_ALREADY_EXISTS(
       "An institution with this HAI already exists", HttpStatus.CONFLICT),
