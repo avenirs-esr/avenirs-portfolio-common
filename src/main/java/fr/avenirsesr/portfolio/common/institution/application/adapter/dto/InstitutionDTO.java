@@ -4,7 +4,6 @@ import fr.avenirsesr.portfolio.common.institution.domain.model.enums.EInstitutio
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.UUID;
 
-/** Institution exposed by the back-office to the other Avenirs services. */
 @Schema(requiredProperties = {"id", "name", "type"})
 public record InstitutionDTO(
     UUID id,
