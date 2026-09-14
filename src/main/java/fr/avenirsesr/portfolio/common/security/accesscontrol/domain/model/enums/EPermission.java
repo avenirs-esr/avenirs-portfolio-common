@@ -25,6 +25,7 @@ public enum EPermission {
       "View the list of own declared activities and their associations"),
   PERM_DECLARED_ACTIVITY_UPDATE_OWN(
       "declared-activity:update:own", "Update, finish or add a reflection to a declared activity"),
+  PERM_ACTIVITY_DELETE_OWN("declared-activity:delete:own","Delete the content related to the declared activity"),
   PERM_DECLARED_ACTIVITY_ASSOCIATION_MANAGE_OWN(
       "declared-activity:association:manage:own", "Remove associations of a declared activity"),
 

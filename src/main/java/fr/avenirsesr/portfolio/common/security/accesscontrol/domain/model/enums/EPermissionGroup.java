@@ -40,6 +40,7 @@ public enum EPermissionGroup {
       Set.of(
           EPermission.PERM_DECLARED_ACTIVITY_LIST_OWN,
           EPermission.PERM_DECLARED_ACTIVITY_UPDATE_OWN,
+          EPermission.PERM_ACTIVITY_DELETE_OWN,
           EPermission.PERM_DECLARED_ACTIVITY_ASSOCIATION_MANAGE_OWN)),
 
   DECLARED_SKILL_MANAGEMENT_OWN(
