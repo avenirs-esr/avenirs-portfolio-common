@@ -10,9 +10,6 @@ public enum EPermission {
       "trace:read:contextual", "View a trace made accessible in an authorized context"),
   PERM_TRACE_DOWNLOAD_CONTEXTUAL(
       "trace:download:contextual", "Download a trace made accessible in an authorized context"),
-  PERM_TRACE_ASSOCIATION_MANAGE_OWN(
-      "trace:association:manage:own",
-      "Associate a trace with a competency, an activity or an experience"),
   PERM_TRACE_UPDATE_OWN("trace:update:own", "Update own trace or add an attachment"),
   PERM_TRACE_DELETE_OWN("trace:delete:own", "Delete own traces"),
 
@@ -25,15 +22,11 @@ public enum EPermission {
       "View the list of own declared activities and their associations"),
   PERM_DECLARED_ACTIVITY_UPDATE_OWN(
       "declared-activity:update:own", "Update, finish or add a reflection to a declared activity"),
-  PERM_DECLARED_ACTIVITY_ASSOCIATION_MANAGE_OWN(
-      "declared-activity:association:manage:own", "Remove associations of a declared activity"),
 
   PERM_DECLARED_SKILL_LIST_OWN("declared-skill:list:own", "View the list of own declared skills"),
   PERM_DECLARED_SKILL_CREATE_OWN("declared-skill:create:own", "Add a declared skill"),
   PERM_DECLARED_SKILL_UPDATE_OWN("declared-skill:update:own", "Update a declared skill"),
   PERM_DECLARED_SKILL_DELETE_OWN("declared-skill:delete:own", "Delete a declared skill"),
-  PERM_DECLARED_SKILL_ASSOCIATION_MANAGE_OWN(
-      "declared-skill:association:manage:own", "Add or remove associations of a declared skill"),
 
   PERM_DECLARED_EXPERIENCE_LIST_OWN(
       "declared-experience:list:own", "View the list of own declared experiences"),
@@ -43,9 +36,11 @@ public enum EPermission {
       "declared-experience:update:own", "Update a declared experience"),
   PERM_DECLARED_EXPERIENCE_DELETE_OWN(
       "declared-experience:delete:own", "Delete a declared experience"),
-  PERM_DECLARED_EXPERIENCE_ASSOCIATION_MANAGE_OWN(
-      "declared-experience:association:manage:own",
-      "Associate a trace or a competency with a declared experience"),
+
+  PERM_ASSOCIATION_MANAGE(
+      "association:manage",
+      "View, add or remove the associations between own traces, activities, skills and"
+          + " experiences"),
 
   PERM_DECLARED_PROGRAM_LIST_OWN(
       "declared-program:list:own", "View the list of own declared programs"),
