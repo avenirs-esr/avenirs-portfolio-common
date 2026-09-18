@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.DeleteSpecification;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -174,6 +175,10 @@ public abstract class GenericJpaRepositoryAdapter<
   @Override
   public void removeAllFromDatabase(List<D> domains) {
     jpaRepository.deleteAll(domains.stream().map(mapper::fromDomain).toList());
+  }
+
+  protected void removeAllFromDatabase(DeleteSpecification<E> specification) {
+    jpaSpecificationExecutor.delete(specification);
   }
 
   protected PagedResult<D> toPagedResult(Page<E> page) {
