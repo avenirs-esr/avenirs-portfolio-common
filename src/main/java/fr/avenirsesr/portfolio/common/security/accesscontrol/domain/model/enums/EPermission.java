@@ -22,6 +22,8 @@ public enum EPermission {
       "View the list of own declared activities and their associations"),
   PERM_DECLARED_ACTIVITY_UPDATE_OWN(
       "declared-activity:update:own", "Update, finish or add a reflection to a declared activity"),
+  PERM_DECLARED_ACTIVITY_DELETE_OWN(
+      "declared-activity:delete:own", "Delete an unsubscribed declared activity and its content"),
 
   PERM_DECLARED_SKILL_LIST_OWN("declared-skill:list:own", "View the list of own declared skills"),
   PERM_DECLARED_SKILL_CREATE_OWN("declared-skill:create:own", "Add a declared skill"),
