@@ -134,6 +134,8 @@ public enum EPermission {
   PERM_EXTERNAL_USER_IMPORT("external-user:import", "Import external users in bulk"),
   PERM_EXTERNAL_USER_UPDATE("external-user:update", "Update or activate an external user in bulk"),
   PERM_EXTERNAL_USER_DELETE("external-user:delete", "Delete an external user"),
+  PERM_EXTERNAL_USER_AFFILIATION_IMPORT(
+      "external-user-affiliation:import", "Import external user affiliations in bulk"),
 
   PERM_SEEDER_RESET(
       "seeder:reset", "Reset and reseed the database (destructive administration operation)"),

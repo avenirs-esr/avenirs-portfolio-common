@@ -123,7 +123,8 @@ public enum EPermissionGroup {
           EPermission.PERM_EXTERNAL_USER_READ,
           EPermission.PERM_EXTERNAL_USER_IMPORT,
           EPermission.PERM_EXTERNAL_USER_UPDATE,
-          EPermission.PERM_EXTERNAL_USER_DELETE)),
+          EPermission.PERM_EXTERNAL_USER_DELETE,
+          EPermission.PERM_EXTERNAL_USER_AFFILIATION_IMPORT)),
 
   SYSTEM_ADMINISTRATION(Set.of(EPermission.PERM_SEEDER_RESET));
 
