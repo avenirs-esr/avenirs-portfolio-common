@@ -33,6 +33,8 @@ public enum EErrorCode {
   GROUP_NOT_FOUND("Group not found", HttpStatus.NOT_FOUND),
   ACTIVITY_NOT_FOUND("Activity not found", HttpStatus.NOT_FOUND),
   ACTIVITY_DRAFT_NOT_FOUND("Activity draft not found", HttpStatus.NOT_FOUND),
+  ACTIVITY_DRAFT_ALREADY_EXISTS(
+      "A modification draft already exists for the activity", HttpStatus.CONFLICT),
   ACTIVITY_UNPUBLISHED("Activity is unpublished", HttpStatus.CONFLICT),
   DECLARED_ACTIVITY_NOT_FOUND("Declared activity not found", HttpStatus.NOT_FOUND),
   FEEDBACK_NOT_FOUND("Feedback not found", HttpStatus.NOT_FOUND),
