@@ -46,6 +46,9 @@ public enum EErrorCode {
   EXTERNAL_USER_BLOCKED("External user was blocked", HttpStatus.FORBIDDEN),
   MAXIMUM_ALLOWED_ASSOCIATIONS_REACHED(
       "The maximum allowed associations is already reached", HttpStatus.FORBIDDEN),
+  ACTIVITY_TARGET_NOT_ACCESSIBLE(
+      "The targeted institution or group is not part of the staff accessible perimeter",
+      HttpStatus.FORBIDDEN),
 
   // 401 Unauthorized
   UNAUTHENTICATED_SESSION("Unauthenticated session", HttpStatus.UNAUTHORIZED),
@@ -68,6 +71,9 @@ public enum EErrorCode {
   INSTITUTION_HAI_ALREADY_EXISTS(
       "An institution with this HAI already exists", HttpStatus.CONFLICT),
   GROUP_ID_SI_SCO_ALREADY_EXISTS("A group with this id_si_sco already exists", HttpStatus.CONFLICT),
+  ACTIVITY_TARGET_REMOVAL_NOT_ALLOWED(
+      "A target already published cannot be removed from a published activity",
+      HttpStatus.CONFLICT),
 
   // 413 Payload Too Large
   MAX_FILE_SIZE_EXCEEDED("Maximum upload size exceeded", HttpStatus.PAYLOAD_TOO_LARGE),
