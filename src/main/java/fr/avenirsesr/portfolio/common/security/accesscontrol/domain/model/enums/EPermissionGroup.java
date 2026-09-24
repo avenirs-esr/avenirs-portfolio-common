@@ -116,7 +116,8 @@ public enum EPermissionGroup {
           EPermission.PERM_TRACE_CONFIG_READ,
           EPermission.PERM_TRACE_CONFIG_UPDATE,
           EPermission.PERM_WEBSITE_CONTENT_CONFIG_READ,
-          EPermission.PERM_WEBSITE_CONTENT_CONFIG_UPDATE)),
+          EPermission.PERM_WEBSITE_CONTENT_CONFIG_UPDATE,
+          EPermission.PERM_CGU_UPDATE)),
 
   EXTERNAL_USER_MANAGEMENT(
       Set.of(
