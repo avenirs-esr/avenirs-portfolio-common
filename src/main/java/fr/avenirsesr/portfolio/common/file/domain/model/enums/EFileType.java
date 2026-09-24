@@ -43,6 +43,7 @@ public enum EFileType {
 
   // Text
   TXT(FileSize.of(5, FileSize.Unit.Mo), "text/plain"),
+  HTML(FileSize.of(5, FileSize.Unit.Mo), "text/html"),
   CSV(FileSize.of(10, FileSize.Unit.Mo), "text/csv"),
   ICS(FileSize.of(10, FileSize.Unit.Mo), "text/calendar"),
   RICHTEXT(FileSize.of(10, FileSize.Unit.Mo), "text/richtext"),
