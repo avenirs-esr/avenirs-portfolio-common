@@ -9,5 +9,7 @@ public interface FileClient {
 
   FileDTO get(UUID fileId);
 
+  byte[] fetchContent(UUID fileId);
+
   void delete(UUID fileId);
 }
