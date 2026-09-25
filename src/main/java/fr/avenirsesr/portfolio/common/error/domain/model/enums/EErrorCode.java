@@ -124,6 +124,8 @@ public enum EErrorCode {
   GROUP_STUDENT_GROUP_REQUIRES_PARENT("A student group must be attached to a parent group"),
   GROUP_STUDENT_GROUP_PARENT_MUST_BE_PROGRAM_OR_OPTION(
       "A student group must be attached to a program or a program option"),
+  EXTERNAL_USER_AFFILIATION_CATEGORY_NOT_ALLOWED(
+      "The affiliation category must be one of the external user''s categories"),
   FIRSTNAME_IS_NULL("First name cannot be null"),
   LASTNAME_IS_NULL("Last name cannot be null"),
   INVALID_DATE_FORMAT("Invalid date format. Expected format: yyyy-MM-dd."),
