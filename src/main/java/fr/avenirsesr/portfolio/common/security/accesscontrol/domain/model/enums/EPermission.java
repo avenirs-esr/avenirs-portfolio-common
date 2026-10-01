@@ -81,6 +81,10 @@ public enum EPermission {
   PERM_ACTIVITY_FEEDBACK_SETTINGS_UPDATE(
       "activity:feedback-settings:update",
       "Configure the feedback request settings of an activity"),
+  PERM_ACTIVITY_ADMIN_MANAGEMENT(
+      "activity:admin:management",
+      "Administer any activity of the platform, including its definitive deletion with every"
+          + " related element"),
 
   PERM_FEEDBACK_REQUEST_CREATE_OWN("feedback:request:create:own", "Request feedback"),
   PERM_FEEDBACK_RECEIVED_READ_OWN("feedback:received:read:own", "View received feedback"),
