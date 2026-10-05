@@ -118,7 +118,25 @@ class ApiKeyAuthenticationFilterTest {
   }
 
   @Test
-  void shouldReturn401OnInternalRequestWithMissingApiKey() throws ServletException, IOException {
+  void shouldDelegateToHmacOnInternalRequestWithoutApiKeyButWithSignedContext()
+      throws ServletException, IOException {
+    BddLogger.given("an internal request without API key but carrying a signed user context");
+    Mockito.when(request.getHeader("X-Forwarded-For")).thenReturn("172.18.0.5");
+    Mockito.when(request.getHeader("X-API-Key")).thenReturn(null);
+    Mockito.when(request.getHeader("X-Signed-Context")).thenReturn("payload");
+    Mockito.when(request.getHeader("X-Context-Signature")).thenReturn("signature");
+
+    BddLogger.when("the ApiKeyAuthenticationFilter processes the request");
+    filter.doFilterInternal(request, response, filterChain);
+
+    BddLogger.then("it should continue the chain so the HMAC filter can authenticate");
+    Mockito.verify(filterChain).doFilter(request, response);
+    Mockito.verify(response, Mockito.never()).setStatus(HttpStatus.UNAUTHORIZED.value());
+    Assertions.assertNull(SecurityContextHolder.getContext().getAuthentication());
+  }
+
+  @Test
+  void shouldReturn401OnInternalRequestWithMissingApiKey()throws ServletException, IOException {
     BddLogger.given("an internal request missing the API key header");
     Mockito.when(request.getHeader("X-Forwarded-For")).thenReturn("192.168.1.20");
     Mockito.when(request.getHeader("X-API-Key")).thenReturn(null);
