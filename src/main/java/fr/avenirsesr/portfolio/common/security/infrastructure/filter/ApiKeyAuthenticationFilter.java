@@ -1,6 +1,7 @@
 package fr.avenirsesr.portfolio.common.security.infrastructure.filter;
 
 import fr.avenirsesr.portfolio.common.security.accesscontrol.domain.model.enums.EPermission;
+import fr.avenirsesr.portfolio.common.security.infrastructure.adapter.model.AvenirsSecurityHeaders;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,6 +50,16 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
     }
 
     String providedApiKey = request.getHeader(API_KEY_HEADER);
+
+    boolean hasSignedContext =
+        request.getHeader(AvenirsSecurityHeaders.SIGNED_CONTEXT) != null
+            && request.getHeader(AvenirsSecurityHeaders.CONTEXT_SIGNATURE) != null;
+
+    if ((providedApiKey == null || providedApiKey.isBlank()) && hasSignedContext) {
+      log.trace("No API key but signed context present; delegating to HMAC authentication");
+      filterChain.doFilter(request, response);
+      return;
+    }
 
     if (providedApiKey == null || providedApiKey.isBlank()) {
       log.warn("API Key authentication failed: missing {} header", API_KEY_HEADER);
