@@ -1,0 +1,25 @@
+package fr.avenirsesr.portfolio.common.file.infrastructure.service;
+
+import fr.avenirsesr.portfolio.common.file.domain.port.input.FileResourceService;
+import fr.avenirsesr.portfolio.common.file.domain.port.output.repository.FileRepository;
+import fr.avenirsesr.portfolio.common.file.domain.port.output.service.FileStorageService;
+import fr.avenirsesr.portfolio.common.file.domain.port.output.service.FileUploaderProvider;
+import fr.avenirsesr.portfolio.common.file.domain.service.FileResourceServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+
+@Configuration
+@RequiredArgsConstructor
+public class FileResourceServiceConfig {
+  private final FileStorageService fileStorageService;
+  private final FileRepository fileRepository;
+  private final FileUploaderProvider fileUploaderProvider;
+
+  @Bean
+  @Primary
+  public FileResourceService fileResourceService() {
+    return new FileResourceServiceImpl(fileStorageService, fileRepository, fileUploaderProvider);
+  }
+}
