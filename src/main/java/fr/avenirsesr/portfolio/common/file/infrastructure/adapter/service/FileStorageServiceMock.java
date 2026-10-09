@@ -13,8 +13,17 @@ import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 @Slf4j
+/**
+ * Part of the shared file registry, wired only where {@code file.registry.enabled} is true.
+ *
+ * <p>Every service embeds the sources of this library, including the ones it has no use for. Gating
+ * the registry keeps a service that owns no file from having to declare a storage backend, an
+ * uploader provider or a file table just to start up.
+ */
+@ConditionalOnProperty(name = "file.registry.enabled", havingValue = "true")
 @Component
 @Qualifier("seederFileStorageService")
 public class FileStorageServiceMock implements FileStorageService {
