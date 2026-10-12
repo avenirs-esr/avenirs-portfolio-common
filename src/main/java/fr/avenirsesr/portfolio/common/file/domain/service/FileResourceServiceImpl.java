@@ -1,11 +1,12 @@
 package fr.avenirsesr.portfolio.common.file.domain.service;
 
-import fr.avenirsesr.portfolio.common.file.domain.model.enums.EFileType;
 import fr.avenirsesr.portfolio.common.file.domain.exception.FileNotFoundException;
 import fr.avenirsesr.portfolio.common.file.domain.exception.FileSizeTooBigException;
 import fr.avenirsesr.portfolio.common.file.domain.model.File;
+import fr.avenirsesr.portfolio.common.file.domain.model.FileContent;
 import fr.avenirsesr.portfolio.common.file.domain.model.FileDownload;
 import fr.avenirsesr.portfolio.common.file.domain.model.FileResource;
+import fr.avenirsesr.portfolio.common.file.domain.model.enums.EFileType;
 import fr.avenirsesr.portfolio.common.file.domain.port.input.FileResourceService;
 import fr.avenirsesr.portfolio.common.file.domain.port.output.repository.FileRepository;
 import fr.avenirsesr.portfolio.common.file.domain.port.output.service.FileStorageService;
@@ -23,17 +24,15 @@ public class FileResourceServiceImpl implements FileResourceService {
 
   @Override
   public File upload(
-      String fileName, String mimeType, long size, byte[] content, boolean isRestricted) {
+      String fileName, String mimeType, long size, FileContent content, boolean isRestricted) {
     var uploadedById = fileUploaderProvider.currentUploaderId();
+    var fileType = EFileType.fromMimeType(mimeType);
 
-    var fileResource =
-        new FileResource(
-            UUID.randomUUID(), fileName, EFileType.fromMimeType(mimeType), size, content);
-
-    if (fileResource.fileType().getSizeLimit().isLessThan(size)) {
+    if (fileType.getSizeLimit().isLessThan(size)) {
       throw new FileSizeTooBigException();
     }
 
+    var fileResource = new FileResource(UUID.randomUUID(), fileName, fileType, size, content);
     var uri = fileStorageService.upload(fileResource);
     var file =
         File.create(
@@ -70,25 +69,26 @@ public class FileResourceServiceImpl implements FileResourceService {
     if (file.isRestricted()) {
       throw new FileNotFoundException();
     }
-    byte[] content = fileStorageService.get(file.getUri());
+
     return new FileResource(
-        file.getId(), file.getFileName(), file.getFileType(), file.getSize(), content);
+        file.getId(),
+        file.getFileName(),
+        file.getFileType(),
+        file.getSize(),
+        fileStorageService.get(file.getUri()));
   }
 
   @Override
   public FileDownload download(UUID fileId) {
     var file = fileRepository.findById(fileId).orElseThrow(FileNotFoundException::new);
-    return new FileDownload(file.getFileName(), fileStorageService.get(file.getUri()));
+    return new FileDownload(
+        file.getFileName(), file.getSize(), fileStorageService.get(file.getUri()));
   }
 
   @Override
   public void delete(UUID fileId) {
     var file = fileRepository.findById(fileId).orElseThrow(FileNotFoundException::new);
 
-    // The row goes first on purpose. There is no transaction spanning the database and the storage
-    // backend, so one of the two writes may be lost: dropping the row first leaves orphan bytes,
-    // which a sweep can reclaim, while dropping the bytes first would leave a row pointing at
-    // nothing and break every read of that file.
     fileRepository.removeFromDatabase(file);
     fileStorageService.delete(file.getUri());
     log.info("File deleted: {}", file);

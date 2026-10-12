@@ -17,12 +17,6 @@ public record FileDTO(
     String url,
     Instant uploadedAt) {
 
-  /**
-   * Exposes a file to a client.
-   *
-   * <p>Lives here rather than in a mapper so that the registry can build its own responses without
-   * pulling an annotation processor into every service that embeds it.
-   */
   public static FileDTO fromDomain(File file) {
     if (file == null) {
       return null;

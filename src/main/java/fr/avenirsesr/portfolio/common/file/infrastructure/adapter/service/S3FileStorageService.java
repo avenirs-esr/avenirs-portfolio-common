@@ -2,19 +2,22 @@ package fr.avenirsesr.portfolio.common.file.infrastructure.adapter.service;
 
 import fr.avenirsesr.portfolio.common.file.domain.exception.FileStorageException;
 import fr.avenirsesr.portfolio.common.file.domain.exception.FileNotFoundException;
+import fr.avenirsesr.portfolio.common.file.domain.model.FileContent;
 import fr.avenirsesr.portfolio.common.file.domain.model.FileResource;
 import fr.avenirsesr.portfolio.common.file.domain.port.output.service.FileStorageService;
 import fr.avenirsesr.portfolio.common.file.infrastructure.configuration.S3StorageProperties;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import software.amazon.awssdk.core.ResponseBytes;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
@@ -42,7 +45,9 @@ public class S3FileStorageService implements FileStorageService {
               .key(key)
               .contentType(fileResource.fileType().getMimeType())
               .build(),
-          RequestBody.fromBytes(fileResource.content()));
+          RequestBody.fromInputStream(fileResource.content().open(), fileResource.size()));
+    } catch (IOException e) {
+      throw new FileStorageException("Failed to read file " + fileResource.fileName(), e);
     } catch (S3Exception e) {
       throw new FileStorageException("Failed to upload file " + fileResource.fileName(), e);
     }
@@ -52,12 +57,12 @@ public class S3FileStorageService implements FileStorageService {
   }
 
   @Override
-  public byte[] get(String locator) {
+  public FileContent get(String locator) {
     try {
-      ResponseBytes<?> object =
-          s3Client.getObjectAsBytes(
+      ResponseInputStream<GetObjectResponse> object =
+          s3Client.getObject(
               GetObjectRequest.builder().bucket(properties.getBucket()).key(locator).build());
-      return object.asByteArray();
+      return () -> object;
     } catch (NoSuchKeyException e) {
       log.error("No object found for key {}", locator);
       FileNotFoundException notFound = new FileNotFoundException();
