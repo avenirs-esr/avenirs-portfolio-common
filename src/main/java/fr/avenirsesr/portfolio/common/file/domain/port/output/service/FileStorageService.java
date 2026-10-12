@@ -1,6 +1,7 @@
 package fr.avenirsesr.portfolio.common.file.domain.port.output.service;
 
 import fr.avenirsesr.portfolio.common.file.domain.exception.FileStorageException;
+import fr.avenirsesr.portfolio.common.file.domain.model.FileContent;
 import fr.avenirsesr.portfolio.common.file.domain.model.FileResource;
 
 /**
@@ -14,7 +15,7 @@ import fr.avenirsesr.portfolio.common.file.domain.model.FileResource;
 public interface FileStorageService {
   String upload(FileResource fileResource) throws FileStorageException;
 
-  byte[] get(String locator) throws FileStorageException;
+  FileContent get(String locator) throws FileStorageException;
 
   void delete(String locator) throws FileStorageException;
 }

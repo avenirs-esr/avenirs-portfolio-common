@@ -3,6 +3,7 @@ package fr.avenirsesr.portfolio.common.file.infrastructure.adapter.service;
 import fr.avenirsesr.portfolio.common.file.domain.exception.FileStorageException;
 import fr.avenirsesr.portfolio.common.file.domain.model.enums.EFileType;
 import fr.avenirsesr.portfolio.common.file.domain.exception.FileNotFoundException;
+import fr.avenirsesr.portfolio.common.file.domain.model.FileContent;
 import fr.avenirsesr.portfolio.common.file.domain.model.FileResource;
 import fr.avenirsesr.portfolio.common.file.domain.port.output.service.FileStorageService;
 import fr.avenirsesr.portfolio.common.file.infrastructure.configuration.FileStorageConstants;
@@ -16,13 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 @Slf4j
-/**
- * Part of the shared file registry, wired only where {@code file.registry.enabled} is true.
- *
- * <p>Every service embeds the sources of this library, including the ones it has no use for. Gating
- * the registry keeps a service that owns no file from having to declare a storage backend, an
- * uploader provider or a file table just to start up.
- */
 @ConditionalOnProperty(name = "file.registry.enabled", havingValue = "true")
 @Component
 @Qualifier("seederFileStorageService")
@@ -74,7 +68,7 @@ public class FileStorageServiceMock implements FileStorageService {
   }
 
   @Override
-  public byte[] get(String locator) {
+  public FileContent get(String locator) {
     log.debug("Mocking get file resource {} return placeholder file", locator);
     File file = new File(locator);
 
@@ -82,11 +76,7 @@ public class FileStorageServiceMock implements FileStorageService {
       throw new FileNotFoundException();
     }
 
-    try {
-      return java.nio.file.Files.readAllBytes(file.toPath());
-    } catch (IOException e) {
-      throw new FileStorageException("Failed to read placeholder file", e);
-    }
+    return () -> java.nio.file.Files.newInputStream(file.toPath());
   }
 
   @Override

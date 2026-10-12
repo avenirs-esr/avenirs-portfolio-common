@@ -4,4 +4,4 @@ import fr.avenirsesr.portfolio.common.file.domain.model.enums.EFileType;
 import java.util.UUID;
 
 public record FileResource(
-    UUID id, String fileName, EFileType fileType, long size, byte[] content) {}
+    UUID id, String fileName, EFileType fileType, long size, FileContent content) {}

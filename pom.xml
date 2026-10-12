@@ -162,7 +162,6 @@
             <artifactId>spring-boot-jackson2</artifactId>
         </dependency>
 
-        <!-- Required by the S3 backend of the shared file registry. -->
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>

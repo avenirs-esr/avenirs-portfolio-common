@@ -2,12 +2,14 @@ package fr.avenirsesr.portfolio.common.file.infrastructure.adapter.service;
 
 import fr.avenirsesr.portfolio.common.file.domain.exception.FileStorageException;
 import fr.avenirsesr.portfolio.common.file.domain.exception.FileNotFoundException;
+import fr.avenirsesr.portfolio.common.file.domain.model.FileContent;
 import fr.avenirsesr.portfolio.common.file.domain.model.FileResource;
 import fr.avenirsesr.portfolio.common.file.domain.port.output.service.FileStorageService;
 import fr.avenirsesr.portfolio.common.file.infrastructure.configuration.FileStorageConstants;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.StandardCopyOption;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
@@ -36,8 +38,9 @@ public class FileStorageServiceImpl implements FileStorageService {
     var fileName = fileResource.id() + "." + fileResource.fileType().name().toLowerCase();
 
     String filePath = String.join("", uploadDir, "/", fileName);
-    try (FileOutputStream fos = new FileOutputStream(filePath)) {
-      fos.write(fileResource.content());
+    try (InputStream content = fileResource.content().open()) {
+      java.nio.file.Files.copy(
+          content, java.nio.file.Path.of(filePath), StandardCopyOption.REPLACE_EXISTING);
     } catch (IOException e) {
       throw new FileStorageException("Failed to upload file " + fileResource.fileName(), e);
     }
@@ -47,18 +50,14 @@ public class FileStorageServiceImpl implements FileStorageService {
   }
 
   @Override
-  public byte[] get(String locator) {
+  public FileContent get(String locator) {
     File file = new File(locator);
 
     if (!file.exists()) {
       throw new FileNotFoundException();
     }
 
-    try {
-      return java.nio.file.Files.readAllBytes(file.toPath());
-    } catch (IOException e) {
-      throw new FileStorageException("Failed to read file at path " + locator, e);
-    }
+    return () -> java.nio.file.Files.newInputStream(file.toPath());
   }
 
   @Override
