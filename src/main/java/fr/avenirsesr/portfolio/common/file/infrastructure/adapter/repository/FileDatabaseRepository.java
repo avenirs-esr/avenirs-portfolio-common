@@ -1,0 +1,18 @@
+package fr.avenirsesr.portfolio.common.file.infrastructure.adapter.repository;
+
+import fr.avenirsesr.portfolio.common.data.infrastructure.adapter.repository.GenericJpaRepositoryAdapter;
+import fr.avenirsesr.portfolio.common.file.domain.model.File;
+import fr.avenirsesr.portfolio.common.file.domain.port.output.repository.FileRepository;
+import fr.avenirsesr.portfolio.common.file.infrastructure.adapter.mapper.FileMapper;
+import fr.avenirsesr.portfolio.common.file.infrastructure.adapter.model.FileEntity;
+import org.springframework.stereotype.Repository;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+
+@ConditionalOnProperty(name = "file.registry.enabled", havingValue = "true")
+@Repository
+public class FileDatabaseRepository extends GenericJpaRepositoryAdapter<File, FileEntity>
+    implements FileRepository {
+  public FileDatabaseRepository(FileJpaRepository jpaRepository) {
+    super(jpaRepository, jpaRepository, FileEntity.class, FileMapper.INSTANCE);
+  }
+}
