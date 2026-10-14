@@ -136,7 +136,7 @@ class ApiKeyAuthenticationFilterTest {
   }
 
   @Test
-  void shouldReturn401OnInternalRequestWithMissingApiKey()throws ServletException, IOException {
+  void shouldReturn401OnInternalRequestWithMissingApiKey() throws ServletException, IOException {
     BddLogger.given("an internal request missing the API key header");
     Mockito.when(request.getHeader("X-Forwarded-For")).thenReturn("192.168.1.20");
     Mockito.when(request.getHeader("X-API-Key")).thenReturn(null);
