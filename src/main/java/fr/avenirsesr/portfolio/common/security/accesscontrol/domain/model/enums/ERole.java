@@ -40,6 +40,15 @@ public enum ERole {
           EPermissionGroup.STAFF_ACTIVITY_ACCESS,
           EPermissionGroup.STAFF_FEEDBACK_MANAGEMENT)),
 
+  ROLE_ADMIN(
+      "Administrator of an institution, in charge of its secondary institutions, its groups and"
+          + " its external users",
+      Set.of(),
+      Set.of(
+          EPermissionGroup.ESTABLISHMENT_MANAGEMENT,
+          EPermissionGroup.GROUP_MANAGEMENT,
+          EPermissionGroup.EXTERNAL_USER_MANAGEMENT)),
+
   ROLE_SUPER_ADMIN(
       "Global administrator of the COFOLIO platform",
       Set.of(EPermission.PERM_ACTIVITY_ADMIN_MANAGEMENT),
