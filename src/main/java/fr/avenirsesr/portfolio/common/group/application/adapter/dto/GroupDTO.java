@@ -9,5 +9,4 @@ public record GroupDTO(
     UUID id,
     String name,
     @Schema(ref = "#/components/schemas/EGroupType") EGroupType type,
-    UUID parentId,
-    String parentName) {}
+    UUID parentId) {}
