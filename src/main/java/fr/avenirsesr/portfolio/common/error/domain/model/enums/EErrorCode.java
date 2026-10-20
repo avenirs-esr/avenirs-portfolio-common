@@ -95,6 +95,7 @@ public enum EErrorCode {
   INVALID_TRACE_TYPE("Invalid trace type"),
   LANGUAGE_NOT_SUPPORTED("Language not supported"),
   INVALID_ARGUMENT_TYPE("The type of the argument is invalid"),
+  VALIDATION_FAILED("Request validation failed"),
   DECLARED_SKILL_NOT_AVAILABLE("Declared skill not available"),
   TITLE_TOO_LONG("The length of the title is too long"),
   DESCRIPTION_TOO_LONG("The length of the description is too long"),
