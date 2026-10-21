@@ -19,8 +19,7 @@ public enum EErrorCode {
   SKILL_LEVEL_NOT_FOUND("Skill level not found", HttpStatus.NOT_FOUND),
   TRACE_NOT_FOUND("Trace not found", HttpStatus.NOT_FOUND),
   AMS_NOT_FOUND("AMS not found", HttpStatus.NOT_FOUND),
-  DECLARED_SKILL_NOT_FOUND("Declared skill not found", HttpStatus.NOT_FOUND),
-  DECLARED_SKILL_PROGRESS_NOT_FOUND("Declared skill progress not found", HttpStatus.NOT_FOUND),
+  SKILL_PROGRESS_NOT_FOUND("Skill progress not found", HttpStatus.NOT_FOUND),
   STUDENT_PROGRESS_NOT_FOUND("Student progress not found", HttpStatus.NOT_FOUND),
   FILE_NOT_FOUND("File not found", HttpStatus.NOT_FOUND),
   ATTACHMENT_NOT_FOUND("Attachment not found", HttpStatus.NOT_FOUND),
@@ -61,8 +60,8 @@ public enum EErrorCode {
   FEEDBACK_SUBMITTED("This feedback has already been submitted", HttpStatus.CONFLICT),
   FEEDBACK_SEEN("This feedback can no longer be edited once seen", HttpStatus.CONFLICT),
   USER_ALREADY_EXISTS("User already exists", HttpStatus.CONFLICT),
-  STUDENT_DECLARED_ALREADY_EXIST(
-      "This declared skill is already assigned to the student", HttpStatus.CONFLICT),
+  SKILL_PROGRESS_ALREADY_EXISTS(
+      "This skill is already assigned to the student", HttpStatus.CONFLICT),
   DECLARED_ACTIVITY_ALREADY_EXIST("Declared activity already exist", HttpStatus.CONFLICT),
   DECLARED_ACTIVITY_ALREADY_FINISHED("Declared activity already finished", HttpStatus.CONFLICT),
   DECLARED_ACTIVITY_HAS_NOT_STARTED("Declared activity has not started", HttpStatus.CONFLICT),
@@ -96,7 +95,6 @@ public enum EErrorCode {
   INVALID_TRACE_TYPE("Invalid trace type"),
   LANGUAGE_NOT_SUPPORTED("Language not supported"),
   INVALID_ARGUMENT_TYPE("The type of the argument is invalid"),
-  DECLARED_SKILL_NOT_AVAILABLE("Declared skill not available"),
   SKILL_NOT_ASSESSABLE("This skill cannot be assessed"),
   SKILL_NOT_SELF_DECLARABLE("This skill cannot be declared by a student"),
   TITLE_TOO_LONG("The length of the title is too long"),
