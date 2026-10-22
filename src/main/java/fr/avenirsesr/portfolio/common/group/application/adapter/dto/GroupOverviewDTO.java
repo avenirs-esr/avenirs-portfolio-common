@@ -10,5 +10,4 @@ public record GroupOverviewDTO(
     String name,
     @Schema(ref = "#/components/schemas/EGroupType") EGroupType type,
     int usersCount,
-    UUID parentId,
-    String parentName) {}
+    GroupReferenceDTO parent) {}
