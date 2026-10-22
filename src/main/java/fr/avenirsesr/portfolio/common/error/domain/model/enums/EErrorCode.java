@@ -132,6 +132,7 @@ public enum EErrorCode {
   LASTNAME_IS_NULL("Last name cannot be null"),
   INVALID_DATE_FORMAT("Invalid date format. Expected format: yyyy-MM-dd."),
   ACTIVITY_DATES("Start and end dates must either be both null or both provided"),
+  ACTIVITY_ASSESSMENT("Invalid activity assessment configuration"),
   DECLARED_ACTIVITY_START_DATE_BEFORE_SUBSCRIPTION(
       "Start date cannot be before the subscription date");
 
