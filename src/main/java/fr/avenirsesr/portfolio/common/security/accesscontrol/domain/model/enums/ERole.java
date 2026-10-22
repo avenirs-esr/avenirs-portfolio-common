@@ -134,6 +134,12 @@ public enum ERole {
       Set.of(),
       Set.of(EPermissionGroup.EXTERNAL_USER_MANAGEMENT)),
 
+  ROLE_EXTERNAL_SKILL_MANAGER(
+      "Full management of external skills",
+      Set.of(),
+      Set.of(EPermission.PERM_EXTERNAL_SKILL_READ),
+      Set.of()),
+
   ROLE_CONFIG_VIEWER(
       "Read-only access to the back-office configuration",
       Set.of(),
@@ -200,9 +206,13 @@ public enum ERole {
       Set.of()),
 
   ROLE_ADMIN(
-      "Administrator of an institution, in charge of its secondary institutions, its groups and"
-          + " its external users",
-      Set.of(ROLE_ESTABLISHMENT_MANAGER, ROLE_GROUP_MANAGER, ROLE_EXTERNAL_USER_MANAGER),
+      "Administrator of an institution, in charge of its secondary institutions, its groups, its"
+          + " external users and its external skills",
+      Set.of(
+          ROLE_ESTABLISHMENT_MANAGER,
+          ROLE_GROUP_MANAGER,
+          ROLE_EXTERNAL_USER_MANAGER,
+          ROLE_EXTERNAL_SKILL_MANAGER),
       Set.of(),
       Set.of()),
 
