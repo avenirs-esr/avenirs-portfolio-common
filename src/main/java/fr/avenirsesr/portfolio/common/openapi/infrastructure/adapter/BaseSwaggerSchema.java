@@ -2,6 +2,7 @@ package fr.avenirsesr.portfolio.common.openapi.infrastructure.adapter;
 
 import fr.avenirsesr.portfolio.common.data.domain.model.enums.ESortField;
 import fr.avenirsesr.portfolio.common.data.domain.model.enums.ESortOrder;
+import fr.avenirsesr.portfolio.common.data.domain.model.enums.EUserCategory;
 import fr.avenirsesr.portfolio.common.error.domain.model.enums.EErrorCode;
 import fr.avenirsesr.portfolio.common.language.domain.model.enums.ELanguage;
 import fr.avenirsesr.portfolio.common.security.accesscontrol.domain.model.enums.ERole;
@@ -54,6 +55,12 @@ public class BaseSwaggerSchema {
           .name("EUniverse")
           ._enum(Arrays.stream(EUniverse.values()).map(Enum::name).toList())
           .description("Enum for universe");
+
+  public static final Schema<String> userCategorySchema =
+      new StringSchema()
+          .name("EUserCategory")
+          ._enum(Arrays.stream(EUserCategory.values()).map(Enum::name).toList())
+          .description("Enum for user category");
 
   static Schema<String> createEnumSchema(Class<? extends Enum<?>> enumClass, String description) {
     return new StringSchema()
