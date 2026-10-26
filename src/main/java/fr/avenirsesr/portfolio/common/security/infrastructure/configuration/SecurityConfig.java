@@ -76,7 +76,8 @@ public class SecurityConfig {
               "Security is disabled, dev mode, using {}, do not use in production",
               DevAuthenticationFilter.class.getSimpleName());
           http.addFilterBefore(
-              new DevAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+              new DevAuthenticationFilter(expectedApiKey),
+              UsernamePasswordAuthenticationFilter.class);
         }
         break;
       case API_KEY:
