@@ -4,6 +4,8 @@ import fr.avenirsesr.portfolio.common.data.domain.model.enums.ESortField;
 import fr.avenirsesr.portfolio.common.data.domain.model.enums.ESortOrder;
 import fr.avenirsesr.portfolio.common.error.domain.model.enums.EErrorCode;
 import fr.avenirsesr.portfolio.common.language.domain.model.enums.ELanguage;
+import fr.avenirsesr.portfolio.common.security.accesscontrol.domain.model.enums.ERole;
+import fr.avenirsesr.portfolio.common.security.accesscontrol.domain.model.enums.EUniverse;
 import fr.avenirsesr.portfolio.common.temporal.domain.model.enums.EDurationUnit;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -40,6 +42,18 @@ public class BaseSwaggerSchema {
           .name("EDurationUnit")
           ._enum(Arrays.stream(EDurationUnit.values()).map(Enum::name).toList())
           .description("Enum for duration units");
+
+  public static final Schema<String> roleSchema =
+      new StringSchema()
+          .name("ERole")
+          ._enum(Arrays.stream(ERole.values()).map(Enum::name).toList())
+          .description("Enum for user role");
+
+  public static final Schema<String> universeSchema =
+      new StringSchema()
+          .name("EUniverse")
+          ._enum(Arrays.stream(EUniverse.values()).map(Enum::name).toList())
+          .description("Enum for universe");
 
   static Schema<String> createEnumSchema(Class<? extends Enum<?>> enumClass, String description) {
     return new StringSchema()
