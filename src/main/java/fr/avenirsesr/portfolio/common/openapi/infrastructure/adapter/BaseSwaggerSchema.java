@@ -1,5 +1,7 @@
 package fr.avenirsesr.portfolio.common.openapi.infrastructure.adapter;
 
+import fr.avenirsesr.portfolio.common.authorization.domain.model.enums.EAuthorization;
+import fr.avenirsesr.portfolio.common.authorization.domain.model.enums.EAuthorizationEntityType;
 import fr.avenirsesr.portfolio.common.data.domain.model.enums.ESortField;
 import fr.avenirsesr.portfolio.common.data.domain.model.enums.ESortOrder;
 import fr.avenirsesr.portfolio.common.data.domain.model.enums.EUserCategory;
@@ -61,6 +63,18 @@ public class BaseSwaggerSchema {
           .name("EUserCategory")
           ._enum(Arrays.stream(EUserCategory.values()).map(Enum::name).toList())
           .description("Enum for user category");
+
+  public static final Schema<String> authorizationSchema =
+      new StringSchema()
+          .name("EAuthorization")
+          ._enum(Arrays.stream(EAuthorization.values()).map(Enum::name).toList())
+          .description("Enum for authorization");
+
+  public static final Schema<String> authorizationEntityTypeSchema =
+      new StringSchema()
+          .name("EAuthorizationEntityType")
+          ._enum(Arrays.stream(EAuthorizationEntityType.values()).map(Enum::name).toList())
+          .description("Enum for authorization entity type");
 
   static Schema<String> createEnumSchema(Class<? extends Enum<?>> enumClass, String description) {
     return new StringSchema()
