@@ -75,6 +75,8 @@ public enum EErrorCode {
   ACTIVITY_TARGET_REMOVAL_NOT_ALLOWED(
       "A target already published cannot be removed from a published activity",
       HttpStatus.CONFLICT),
+  SUB_ACTIVITY_OPERATION_NOT_ALLOWED(
+      "This operation is not allowed on a sub-activity", HttpStatus.CONFLICT),
 
   // 413 Payload Too Large
   MAX_FILE_SIZE_EXCEEDED("Maximum upload size exceeded", HttpStatus.PAYLOAD_TOO_LARGE),
@@ -133,6 +135,7 @@ public enum EErrorCode {
   INVALID_DATE_FORMAT("Invalid date format. Expected format: yyyy-MM-dd."),
   ACTIVITY_DATES("Start and end dates must either be both null or both provided"),
   ACTIVITY_ASSESSMENT("Invalid activity assessment configuration"),
+  SUB_ACTIVITY_FIELD_NOT_ALLOWED("The field {0} cannot be set on a sub-activity"),
   DECLARED_ACTIVITY_START_DATE_BEFORE_SUBSCRIPTION(
       "Start date cannot be before the subscription date");
 
