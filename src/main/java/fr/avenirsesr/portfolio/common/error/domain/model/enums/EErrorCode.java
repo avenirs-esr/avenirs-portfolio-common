@@ -77,6 +77,8 @@ public enum EErrorCode {
       HttpStatus.CONFLICT),
   SUB_ACTIVITY_OPERATION_NOT_ALLOWED(
       "This operation is not allowed on a sub-activity", HttpStatus.CONFLICT),
+  SUB_ACTIVITY_ADDITION_NOT_ALLOWED(
+      "A sub-activity cannot be added to an activity with enrolled students", HttpStatus.CONFLICT),
 
   // 413 Payload Too Large
   MAX_FILE_SIZE_EXCEEDED("Maximum upload size exceeded", HttpStatus.PAYLOAD_TOO_LARGE),
@@ -136,6 +138,10 @@ public enum EErrorCode {
   ACTIVITY_DATES("Start and end dates must either be both null or both provided"),
   ACTIVITY_ASSESSMENT("Invalid activity assessment configuration"),
   SUB_ACTIVITY_FIELD_NOT_ALLOWED("The field {0} cannot be set on a sub-activity"),
+  SUB_ACTIVITY_PERIOD_OUTSIDE_MAIN_ACTIVITY(
+      "The period of a sub-activity must be within the period of its main activity"),
+  ACTIVITY_PERIOD_EXCLUDES_SUB_ACTIVITIES(
+      "The period of an activity must cover the periods of its sub-activities"),
   DECLARED_ACTIVITY_START_DATE_BEFORE_SUBSCRIPTION(
       "Start date cannot be before the subscription date");
 
