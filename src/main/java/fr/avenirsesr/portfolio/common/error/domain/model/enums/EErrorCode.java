@@ -142,6 +142,8 @@ public enum EErrorCode {
       "The period of a sub-activity must be within the period of its main activity"),
   ACTIVITY_PERIOD_EXCLUDES_SUB_ACTIVITIES(
       "The period of an activity must cover the periods of its sub-activities"),
+  SUB_ACTIVITY_ORDER_MISMATCH(
+      "The ordered sub-activities must be exactly the sub-activities of the activity"),
   DECLARED_ACTIVITY_START_DATE_BEFORE_SUBSCRIPTION(
       "Start date cannot be before the subscription date");
 
