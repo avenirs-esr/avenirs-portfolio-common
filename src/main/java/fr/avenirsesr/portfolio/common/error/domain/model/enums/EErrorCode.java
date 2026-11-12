@@ -42,6 +42,8 @@ public enum EErrorCode {
   // 403 Forbidden
   ACCESS_DENIED("Access denied", HttpStatus.FORBIDDEN),
   USER_NOT_AUTHORIZED("User not authorized", HttpStatus.FORBIDDEN),
+  ACTIVITY_AUTHORIZATION_CHANGE_NOT_ALLOWED(
+      "This change of activity authorizations is not allowed", HttpStatus.FORBIDDEN),
   USER_IS_NOT_STUDENT_EXCEPTION("User is not student", HttpStatus.FORBIDDEN),
   USER_IS_NOT_STAFF_EXCEPTION("User is not staff", HttpStatus.FORBIDDEN),
   EXTERNAL_USER_BLOCKED("External user was blocked", HttpStatus.FORBIDDEN),
