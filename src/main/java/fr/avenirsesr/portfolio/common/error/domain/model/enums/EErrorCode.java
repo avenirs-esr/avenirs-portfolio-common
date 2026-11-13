@@ -81,6 +81,9 @@ public enum EErrorCode {
       "This operation is not allowed on a sub-activity", HttpStatus.CONFLICT),
   SUB_ACTIVITY_ADDITION_NOT_ALLOWED(
       "A sub-activity cannot be added to an activity with enrolled students", HttpStatus.CONFLICT),
+  SUB_ACTIVITY_DELETION_NOT_ALLOWED(
+      "A sub-activity cannot be deleted from an activity with enrolled students",
+      HttpStatus.CONFLICT),
 
   // 413 Payload Too Large
   MAX_FILE_SIZE_EXCEEDED("Maximum upload size exceeded", HttpStatus.PAYLOAD_TOO_LARGE),
