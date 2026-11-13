@@ -39,7 +39,7 @@ public abstract class BaseRestExceptionHandler {
     log.error("Erreur métier : {}", ex.getMessage());
 
     return ResponseEntity.status(ex.getErrorCode().getHttpStatus())
-        .body(new ErrorResponse(ex.getErrorCode().name(), ex.getMessage()));
+        .body(new ErrorResponse(ex.getErrorCode().name(), ex.getMessage(), ex.getDetails()));
   }
 
   @ExceptionHandler(MaxUploadSizeExceededException.class)
