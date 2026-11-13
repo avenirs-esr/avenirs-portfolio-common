@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -67,11 +68,11 @@ public class RequestContextFilter extends OncePerRequestFilter {
         }
       } catch (BusinessException ex) {
         log.warn("Rejected request while building request context: {}", ex.getErrorCode());
-        writeErrorResponse(response, ex.getErrorCode());
+        writeErrorResponse(response, ex.getErrorCode(), ex.getDetails());
         return;
       } catch (Exception ex) {
         log.error("Unexpected error while building request context", ex);
-        writeErrorResponse(response, EErrorCode.UNEXPECTED_ERROR);
+        writeErrorResponse(response, EErrorCode.UNEXPECTED_ERROR, null);
         return;
       }
 
@@ -81,11 +82,12 @@ public class RequestContextFilter extends OncePerRequestFilter {
     }
   }
 
-  private void writeErrorResponse(HttpServletResponse response, EErrorCode errorCode)
+  private void writeErrorResponse(
+      HttpServletResponse response, EErrorCode errorCode, Map<String, Object> details)
       throws IOException, StreamWriteException, DatabindException {
     response.setStatus(errorCode.getHttpStatus().value());
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     objectMapper.writeValue(
-        response.getWriter(), new ErrorResponse(errorCode.name(), errorCode.getMessage()));
+        response.getWriter(), new ErrorResponse(errorCode.name(), errorCode.getMessage(), details));
   }
 }
