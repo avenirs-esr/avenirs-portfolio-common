@@ -116,6 +116,7 @@ public enum EErrorCode {
   SELF_KNOWLEDGE_CATEGORY_IS_MANDATORY("Self knowledge category is mandatory"),
   SELF_KNOWLEDGE_CATEGORY_NOT_LINKED("Self knowledge category is not linked to the student"),
   NOT_BLANK("The field {0} cannot be blank"),
+  SUB_ACTIVITY_NOT_PUBLISHABLE("The sub-activity cannot be published"),
   NOT_NULL("The field {0} cannot be null"),
   TOO_LONG("The field {0} exceeds the maximum allowed length"),
   ENRICHED_TEXT_TOO_LONG(
