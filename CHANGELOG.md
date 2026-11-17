@@ -6,6 +6,22 @@ and [Conventional Commits](https://www.conventionalcommits.org/) standard.
 
 ---
 
+## [v1.5.0] - 2026-11-17
+
+- **File registry**
+    - The file registry moves here from `avenirs-portfolio-api`, so that every service can register
+      and store the files it owns: the `File` model, its entity and repository, the local, S3 and
+      seeding storage backends, `LocalFileClient`, and the `AbstractFileController` and
+      `AbstractStorageController` a service extends with its own routes.
+    - Its beans are wired only where `file.registry.enabled=true`. A service that owns no file has
+      nothing to declare.
+    - The uploader is resolved through the `FileUploaderProvider` port, implemented by each service
+      against its own notion of a current user.
+    - File content travels as a `FileContent`, an openable stream, instead of a byte array.
+- **Update process**
+    - A service embedding these sources must declare the `software.amazon.awssdk:s3` dependency,
+      needed to compile the S3 backend.
+
 ## [v1.4.0]
 
 - Combined security filters, hmac or Api key, to be usable by the frontend or another microservice.
