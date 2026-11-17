@@ -140,6 +140,18 @@ public enum ERole {
       Set.of(EPermission.PERM_EXTERNAL_SKILL_READ),
       Set.of()),
 
+  ROLE_NATIONAL_TOOL_MANAGER(
+      "Management of the national tools",
+      Set.of(),
+      Set.of(EPermission.PERM_TOOL_NATIONAL_MANAGEMENT),
+      Set.of()),
+
+  ROLE_LOCAL_TOOL_MANAGER(
+      "Management of the regional and institution tools within the accessible institutions",
+      Set.of(),
+      Set.of(EPermission.PERM_TOOL_LOCAL_MANAGEMENT),
+      Set.of()),
+
   ROLE_CONFIG_VIEWER(
       "Read-only access to the back-office configuration",
       Set.of(),
@@ -207,12 +219,13 @@ public enum ERole {
 
   ROLE_ADMIN(
       "Administrator of an institution, in charge of its secondary institutions, its groups, its"
-          + " external users and its external skills",
+          + " external users, its external skills and its tools",
       Set.of(
           ROLE_ESTABLISHMENT_MANAGER,
           ROLE_GROUP_MANAGER,
           ROLE_EXTERNAL_USER_MANAGER,
-          ROLE_EXTERNAL_SKILL_MANAGER),
+          ROLE_EXTERNAL_SKILL_MANAGER,
+          ROLE_LOCAL_TOOL_MANAGER),
       Set.of(),
       Set.of()),
 
@@ -223,7 +236,8 @@ public enum ERole {
           ROLE_ACTIVITY_ADMIN,
           ROLE_RBAC_ADMIN,
           ROLE_CONFIG_MANAGER,
-          ROLE_SYSTEM_OPERATOR),
+          ROLE_SYSTEM_OPERATOR,
+          ROLE_NATIONAL_TOOL_MANAGER),
       Set.of(),
       Set.of());
 
