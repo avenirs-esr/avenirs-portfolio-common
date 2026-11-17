@@ -5,8 +5,8 @@ import fr.avenirsesr.portfolio.common.file.domain.model.File;
 import fr.avenirsesr.portfolio.common.file.domain.port.output.repository.FileRepository;
 import fr.avenirsesr.portfolio.common.file.infrastructure.adapter.mapper.FileMapper;
 import fr.avenirsesr.portfolio.common.file.infrastructure.adapter.model.FileEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Repository;
 
 @ConditionalOnProperty(name = "file.registry.enabled", havingValue = "true")
 @Repository

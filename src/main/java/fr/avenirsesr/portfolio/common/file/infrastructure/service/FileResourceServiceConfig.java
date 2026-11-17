@@ -6,10 +6,10 @@ import fr.avenirsesr.portfolio.common.file.domain.port.output.service.FileStorag
 import fr.avenirsesr.portfolio.common.file.domain.port.output.service.FileUploaderProvider;
 import fr.avenirsesr.portfolio.common.file.domain.service.FileResourceServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 @ConditionalOnProperty(name = "file.registry.enabled", havingValue = "true")
 @Configuration
