@@ -136,6 +136,11 @@ public enum EPermission {
 
   PERM_CGU_UPDATE("cgu:update", "Publish a new version of the terms of use"),
 
+  PERM_TOOL_NATIONAL_MANAGEMENT("tool:national:management", "Manage the national tools"),
+  PERM_TOOL_LOCAL_MANAGEMENT(
+      "tool:local:management",
+      "Manage the regional and institution tools within the accessible institutions"),
+
   PERM_EXTERNAL_USER_READ("external-user:read", "View external users"),
   PERM_EXTERNAL_USER_IMPORT("external-user:import", "Import external users in bulk"),
   PERM_EXTERNAL_USER_UPDATE("external-user:update", "Update or activate an external user in bulk"),
