@@ -75,9 +75,6 @@ public enum EErrorCode {
   INSTITUTION_HAI_ALREADY_EXISTS(
       "An institution with this HAI already exists", HttpStatus.CONFLICT),
   GROUP_ID_SI_SCO_ALREADY_EXISTS("A group with this id_si_sco already exists", HttpStatus.CONFLICT),
-  ACTIVITY_TARGET_REMOVAL_NOT_ALLOWED(
-      "A target already published cannot be removed from a published activity",
-      HttpStatus.CONFLICT),
   SUB_ACTIVITY_OPERATION_NOT_ALLOWED(
       "This operation is not allowed on a sub-activity", HttpStatus.CONFLICT),
   SUB_ACTIVITY_ADDITION_NOT_ALLOWED(
@@ -89,11 +86,18 @@ public enum EErrorCode {
   // 413 Payload Too Large
   MAX_FILE_SIZE_EXCEEDED("Maximum upload size exceeded", HttpStatus.PAYLOAD_TOO_LARGE),
 
+  //422 Unprocessable Content
+  INSTITUTION_NOT_PRIMARY("Institution is not primary", HttpStatus.UNPROCESSABLE_CONTENT ),
+  EXTERNAL_USER_NOT_STAFF("External user is not staff", HttpStatus.UNPROCESSABLE_CONTENT),
+
   // 500 Internal Server Error
   UNEXPECTED_ERROR("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR),
   FILE_STORAGE_ERROR("File storage operation failed", HttpStatus.INTERNAL_SERVER_ERROR),
   CONFIGURATION_ERROR("Configuration error", HttpStatus.INTERNAL_SERVER_ERROR),
   KIT_DOWNLOAD_MEDIA_FAILED("Failed to download kit media", HttpStatus.INTERNAL_SERVER_ERROR),
+
+  //502 BAD_GATEWAY
+  ADMIN_ROLE_GRANT_FAILED("Failed to grant the administrator role", HttpStatus.BAD_GATEWAY),
 
   // 503 Service Unavailable
   DEPENDENCY_CHECK_TIMEOUT("Dependency check timeout", HttpStatus.SERVICE_UNAVAILABLE),
