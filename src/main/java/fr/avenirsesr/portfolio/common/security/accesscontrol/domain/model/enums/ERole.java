@@ -202,7 +202,7 @@ public enum ERole {
           ROLE_STUDENT_FEEDBACK,
           ROLE_STUDENT_EMPLOYMENT_KIT,
           ROLE_STUDENT_REFERENCE_DATA),
-      Set.of(),
+      Set.of(EPermission.PERM_TOOL_READ),
       Set.of()),
 
   ROLE_STAFF(
