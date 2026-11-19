@@ -75,9 +75,6 @@ public enum EErrorCode {
   INSTITUTION_HAI_ALREADY_EXISTS(
       "An institution with this HAI already exists", HttpStatus.CONFLICT),
   GROUP_ID_SI_SCO_ALREADY_EXISTS("A group with this id_si_sco already exists", HttpStatus.CONFLICT),
-  ACTIVITY_TARGET_REMOVAL_NOT_ALLOWED(
-      "A target already published cannot be removed from a published activity",
-      HttpStatus.CONFLICT),
   SUB_ACTIVITY_OPERATION_NOT_ALLOWED(
       "This operation is not allowed on a sub-activity", HttpStatus.CONFLICT),
   SUB_ACTIVITY_ADDITION_NOT_ALLOWED(
