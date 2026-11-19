@@ -140,6 +140,8 @@ public enum EPermission {
   PERM_TOOL_LOCAL_MANAGEMENT(
       "tool:local:management",
       "Manage the regional and institution tools within the accessible institutions"),
+  PERM_TOOL_READ(
+      "tool:read", "View the national tools and those of the institutions of the learner"),
 
   PERM_EXTERNAL_USER_READ("external-user:read", "View external users"),
   PERM_EXTERNAL_USER_IMPORT("external-user:import", "Import external users in bulk"),
