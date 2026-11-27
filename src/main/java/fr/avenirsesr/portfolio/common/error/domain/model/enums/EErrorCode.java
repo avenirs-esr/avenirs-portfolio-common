@@ -92,9 +92,15 @@ public enum EErrorCode {
   CONFIGURATION_ERROR("Configuration error", HttpStatus.INTERNAL_SERVER_ERROR),
   KIT_DOWNLOAD_MEDIA_FAILED("Failed to download kit media", HttpStatus.INTERNAL_SERVER_ERROR),
 
+  //502 BAD_GATEWAY
+  ADMIN_ROLE_GRANT_FAILED("Failed to grant the administrator role", HttpStatus.BAD_GATEWAY),
+
   // 503 Service Unavailable
   DEPENDENCY_CHECK_TIMEOUT("Dependency check timeout", HttpStatus.SERVICE_UNAVAILABLE),
   DEPENDENCY_CHECK_FAILED("Dependency check failed", HttpStatus.SERVICE_UNAVAILABLE),
+
+  //422 Unprocessable Content
+  INSTITUTION_NOT_PRIMARY("Institution is not primary", HttpStatus.UNPROCESSABLE_CONTENT ),
 
   // 400 Bad Request (default)
   WRONG_CLASS_TYPE("The class type should be different"),
