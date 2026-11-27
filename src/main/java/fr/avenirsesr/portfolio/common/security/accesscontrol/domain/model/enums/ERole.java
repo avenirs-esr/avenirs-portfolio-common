@@ -238,7 +238,7 @@ public enum ERole {
           ROLE_CONFIG_MANAGER,
           ROLE_SYSTEM_OPERATOR,
           ROLE_NATIONAL_TOOL_MANAGER),
-      Set.of(),
+      Set.of(EPermission.PERM_STATISTIC_EVENT_RECORD, EPermission.PERM_STATISTIC_EVENT_READ),
       Set.of());
 
   private final String description;
