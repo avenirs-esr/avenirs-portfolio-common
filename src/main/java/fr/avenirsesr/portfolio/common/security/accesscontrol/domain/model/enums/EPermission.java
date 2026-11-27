@@ -150,6 +150,9 @@ public enum EPermission {
   PERM_EXTERNAL_USER_AFFILIATION_IMPORT(
       "external-user-affiliation:import", "Import external user affiliations in bulk"),
 
+  PERM_STATISTIC_EVENT_RECORD("statistic-event:record", "Record a statistic event"),
+  PERM_STATISTIC_EVENT_READ("statistic-event:read", "View the statistic events and their counters"),
+
   PERM_SEEDER_RESET(
       "seeder:reset", "Reset and reseed the database (destructive administration operation)"),
 
